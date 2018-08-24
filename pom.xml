@@ -22,6 +22,14 @@
   <dependencies verbose="true">
     <dependency>
       <groupId>ball</groupId>
+      <artifactId>ball-databind</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>ball</groupId>
+      <artifactId>ball-persistence</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>ball</groupId>
       <artifactId>ball-spring</artifactId>
     </dependency>
     <dependency>
