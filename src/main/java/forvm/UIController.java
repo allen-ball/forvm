@@ -35,7 +35,7 @@ public class UIController {
 
     @RequestMapping(value = { "/index.html" })
     public String index(Model model) {
-        return null;
+        return "boilerplate";
     }
 
     @Override
