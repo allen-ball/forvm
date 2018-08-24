@@ -22,4 +22,20 @@
   </aether:resolve>
   <import file="${ball:parent:xml}"/>
 
+  <target name="markdown-parse"
+          description="--> Invokes &lt;markdown-parse/&gt; task."
+          depends="jar-classes">
+    <taskdef classpathref="build.classpath"
+             resource="forvm/ant/defaults.properties"/>
+    <markdown-parse classpathref="runtime.classpath"/>
+  </target>
+
+  <target name="markdown-render"
+          description="--> Invokes &lt;markdown-render/&gt; task."
+          depends="jar-classes">
+    <taskdef classpathref="build.classpath"
+             resource="forvm/ant/defaults.properties"/>
+    <markdown-render classpathref="runtime.classpath"/>
+  </target>
+
 </project>
