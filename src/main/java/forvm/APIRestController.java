@@ -7,6 +7,7 @@ package forvm;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @version $Revision$
  */
 @RestController
+@ComponentScan(basePackageClasses =
+                   { ball.spring.mysqld.MysqldComponent.class })
 @RequestMapping(value = { "/api/v1" })
 public class APIRestController {
     private static final Logger LOGGER = LogManager.getLogger();
