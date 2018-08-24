@@ -1,0 +1,5 @@
+2018-08-24  Allen D. Ball  <ball@sol.local>
+
+	* src/main/java/forvm/ant/taskdefs/MarkdownTask.java:
+	Added <markdown-parse/> and <markdown-render/> Ant Tasks.
+
