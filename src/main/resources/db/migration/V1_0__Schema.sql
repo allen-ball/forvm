@@ -16,22 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `articles`
---
-
-DROP TABLE IF EXISTS `articles`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `articles` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `slug` varchar(255) NOT NULL,
-  `markdown` longtext NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UK_sn7al9fwhgtf98rvn8nxhjt4f` (`slug`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `authors`
 --
 
@@ -47,8 +31,25 @@ CREATE TABLE `authors` (
   `last` varchar(32) DEFAULT NULL,
   `suffix` varchar(12) DEFAULT NULL,
   `alias` longtext,
+  `markdown` longtext,
   PRIMARY KEY (`email`),
   UNIQUE KEY `UK_50058x3s3i9lcreapeth7bbsw` (`slug`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `posts`
+--
+
+DROP TABLE IF EXISTS `posts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `posts` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `slug` varchar(255) NOT NULL,
+  `markdown` longtext NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_qmmso8qxjpbxwegdtp0l90390` (`slug`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -90,4 +91,4 @@ CREATE TABLE `credentials` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-24 13:04:09
+-- Dump completed on 2018-08-24 17:54:09

@@ -5,18 +5,20 @@
  */
 package forvm.repository;
 
-import forvm.entity.Article;
+import forvm.entity.Post;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * {@link Article} {@link JpaRepository}
+ * {@link Post} {@link JpaRepository}
  *
  * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
  * @version $Revision$
  */
 @Repository
 @Transactional(readOnly = true)
-public interface ArticleRepository extends JpaRepository<Article,String> {
+public interface PostRepository extends JpaRepository<Post,String> {
+    public Optional<Post> findBySlug(String slug);
 }

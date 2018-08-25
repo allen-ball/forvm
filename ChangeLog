@@ -1,5 +1,9 @@
 2018-08-24  Allen D. Ball  <ball@sol.local>
 
+	* src/main/java/forvm/entity/, src/main/java/forvm/repository/:
+	Added findBySlug(String) methods to JpaRepository interfaces and
+	synchronized with V1_0__Schema.sql.
+
 	* src/main/java/forvm/UIController.java:
 	Stubbed out Web UI paths (with @PathVariable annotations).
 

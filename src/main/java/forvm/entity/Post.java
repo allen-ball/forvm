@@ -28,9 +28,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(catalog = "forvm", name = "articles")
-public class Article extends JSONBean {
-    private static final long serialVersionUID = 548443083234569289L;
+@Table(catalog = "forvm", name = "posts")
+public class Post extends JSONBean {
+    private static final long serialVersionUID = 6458730758489386403L;
 
     @Getter @Setter
     @Id @GeneratedValue(strategy = IDENTITY)
