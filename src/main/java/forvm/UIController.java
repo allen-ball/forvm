@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -30,11 +31,39 @@ public class UIController {
      */
     public UIController() { super(); }
 
-    @RequestMapping(value = { "/", "/index", "/index.htm" })
-    public String root() { return "redirect:/index.html"; }
+    @RequestMapping(value = { "/" })
+    public String root() { return "redirect:/posts"; }
 
-    @RequestMapping(value = { "/index.html" })
-    public String index(Model model) {
+    @RequestMapping(value = { "/index.html", "/index", "/index.htm" })
+    public String index() { return "redirect:/posts"; }
+
+    @RequestMapping(value = { "/posts" })
+    public String posts(Model model) {
+        return "boilerplate";
+    }
+
+    @RequestMapping(value = { "/post/{slug}" })
+    public String post(@PathVariable String slug, Model model) {
+        return "boilerplate";
+    }
+
+    @RequestMapping(value = { "/authors" })
+    public String authors(Model model) {
+        return "boilerplate";
+    }
+
+    @RequestMapping(value = { "/author/{slug}" })
+    public String author(@PathVariable String slug, Model model) {
+        return "boilerplate";
+    }
+
+    @RequestMapping(value = { "/tags" })
+    public String tags(Model model) {
+        return "boilerplate";
+    }
+
+    @RequestMapping(value = { "/tag/{slug}" })
+    public String tag(@PathVariable String slug, Model model) {
         return "boilerplate";
     }
 
