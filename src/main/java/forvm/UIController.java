@@ -6,6 +6,7 @@
 package forvm;
 
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +33,29 @@ public class UIController {
     public UIController() { super(); }
 
     @RequestMapping(value = { "/" })
-    public String root() { return "redirect:/posts"; }
+    public String root() { return "redirect:/index.html"; }
 
-    @RequestMapping(value = { "/index.html", "/index", "/index.htm" })
-    public String index() { return "redirect:/posts"; }
+    @RequestMapping(value = { "/index.html", "/index.htm", "/index" })
+    public String index() { return "redirect:/posts/page/1"; }
 
-    @RequestMapping(value = { "/posts" })
-    public String posts(Model model) {
+    @RequestMapping(value = { "/posts", "/posts/by-{type}/{slug}" })
+    public String posts(HttpServletRequest request) {
+        return "redirect:" + request.getServletPath() + "/page/1";
+    }
+
+    @RequestMapping(value = {
+                        "/posts/page/{page}",
+                        "/posts/by-{type}/{slug}/page/{page}"
+                    })
+    public String posts(@PathVariable(required = false) String type,
+                        @PathVariable(required = false) String slug,
+                        @PathVariable int page,
+                        Model model) {
         return "boilerplate";
     }
 
     @RequestMapping(value = { "/post/{slug}" })
-    public String post(@PathVariable String slug, Model model) {
+    public String post(@PathVariable("slug") String slug, Model model) {
         return "boilerplate";
     }
 
@@ -52,18 +64,8 @@ public class UIController {
         return "boilerplate";
     }
 
-    @RequestMapping(value = { "/author/{slug}" })
-    public String author(@PathVariable String slug, Model model) {
-        return "boilerplate";
-    }
-
     @RequestMapping(value = { "/tags" })
     public String tags(Model model) {
-        return "boilerplate";
-    }
-
-    @RequestMapping(value = { "/tag/{slug}" })
-    public String tag(@PathVariable String slug, Model model) {
         return "boilerplate";
     }
 

@@ -5,26 +5,32 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{css/prism.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/prism.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
   </head>
   <body>
-    <header class="fixed-top bg-dark text-white">
-      <nav class="navbar navbar-dark">
-        <div class="container">
-          <div class="navbar-header">
-            <a class="navbar-nav navbar-brand"
-               th:href="${(#mvc.url('UIC#root')).build()}"
-               th:text="@pom.artifactId@"/>
-          </div>
+    <nav class="navbar navbar-dark fixed-top bg-dark text-white">
+      <div class="container">
+        <a class="navbar-brand"
+           th:href="${(#mvc.url('UIC#root')).build()}"
+           th:text="@pom.artifactId@"/>
+        <div class="navbar-expand">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/authors}" th:text="Authors"/>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/tags}" th:text="Tags"/>
+            </li>
+          </ul>
         </div>
-      </nav>
-    </header>
+      </div>
+    </nav>
     <div class="container">
       <!-- Content based on context -->
     </div>
@@ -40,9 +46,9 @@
         </div>
       </nav>
     </footer>
-    <script type="text/javascript" th:src="@{js/jquery.js}"></script>
-    <script type="text/javascript" th:src="@{js/popper.js}"></script>
-    <script type="text/javascript" th:src="@{js/bootstrap.js}"></script>
-    <script type="text/javascript" th:src="@{js/prism.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/js/popper.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/js/prism.js}"></script>
   </body>
 </html>

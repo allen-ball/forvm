@@ -1,3 +1,7 @@
+2018-08-25  Allen D. Ball  <ball@sol.local>
+
+	* src/main/java/forvm/UIController.java: Outlined navigation.
+
 2018-08-24  Allen D. Ball  <ball@sol.local>
 
 	* src/main/java/forvm/entity/, src/main/java/forvm/repository/:
