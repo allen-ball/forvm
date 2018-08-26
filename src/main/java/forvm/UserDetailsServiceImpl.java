@@ -7,8 +7,10 @@ package forvm;
 
 import forvm.entity.Author;
 import forvm.entity.Credential;
+import forvm.entity.Subscriber;
 import forvm.repository.AuthorRepository;
 import forvm.repository.CredentialRepository;
+import forvm.repository.SubscriberRepository;
 import java.util.HashSet;
 import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
@@ -33,8 +35,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserDetailsServiceImpl implements UserDetailsService {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    @Autowired private AuthorRepository authorRepository;
     @Autowired private CredentialRepository credentialRepository;
+    @Autowired private AuthorRepository authorRepository;
+    @Autowired private SubscriberRepository subscriberRepository;
 
     /**
      * Sole constructor.
@@ -51,7 +54,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (credential.isPresent()) {
             HashSet<GrantedAuthority> set = new HashSet<>();
 
-            set.add(new SimpleGrantedAuthority("USER"));
+            if (subscriberRepository.findById(username).isPresent()) {
+                set.add(new SimpleGrantedAuthority("SUBSCRIBER"));
+            }
 
             if (authorRepository.findById(username).isPresent()) {
                 set.add(new SimpleGrantedAuthority("AUTHOR"));

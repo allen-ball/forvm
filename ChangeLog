@@ -1,6 +1,6 @@
 2018-08-26  Allen D. Ball  <ball@sol.local>
 
-	* Added AUTHOR role to security model.
+	* Added SUBSCRIBER and AUTHOR roles to security model.
 
 	* Integrated spring-boot-starter-security and added Login/Logout
 	functionality.
