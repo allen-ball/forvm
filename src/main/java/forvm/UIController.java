@@ -7,9 +7,13 @@ package forvm;
 
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -67,6 +71,21 @@ public class UIController {
     @RequestMapping(value = { "/tags" })
     public String tags(Model model) {
         return "boilerplate";
+    }
+
+    @RequestMapping(value = { "/login" })
+    public String login() { return "boilerplate"; }
+
+    @RequestMapping(value = { "/logout" })
+    public String logout (HttpServletRequest request,
+                          HttpServletResponse response) {
+        Authentication authentication =
+            SecurityContextHolder.getContext().getAuthentication();
+
+        new SecurityContextLogoutHandler()
+            .logout(request, response, authentication);
+
+        return "redirect:/";
     }
 
     @Override

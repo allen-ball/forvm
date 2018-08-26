@@ -1,3 +1,8 @@
+2018-08-26  Allen D. Ball  <ball@sol.local>
+
+	* Integrated spring-boot-starter-security and added Login/Logout
+	functionality.
+
 2018-08-25  Allen D. Ball  <ball@sol.local>
 
 	* src/main/java/forvm/UIController.java: Outlined navigation.
