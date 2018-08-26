@@ -5,7 +5,9 @@
  */
 package forvm;
 
+import forvm.entity.Author;
 import forvm.entity.Credential;
+import forvm.repository.AuthorRepository;
 import forvm.repository.CredentialRepository;
 import java.util.HashSet;
 import java.util.Optional;
@@ -31,7 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserDetailsServiceImpl implements UserDetailsService {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    @Autowired private CredentialRepository repository;
+    @Autowired private AuthorRepository authorRepository;
+    @Autowired private CredentialRepository credentialRepository;
 
     /**
      * Sole constructor.
@@ -42,12 +45,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = null;
-        Optional<Credential> credential = repository.findById(username);
+        Optional<Credential> credential =
+            credentialRepository.findById(username);
 
         if (credential.isPresent()) {
             HashSet<GrantedAuthority> set = new HashSet<>();
 
             set.add(new SimpleGrantedAuthority("USER"));
+
+            if (authorRepository.findById(username).isPresent()) {
+                set.add(new SimpleGrantedAuthority("AUTHOR"));
+            }
 
             user = new User(username, credential.get().getPassword(), set);
         } else {

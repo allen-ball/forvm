@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UIController {
     private static final Logger LOGGER = LogManager.getLogger();
 
+    public static final String BOILERPLATE ="boilerplate";
+
     @Autowired private APIRestController api;
 
     /**
@@ -55,26 +57,31 @@ public class UIController {
                         @PathVariable(required = false) String slug,
                         @PathVariable int page,
                         Model model) {
-        return "boilerplate";
+        return BOILERPLATE;
     }
 
     @RequestMapping(value = { "/post/{slug}" })
     public String post(@PathVariable("slug") String slug, Model model) {
-        return "boilerplate";
+        return BOILERPLATE;
     }
 
     @RequestMapping(value = { "/authors" })
     public String authors(Model model) {
-        return "boilerplate";
+        return BOILERPLATE;
     }
 
     @RequestMapping(value = { "/tags" })
     public String tags(Model model) {
-        return "boilerplate";
+        return BOILERPLATE;
+    }
+
+    @RequestMapping(value = { "/preview" })
+    public String preview(Model model) {
+        return BOILERPLATE;
     }
 
     @RequestMapping(value = { "/login" })
-    public String login() { return "boilerplate"; }
+    public String login() { return BOILERPLATE; }
 
     @RequestMapping(value = { "/logout" })
     public String logout (HttpServletRequest request,
