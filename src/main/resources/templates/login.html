@@ -1,20 +1,29 @@
 <!-- $Id$ -->
-<div class="row">
-  <form th:action="@{/login}" method="post">
-    <div class="form-group">
-      <label for="username">E'mail:</label>
-      <input type="text" name="username"
-             class="form-control" id="username" placeholder="username"/>
+<div class="jumbotron">
+  <div class="row justify-content-center">
+    <div class="col-sm-6">
+      <form class="form-signin" th:action="@{/login}" method="post">
+        <th:block th:with="name = 'username', type = 'email', label = 'E\'mail Address'">
+          <label class="sr-only" th:for="${name}" th:text="${label}"/>
+          <input class="form-control" th:type="${type}"
+                 th:name="${name}" th:id="${name}"
+                 th:placeholder="${label}" required autofocus/>
+        </th:block>
+        <th:block th:with="name = 'password', type = 'password', label = 'Password'">
+          <label class="sr-only" th:for="${name}" th:text="${label}"/>
+          <input class="form-control" th:type="${type}"
+                 th:name="${name}" th:id="${name}"
+                 th:placeholder="${label}" required autofocus/>
+        </th:block>
+        <button class="btn btn-lg btn-primary btn-block" type="submit"
+                th:text="Login"/>
+      </form>
     </div>
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input type="password" name="password"
-             class="form-control" id="password" placeholder="password"/>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-sm-6">
+      <p th:if="${param.error}">Invalid username and password.</p>
+      <p th:if="${param.logout}">You have been logged out.</p>
     </div>
-    <button type="submit" class="btn btn-primary" th:text="Submit"/>
-  </form>
-</div>
-<div class="row">
-  <p th:if="${param.error}">Invalid username and password.</p>
-  <p th:if="${param.logout}">You have been logged out.</p>
+  </div>
 </div>

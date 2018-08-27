@@ -82,6 +82,7 @@
                th:href="${compass.lastPage}" th:text="'>|'"/>
           </div>
           <div class="col-sm text-right">
+            <p sec:authorize="isAuthenticated()" sec:authentication="name"/>
           </div>
         </div>
       </nav>
