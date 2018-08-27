@@ -16,6 +16,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -39,7 +41,9 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class UIController implements ErrorController {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public static final String BOILERPLATE ="boilerplate";
+    private static final String BOILERPLATE ="boilerplate";
+
+    private static final int PAGE_SIZE = 6;
 
     @Autowired private AuthorRepository authorRepository;
     @Autowired private PostRepository postRepository;
@@ -56,8 +60,8 @@ public class UIController implements ErrorController {
     @RequestMapping(value = { "/index.html", "/index.htm", "/index" })
     public String index() { return "redirect:/posts/"; }
 
-    @RequestMapping(value = { "/posts" })
-    public String posts(HttpServletRequest request) {
+    @RequestMapping(value = { "/posts", "/authors", "/tags" })
+    public String containers(HttpServletRequest request) {
         return "redirect:" + request.getServletPath() + "/";
     }
 
@@ -69,7 +73,11 @@ public class UIController implements ErrorController {
             return "redirect:" + request.getServletPath() + "?page=1";
         }
 
-        model.addAttribute("compass", new Compass(request, 1, 1));
+        Page<?> posts =
+            postRepository.findAll(PageRequest.of(page - 1, PAGE_SIZE));
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("compass", new Compass(request, posts));
 
         return BOILERPLATE;
     }
@@ -80,11 +88,6 @@ public class UIController implements ErrorController {
         model.addAttribute("compass", new Compass());
 
         return BOILERPLATE;
-    }
-
-    @RequestMapping(value = { "/authors" })
-    public String authors(HttpServletRequest request) {
-        return "redirect:" + request.getServletPath() + "/";
     }
 
     @RequestMapping(value = { "/authors/" })
@@ -101,11 +104,6 @@ public class UIController implements ErrorController {
         model.addAttribute("compass", new Compass());
 
         return BOILERPLATE;
-    }
-
-    @RequestMapping(value = { "/tags" })
-    public String tags(HttpServletRequest request) {
-        return "redirect:" + request.getServletPath() + "/";
     }
 
     @RequestMapping(value = { "/tags/" })
@@ -171,36 +169,62 @@ public class UIController implements ErrorController {
      * {@bean.info}
      */
     protected class Compass {
+        private static final String HREF = "%s?page=%d";
+
         private final String path;
-        private final int page;
-        private final int count;
+        private final Page<?> page;
 
-        private Compass() { this(null, 0, 0); }
-
-        private Compass(HttpServletRequest request, int page, int count) {
+        private Compass(HttpServletRequest request, Page<?> page) {
             this.path = (request != null) ? request.getServletPath() : null;
             this.page = page;
-            this.count = count;
         }
 
-        public String getUp() {
-            return null;
-        }
+        private Compass() { this(null, null); }
 
         public String getFirstPage() {
-            return (path != null) ? (path + "?page=1") : null;
+            return href(1);
         }
 
         public String getPrevPage() {
-            return (path != null && 1 < page) ? (path + "?page=" + (page - 1)) : null;
+            String href = null;
+
+            if (page != null && page.hasPrevious()) {
+                href = href(page.getNumber());
+            }
+
+            return href;
         }
 
         public String getNextPage() {
-            return (path != null && page < count) ? (path + "?page=" + (page + 1)) : null;
+            String href = null;
+
+            if (page != null && page.hasNext()) {
+                href = href(page.getNumber() + 2);
+            }
+
+            return href;
         }
 
         public String getLastPage() {
-            return (path != null) ? (path + "?page=" + count) : null;
+            String href = null;
+
+            if (page != null) {
+                href = href(Math.max(page.getTotalPages(), 1));
+            } else {
+                href = getFirstPage();
+            }
+
+            return href;
+        }
+
+        private String href(int page) {
+            String string = null;
+
+            if (path != null) {
+                string = String.format(HREF, path, page);
+            }
+
+            return string;
         }
 
         @Override

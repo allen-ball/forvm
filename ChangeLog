@@ -1,3 +1,8 @@
+2018-08-27  Allen D. Ball  <ball@sol.local>
+
+	* src/main/java/forvm/UIController.java:
+	Completed pagination implementation for /posts/.
+
 2018-08-26  Allen D. Ball  <ball@sol.local>
 
 	* Added navigation.
