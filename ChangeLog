@@ -1,5 +1,7 @@
 2018-08-26  Allen D. Ball  <ball@sol.local>
 
+	* Added navigation.
+
 	* Added SUBSCRIBER and AUTHOR roles to security model.
 
 	* Integrated spring-boot-starter-security and added Login/Logout

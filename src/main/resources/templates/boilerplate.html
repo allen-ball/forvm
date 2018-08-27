@@ -33,10 +33,10 @@
         <div class="navbar-expand">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" th:href="@{/authors}" th:text="Authors"/>
+              <a class="nav-link" th:href="@{/authors/}" th:text="Authors"/>
             </li>
             <li class="nav-item">
-              <a class="nav-link" th:href="@{/tags}" th:text="Tags"/>
+              <a class="nav-link" th:href="@{/tags/}" th:text="Tags"/>
             </li>
             <li class="nav-item" sec:authorize="!isAuthenticated()">
               <a class="nav-link" th:href="@{/login}" th:text="Login"/>
@@ -50,16 +50,36 @@
     </nav>
     <div class="container">
       <th:block th:switch="${#request.servletPath}">
-        <th:block th:case="'/login'" th:insert="~{login.html}"/>
+        <th:block th:case="'/authors/'" th:insert="~{authors.html}"/>
+        <th:block th:case="'/posts/'" th:insert="~{posts.html}"/>
+        <th:block th:case="'/tags/'" th:insert="~{tags.html}"/>
         <th:block th:case="'/preview'" th:insert="~{preview.html}"/>
+        <th:block th:case="'/login'" th:insert="~{login.html}"/>
+        <th:block th:case="'/error'" th:insert="~{error.html}"/>
       </th:block>
     </div>
     <footer class="fixed-bottom bg-dark text-white">
       <nav class="navbar navbar-dark">
         <div class="container">
           <div class="col-sm text-left">
+            <p class="col-sm" th:text="${#request.servletPath}"/>
           </div>
-          <div class="col-sm text-center">
+          <div class="col-sm-3 text-center">
+            <a class="btn"
+               th:classappend="${compass.firstPage == null} ? disabled"
+               th:href="${compass.firstPage}" th:text="'|<'"/>
+            <a class="btn"
+               th:classappend="${compass.prevPage == null} ? disabled"
+               th:href="${compass.prevPage}" th:text="'<'"/>
+            <th:block th:if="${param.page != null}"
+                      th:text="${param.page[0]}"/>
+            <th:block th:unless="${param.page != null}" th:text="'#'"/>
+            <a class="btn"
+               th:classappend="${compass.nextPage == null} ? disabled"
+               th:href="${compass.nextPage}" th:text="'>'"/>
+            <a class="btn"
+               th:classappend="${compass.lastPage == null} ? disabled"
+               th:href="${compass.lastPage}" th:text="'>|'"/>
           </div>
           <div class="col-sm text-right">
           </div>

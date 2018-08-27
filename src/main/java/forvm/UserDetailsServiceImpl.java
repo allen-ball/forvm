@@ -54,13 +54,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (credential.isPresent()) {
             HashSet<GrantedAuthority> set = new HashSet<>();
 
-            if (subscriberRepository.findById(username).isPresent()) {
-                set.add(new SimpleGrantedAuthority("SUBSCRIBER"));
-            }
+            subscriberRepository.findById(username)
+                .ifPresent(t -> set.add(new SimpleGrantedAuthority("SUBSCRIBER")));
 
-            if (authorRepository.findById(username).isPresent()) {
-                set.add(new SimpleGrantedAuthority("AUTHOR"));
-            }
+            authorRepository.findById(username)
+                .ifPresent(t -> set.add(new SimpleGrantedAuthority("AUTHOR")));
 
             user = new User(username, credential.get().getPassword(), set);
         } else {
