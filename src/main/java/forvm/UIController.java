@@ -40,12 +40,12 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class UIController implements ErrorController {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private static final String BOILERPLATE ="boilerplate";
-
-    private static final int PAGE_SIZE = 6;
+    private static final String VIEW = UIController.class.getSimpleName();
 
     @Autowired private AuthorRepository authorRepository;
     @Autowired private PostRepository postRepository;
+
+    private int posts_per_page = 6;
 
     /**
      * Sole constructor.
@@ -67,17 +67,20 @@ public class UIController implements ErrorController {
     public String posts(HttpServletRequest request,
                         @RequestParam(required = false) Integer page,
                         Model model) {
-        if (page == null) {
-            return "redirect:" + request.getServletPath() + "?page=1";
+        String view = VIEW;
+
+        if (page != null) {
+            Page<?> posts =
+                postRepository.findAll(PageRequest.of(page - 1,
+                                                      posts_per_page));
+
+            model.addAttribute("posts", posts);
+            model.addAttribute("compass", new Compass(request, posts));
+        } else {
+            view = "redirect:" + request.getServletPath() + "?page=1";
         }
 
-        Page<?> posts =
-            postRepository.findAll(PageRequest.of(page - 1, PAGE_SIZE));
-
-        model.addAttribute("posts", posts);
-        model.addAttribute("compass", new Compass(request, posts));
-
-        return BOILERPLATE;
+        return view;
     }
 
     @RequestMapping(value = { "/post/{slug}" })
@@ -85,7 +88,7 @@ public class UIController implements ErrorController {
         model.addAttribute("post", postRepository.findBySlug(slug).get());
         model.addAttribute("compass", new Compass());
 
-        return BOILERPLATE;
+        return VIEW;
     }
 
     @RequestMapping(value = { "/authors/" })
@@ -93,7 +96,7 @@ public class UIController implements ErrorController {
         model.addAttribute("authors", authorRepository.findAll());
         model.addAttribute("compass", new Compass());
 
-        return BOILERPLATE;
+        return VIEW;
     }
 
     @RequestMapping(value = { "/author/{slug}" })
@@ -101,21 +104,21 @@ public class UIController implements ErrorController {
         model.addAttribute("author", authorRepository.findBySlug(slug).get());
         model.addAttribute("compass", new Compass());
 
-        return BOILERPLATE;
+        return VIEW;
     }
 
     @RequestMapping(value = { "/preview" })
     public String preview(Model model) {
         model.addAttribute("compass", new Compass());
 
-        return BOILERPLATE;
+        return VIEW;
     }
 
     @RequestMapping(value = { "/login" })
     public String login(Model model) {
         model.addAttribute("compass", new Compass());
 
-        return BOILERPLATE;
+        return VIEW;
     }
 
     @RequestMapping(value = { "/logout" })
@@ -134,7 +137,7 @@ public class UIController implements ErrorController {
     public String error(HttpServletRequest request, Model model) {
         model.addAttribute("compass", new Compass());
 
-        return BOILERPLATE;
+        return VIEW;
     }
 
     @Override
