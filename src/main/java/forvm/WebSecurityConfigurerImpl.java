@@ -47,8 +47,7 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
             .antMatchers("/authors/**", "/author/**",
-                         "/posts/**", "/post/**",
-                         "/tags/**", "/tag/**")
+                         "/posts/**", "/post/**")
             .permitAll();
         http.authorizeRequests()
             .antMatchers("/preview")

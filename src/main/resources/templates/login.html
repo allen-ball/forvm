@@ -4,15 +4,17 @@
     <div class="col-sm-6">
       <form class="form-signin" th:action="@{/login}" method="post">
         <th:block th:with="name = 'username', type = 'email', label = 'E\'mail Address'">
-          <label class="sr-only" th:for="${name}" th:text="${label}"/>
+          <label class="sr-only"
+                 th:for="${#ids.next(name)}" th:text="${label}"/>
           <input class="form-control" th:type="${type}"
-                 th:name="${name}" th:id="${name}"
+                 th:name="${name}" th:id="${#ids.seq(name)}"
                  th:placeholder="${label}" required autofocus/>
         </th:block>
         <th:block th:with="name = 'password', type = 'password', label = 'Password'">
-          <label class="sr-only" th:for="${name}" th:text="${label}"/>
+          <label class="sr-only"
+                 th:for="${#ids.seq(name)}" th:text="${label}"/>
           <input class="form-control" th:type="${type}"
-                 th:name="${name}" th:id="${name}"
+                 th:name="${name}" th:id="${#ids.seq(name)}"
                  th:placeholder="${label}" required autofocus/>
         </th:block>
         <button class="btn btn-lg btn-primary btn-block" type="submit"

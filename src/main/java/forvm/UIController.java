@@ -7,7 +7,6 @@ package forvm;
 
 import forvm.repository.AuthorRepository;
 import forvm.repository.PostRepository;
-import forvm.repository.TagRepository;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +46,6 @@ public class UIController implements ErrorController {
 
     @Autowired private AuthorRepository authorRepository;
     @Autowired private PostRepository postRepository;
-    @Autowired private TagRepository tagRepository;
 
     /**
      * Sole constructor.
@@ -60,7 +58,7 @@ public class UIController implements ErrorController {
     @RequestMapping(value = { "/index.html", "/index.htm", "/index" })
     public String index() { return "redirect:/posts/"; }
 
-    @RequestMapping(value = { "/posts", "/authors", "/tags" })
+    @RequestMapping(value = { "/posts", "/authors" })
     public String containers(HttpServletRequest request) {
         return "redirect:" + request.getServletPath() + "/";
     }
@@ -101,22 +99,6 @@ public class UIController implements ErrorController {
     @RequestMapping(value = { "/author/{slug}" })
     public String author(@PathVariable("slug") String slug, Model model) {
         model.addAttribute("author", authorRepository.findBySlug(slug).get());
-        model.addAttribute("compass", new Compass());
-
-        return BOILERPLATE;
-    }
-
-    @RequestMapping(value = { "/tags/" })
-    public String tags(Model model) {
-        model.addAttribute("tags", tagRepository.findAll());
-        model.addAttribute("compass", new Compass());
-
-        return BOILERPLATE;
-    }
-
-    @RequestMapping(value = { "/tag/{slug}" })
-    public String tag(@PathVariable("slug") String slug, Model model) {
-        model.addAttribute("tag", tagRepository.findBySlug(slug).get());
         model.addAttribute("compass", new Compass());
 
         return BOILERPLATE;

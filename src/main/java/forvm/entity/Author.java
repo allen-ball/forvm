@@ -7,16 +7,21 @@ package forvm.entity;
 
 import ball.databind.JSONBean;
 import ball.persistence.embeddable.PersonName;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import static javax.persistence.CascadeType.ALL;
 
 /**
  * {@bean.info}
@@ -29,7 +34,7 @@ import lombok.Setter;
 @Entity
 @Table(catalog = "forvm", name = "authors")
 public class Author extends JSONBean {
-    private static final long serialVersionUID = -5432529026515991274L;
+    private static final long serialVersionUID = -9003779079577188024L;
 
     @Getter @Setter
     @Id @Column(length = 64, nullable = false, unique = true)
@@ -46,4 +51,7 @@ public class Author extends JSONBean {
     @Getter @Setter
     @Lob @Column(nullable = true)
     private String markdown = null;
+
+    @OneToMany(mappedBy = "author", cascade = ALL)
+    private List<Post> posts = new ArrayList<>();
 }

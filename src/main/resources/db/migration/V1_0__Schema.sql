@@ -16,6 +16,19 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `subscribers`
+--
+
+DROP TABLE IF EXISTS `subscribers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `subscribers` (
+  `email` varchar(64) NOT NULL,
+  PRIMARY KEY (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `authors`
 --
 
@@ -47,27 +60,14 @@ DROP TABLE IF EXISTS `posts`;
 CREATE TABLE `posts` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `slug` varchar(255) NOT NULL,
+  `email` varchar(64) DEFAULT NULL,
   `markdown` longtext NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UK_qmmso8qxjpbxwegdtp0l90390` (`slug`)
+  UNIQUE KEY `UK_qmmso8qxjpbxwegdtp0l90390` (`slug`),
+  KEY `FKlrpht2t0c65j1fqsna3eayc2f` (`email`),
+  CONSTRAINT `FKlrpht2t0c65j1fqsna3eayc2f` FOREIGN KEY (`email`) REFERENCES `authors` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `tags`
---
-
-DROP TABLE IF EXISTS `tags`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `tags` (
-  `name` varchar(32) NOT NULL,
-  `slug` varchar(255) NOT NULL,
-  PRIMARY KEY (`name`),
-  UNIQUE KEY `UK_sn0d91hxu700qcw0n4pebp5vc` (`slug`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 --
 -- Table structure for table `credentials`
@@ -91,4 +91,4 @@ CREATE TABLE `credentials` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-24 17:54:09
+-- Dump completed on 2018-08-27 17:39:01

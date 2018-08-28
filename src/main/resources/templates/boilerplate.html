@@ -19,29 +19,46 @@
         <a class="navbar-brand"
            th:href="${(#mvc.url('UIC#root')).build()}"
            th:text="@pom.artifactId@"/>
-        <div class="navbar-expand" sec:authorize="hasAuthority('AUTHOR')">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" th:href="@{/preview}" th:text="Preview"/>
-            </li>
-          </ul>
-        </div>
-        <div class="navbar-expand" sec:authorize="hasAuthority('SUBSCRIBER')">
-          <ul class="navbar-nav">
-          </ul>
-        </div>
         <div class="navbar-expand">
           <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" th:href="@{/authors/}" th:text="Authors"/>
+            <li sec:authorize="hasAuthority('AUTHOR')"
+                class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+                 aria-haspopup="true" aria-expanded="false"
+                 th:id="${#ids.seq('dropdown')}"
+                 th:href="@{''}" th:text="Author"/>
+              <div class="dropdown-menu"
+                   th:attr="aria-labelledby=${#ids.prev('dropdown')}">
+                <a class="dropdown-item"
+                   th:href="@{/preview}" th:text="Preview"/>
+              </div>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" th:href="@{/tags/}" th:text="Tags"/>
+            <li sec:authorize="hasAuthority('SUBSCRIBER')"
+                class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+                 aria-haspopup="true" aria-expanded="false"
+                 th:classappend="'disabled'"
+                 th:id="${#ids.seq('dropdown')}"
+                 th:href="@{''}" th:text="Subscriber"/>
+              <div class="dropdown-menu"
+                   th:attr="aria-labelledby=${#ids.prev('dropdown')}">
+              </div>
             </li>
-            <li class="nav-item" sec:authorize="!isAuthenticated()">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+                 aria-haspopup="true" aria-expanded="false"
+                 th:id="${#ids.seq('dropdown')}"
+                 th:href="@{''}" th:text="Collections"/>
+              <div class="dropdown-menu"
+                   th:attr="aria-labelledby=${#ids.prev('dropdown')}">
+                <a class="dropdown-item"
+                   th:href="@{/authors/}" th:text="Authors"/>
+              </div>
+            </li>
+            <li sec:authorize="!isAuthenticated()" class="nav-item">
               <a class="nav-link" th:href="@{/login}" th:text="Login"/>
             </li>
-            <li class="nav-item" sec:authorize="isAuthenticated()">
+            <li sec:authorize="isAuthenticated()" class="nav-item">
               <a class="nav-link" th:href="@{/logout}" th:text="Logout"/>
             </li>
           </ul>
@@ -52,7 +69,6 @@
       <th:block th:switch="${#request.servletPath}">
         <th:block th:case="'/authors/'" th:insert="~{authors.html}"/>
         <th:block th:case="'/posts/'" th:insert="~{posts.html}"/>
-        <th:block th:case="'/tags/'" th:insert="~{tags.html}"/>
         <th:block th:case="'/preview'" th:insert="~{preview.html}"/>
         <th:block th:case="'/login'" th:insert="~{login.html}"/>
         <th:block th:case="'/error'" th:insert="~{error.html}"/>
