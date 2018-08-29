@@ -1,5 +1,8 @@
 2018-08-28  Allen D. Ball  <ball@sol.local>
 
+	* src/main/java/forvm/entity/Credential.java:
+	Added javax.validation.constraints annotations.
+
 	* Mapped one:many Author->Posts relationship.
 
 2018-08-27  Allen D. Ball  <ball@sol.local>
