@@ -1,3 +1,8 @@
+2018-08-29  Allen D. Ball  <ball@sol.local>
+
+	* src/main/java/forvm/MarkdownConfiguration.java:
+	Added author "preview" functionality.
+
 2018-08-28  Allen D. Ball  <ball@sol.local>
 
 	* src/main/java/forvm/entity/Credential.java:

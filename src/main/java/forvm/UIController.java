@@ -7,12 +7,18 @@ package forvm;
 
 import forvm.repository.AuthorRepository;
 import forvm.repository.PostRepository;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.commonmark.ext.front.matter.YamlFrontMatterVisitor;
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.data.domain.Page;
@@ -27,8 +33,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartFile;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * UI {@link Controller} implementation
@@ -44,6 +54,8 @@ public class UIController implements ErrorController {
 
     @Autowired private AuthorRepository authorRepository;
     @Autowired private PostRepository postRepository;
+    @Autowired private Parser parser;
+    @Autowired private HtmlRenderer renderer;
 
     private int posts_per_page = 6;
 
@@ -102,8 +114,35 @@ public class UIController implements ErrorController {
         return VIEW;
     }
 
-    @RequestMapping(value = { "/preview" })
+    @RequestMapping(method = GET, value = { "/preview" })
     public String preview(Model model) {
+        model.addAttribute("compass", new Compass());
+
+        return VIEW;
+    }
+
+    @RequestMapping(method = POST, value = { "/preview" })
+    public String previewPOST(@RequestParam("file") MultipartFile file,
+                                            Model model) {
+        try {
+            String markdown = new String(file.getBytes(), UTF_8);
+
+            model.addAttribute("markdown", markdown);
+
+            Node document = parser.parse(markdown);
+            YamlFrontMatterVisitor visitor = new YamlFrontMatterVisitor();
+
+            document.accept(visitor);
+
+            StringBuilder html = new StringBuilder();
+
+            renderer.render(document, html);
+
+            model.addAttribute("html", html);
+        } catch (Exception exception) {
+            model.addAttribute("error", exception.getMessage());
+        }
+
         model.addAttribute("compass", new Compass());
 
         return VIEW;

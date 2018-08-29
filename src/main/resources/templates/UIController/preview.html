@@ -1,3 +1,29 @@
 <!-- $Id$ -->
-<div class="row">
-</div>
+<th:block th:switch="${#request.method}">
+  <th:block th:case="'POST'">
+    <p th:if="${error != null}" th:text="${error}"/>
+    <article th:if="${html != null}">
+      <div th:remove="tag" th:utext="${html}"/>
+    </article>
+  </th:block>
+  <th:block th:case="*">
+    <div class="jumbotron">
+      <div class="row justify-content-center">
+        <div class="col-sm-6">
+          <form th:action="${#request.servletPath}" method="post"
+                enctype="multipart/form-data">
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <input type="file" th:name="file"
+                   th:id="${#ids.seq('file')}" th:placeholder="'markdown file'"
+                   class="form-control-file" required autofocus/>
+            <label class="sr-only"
+                   th:for="${#ids.prev('file')}" th:text="'markdown file'"/>
+            <button class="btn btn-lg btn-primary btn-block"
+                    type="submit" th:text="Submit"/>
+          </form>
+        </div>
+      </div>
+    </div>
+  </th:block>
+</th:block>

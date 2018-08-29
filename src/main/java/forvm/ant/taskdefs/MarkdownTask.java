@@ -11,23 +11,13 @@ import ball.util.PropertiesImpl;
 import ball.util.ant.taskdefs.AbstractClasspathTask;
 import ball.util.ant.taskdefs.AntTask;
 import ball.util.ant.taskdefs.NotNull;
+import forvm.MarkdownConfiguration;
 import java.io.File;
 import java.io.Reader;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.List;
 import org.apache.tools.ant.BuildException;
-import org.commonmark.Extension;
-import org.commonmark.ext.autolink.AutolinkExtension;
-import org.commonmark.ext.front.matter.YamlFrontMatterExtension;
 import org.commonmark.ext.front.matter.YamlFrontMatterVisitor;
-import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension;
-import org.commonmark.ext.gfm.tables.TablesExtension;
-import org.commonmark.ext.heading.anchor.HeadingAnchorExtension;
-import org.commonmark.ext.ins.InsExtension;
 import org.commonmark.node.Node;
-import org.commonmark.parser.Parser;
-import org.commonmark.renderer.html.HtmlRenderer;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -41,13 +31,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @version $Revision$
  */
 public abstract class MarkdownTask extends AbstractClasspathTask {
-    private static List<Extension> EXTENSIONS =
-        Arrays.asList(AutolinkExtension.create(),
-                      StrikethroughExtension.create(),
-                      TablesExtension.create(),
-                      HeadingAnchorExtension.create(),
-                      InsExtension.create(),
-                      YamlFrontMatterExtension.create());
+    protected MarkdownConfiguration markdown = new MarkdownConfiguration();
 
     /**
      * Sole constructor.
@@ -75,7 +59,6 @@ public abstract class MarkdownTask extends AbstractClasspathTask {
     @AntTask("markdown-parse")
     public static class Parse extends MarkdownTask {
         private File file = null;
-        protected Parser parser = null;
         protected Node document = null;
 
         /**
@@ -95,8 +78,7 @@ public abstract class MarkdownTask extends AbstractClasspathTask {
 
                 byte[] bytes = Files.readAllBytes(getFile().toPath());
 
-                parser = Parser.builder().extensions(EXTENSIONS).build();
-                document = parser.parse(new String(bytes, UTF_8));
+                document = markdown.parser().parse(new String(bytes, UTF_8));
 
                 YamlFrontMatterVisitor visitor = new YamlFrontMatterVisitor();
 
@@ -131,10 +113,7 @@ public abstract class MarkdownTask extends AbstractClasspathTask {
             try {
                 super.execute();
 
-                HtmlRenderer renderer =
-                    HtmlRenderer.builder().extensions(EXTENSIONS).build();
-
-                log(renderer.render(document));
+                log(markdown.renderer().render(document));
             } catch (BuildException exception) {
                 throw exception;
             } catch (Throwable throwable) {
