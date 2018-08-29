@@ -73,16 +73,13 @@
     </nav>
     <div class="container">
       <th:block th:switch="${#request.servletPath}">
-        <th:block th:case="'/authors/'"
-                  th:insert="~{UIController/authors.html}"/>
-        <th:block th:case="'/posts/'"
-                  th:insert="~{UIController/posts.html}"/>
-        <th:block th:case="'/preview'"
-                  th:insert="~{UIController/preview.html}"/>
         <th:block th:case="'/login'"
-                  th:insert="~{UIController/login.html}"/>
+                  th:insert="~{${#execInfo.templateName + '/login'}}"/>
         <th:block th:case="'/error'"
-                  th:insert="~{UIController/error.html}"/>
+                  th:insert="~{${#execInfo.templateName + '/error'}}"/>
+        <th:block th:case="*">
+          <th:block th:insert="~{${#execInfo.templateName + #request.servletPath}}"/>
+        </th:block>
       </th:block>
     </div>
     <footer class="fixed-bottom bg-dark text-white">

@@ -56,14 +56,9 @@ public class UIController implements ErrorController {
     public String root() { return "redirect:/index.html"; }
 
     @RequestMapping(value = { "/index.html", "/index.htm", "/index" })
-    public String index() { return "redirect:/posts/"; }
+    public String index() { return "redirect:/posts"; }
 
-    @RequestMapping(value = { "/posts", "/authors" })
-    public String containers(HttpServletRequest request) {
-        return "redirect:" + request.getServletPath() + "/";
-    }
-
-    @RequestMapping(value = { "/posts/" })
+    @RequestMapping(value = { "/posts" })
     public String posts(HttpServletRequest request,
                         @RequestParam(required = false) Integer page,
                         Model model) {
@@ -91,7 +86,7 @@ public class UIController implements ErrorController {
         return VIEW;
     }
 
-    @RequestMapping(value = { "/authors/" })
+    @RequestMapping(value = { "/authors" })
     public String authors(Model model) {
         model.addAttribute("authors", authorRepository.findAll());
         model.addAttribute("compass", new Compass());
