@@ -1,193 +1,309 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+/* PrismJS 1.15.0
+https://prismjs.com/download.html#themes=prism-tomorrow&languages=markup+css+clike+javascript+abap+actionscript+ada+apacheconf+apl+applescript+c+arff+asciidoc+asm6502+csharp+autohotkey+autoit+bash+basic+batch+bison+brainfuck+bro+cpp+aspnet+arduino+coffeescript+clojure+ruby+csp+css-extras+d+dart+diff+django+docker+eiffel+elixir+elm+markup-templating+erlang+fsharp+flow+fortran+gedcom+gherkin+git+glsl+go+graphql+groovy+less+handlebars+haskell+haxe+http+hpkp+hsts+ichigojam+icon+inform7+ini+io+j+java+jolie+json+julia+keyman+kotlin+latex+markdown+liquid+lisp+livescript+lolcode+lua+makefile+crystal+erb+matlab+mel+mizar+monkey+n4js+nasm+nginx+nim+nix+nsis+objectivec+ocaml+opencl+oz+parigp+parser+pascal+perl+php+php-extras+sql+powershell+processing+prolog+properties+protobuf+scss+puppet+pure+python+q+qore+r+jsx+typescript+renpy+reason+rest+rip+roboconf+textile+rust+sas+sass+stylus+scala+scheme+smalltalk+smarty+plsql+soy+pug+swift+yaml+tcl+haml+tt2+twig+tsx+vbnet+velocity+verilog+vhdl+vim+visual-basic+wasm+wiki+xeora+xojo+xquery+tap&plugins=line-highlight+line-numbers+file-highlight+toolbar+jsonp-highlight+highlight-keywords+remove-initial-line-feed+command-line+normalize-whitespace+show-language+copy-to-clipboard */
+/**
+ * prism.js tomorrow night eighties for JavaScript, CoffeeScript, CSS and HTML
+ * Based on https://github.com/chriskempson/tomorrow-theme
+ * @author Rose Pritchard
+ */
 
-<meta charset="utf-8" />
-<link rel="icon" href="favicon.png" />
-<title>Download ▲ Prism</title>
-<link rel="stylesheet" href="style.css" />
-<link rel="stylesheet" href="themes/prism.css" data-noprefix />
-<style>
-form label {
-	display: block;
-	padding: .2em;
-	padding-left: 1.9em;
-	page-break-inside: avoid;
-	break-inside: avoid;
-	-webkit-column-break-inside: avoid;
+code[class*="language-"],
+pre[class*="language-"] {
+	color: #ccc;
+	background: none;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+
 }
 
-	form label .name {
-		margin-right: .3em;
-	}
-
-	form label a.owner {
-		margin-left: 0;
-		hyphens: none;
-	}
-
-	form label input {
-		margin-right: .7em;
-		margin-left: -1.7em;
-	}
-
-form > p:first-of-type > label {
-	font-size: 150%;
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
 }
 
-	form > p:first-of-type > label input {
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background: #2d2d2d;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+	white-space: normal;
+}
+
+.token.comment,
+.token.block-comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: #999;
+}
+
+.token.punctuation {
+	color: #ccc;
+}
+
+.token.tag,
+.token.attr-name,
+.token.namespace,
+.token.deleted {
+	color: #e2777a;
+}
+
+.token.function-name {
+	color: #6196cc;
+}
+
+.token.boolean,
+.token.number,
+.token.function {
+	color: #f08d49;
+}
+
+.token.property,
+.token.class-name,
+.token.constant,
+.token.symbol {
+	color: #f8c555;
+}
+
+.token.selector,
+.token.important,
+.token.atrule,
+.token.keyword,
+.token.builtin {
+	color: #cc99cd;
+}
+
+.token.string,
+.token.char,
+.token.attr-value,
+.token.regex,
+.token.variable {
+	color: #7ec699;
+}
+
+.token.operator,
+.token.entity,
+.token.url {
+	color: #67cdcc;
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}
+
+.token.inserted {
+	color: green;
+}
+
+pre[data-line] {
+	position: relative;
+	padding: 1em 0 1em 3em;
+}
+
+.line-highlight {
+	position: absolute;
+	left: 0;
+	right: 0;
+	padding: inherit 0;
+	margin-top: 1em; /* Same as .prism’s padding-top */
+
+	background: hsla(24, 20%, 50%,.08);
+	background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+
+	pointer-events: none;
+
+	line-height: inherit;
+	white-space: pre;
+}
+
+	.line-highlight:before,
+	.line-highlight[data-end]:after {
+		content: attr(data-start);
+		position: absolute;
+		top: .4em;
+		left: .6em;
+		min-width: 1em;
+		padding: 0 .5em;
+		background-color: hsla(24, 20%, 50%,.4);
+		color: hsl(24, 20%, 95%);
+		font: bold 65%/1.5 sans-serif;
+		text-align: center;
 		vertical-align: .3em;
+		border-radius: 999px;
+		text-shadow: none;
+		box-shadow: 0 1px white;
 	}
 
-.filesize:empty {
-	display: none;
+	.line-highlight[data-end]:after {
+		content: attr(data-end);
+		top: auto;
+		bottom: .4em;
+	}
+
+.line-numbers .line-highlight:before,
+.line-numbers .line-highlight:after {
+	content: none;
 }
 
-.filesize::before,
-.filesize::after {
-	font-weight: normal;
+pre[class*="language-"].line-numbers {
+	position: relative;
+	padding-left: 3.8em;
+	counter-reset: linenumber;
 }
 
-.filesize::before {
-	content: '(';
+pre[class*="language-"].line-numbers > code {
+	position: relative;
+	white-space: inherit;
 }
 
-.filesize::after {
-	content: ')';
+.line-numbers .line-numbers-rows {
+	position: absolute;
+	pointer-events: none;
+	top: 0;
+	font-size: 100%;
+	left: -3.8em;
+	width: 3em; /* works for line-numbers below 1000 lines */
+	letter-spacing: -1px;
+	border-right: 1px solid #999;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
 }
 
-#components {
-	overflow: hidden;
+	.line-numbers-rows > span {
+		pointer-events: none;
+		display: block;
+		counter-increment: linenumber;
+	}
+
+		.line-numbers-rows > span:before {
+			content: counter(linenumber);
+			color: #999;
+			display: block;
+			padding-right: 0.8em;
+			text-align: right;
+		}
+
+div.code-toolbar {
+	position: relative;
 }
 
-section.options {
-	width: 33.3%;
-	width: calc(100% / 3);
-	float: left;
+div.code-toolbar > .toolbar {
+	position: absolute;
+	top: .3em;
+	right: .2em;
+	transition: opacity 0.3s ease-in-out;
+	opacity: 0;
 }
 
-section.options#category-languages,
-section.options#category-plugins {
-	width: 100%;
-	float: none;
-	column-count: 3;
-	padding-top: 2em;
+div.code-toolbar:hover > .toolbar {
+	opacity: 1;
+}
+
+div.code-toolbar > .toolbar .toolbar-item {
+	display: inline-block;
+}
+
+div.code-toolbar > .toolbar a {
+	cursor: pointer;
+}
+
+div.code-toolbar > .toolbar button {
+	background: none;
+	border: 0;
+	color: inherit;
+	font: inherit;
+	line-height: normal;
 	overflow: visible;
+	padding: 0;
+	-webkit-user-select: none; /* for button */
+	-moz-user-select: none;
+	-ms-user-select: none;
 }
 
-	section.options#category-languages label,
-	section.options#category-plugins label {
-		break-inside: avoid;
-	}
-	section.options#category-languages > h1,
-	section.options#category-plugins > h1 {
-		margin-top: 0;
-		column-span: all;
-	}
-
-	section.options#category-languages label[data-id="javascript"],
-	section.options label[data-id^="check-all-"] {
-		border-bottom: 1px solid #aaa;
-		padding-bottom: 1em;
-		margin-bottom: 1em;
-	}
-
-section.options#category-themes {
-	width: 66.6%;
-	width: calc(100% * 2/3);
-	column-count: 2;
-	overflow: visible;
-	float: none;
+div.code-toolbar > .toolbar a,
+div.code-toolbar > .toolbar button,
+div.code-toolbar > .toolbar span {
+	color: #bbb;
+	font-size: .8em;
+	padding: 0 .5em;
+	background: #f5f2f0;
+	background: rgba(224, 224, 224, 0.2);
+	box-shadow: 0 2px 0 0 rgba(0,0,0,0.2);
+	border-radius: .5em;
 }
 
-	section.options#category-themes > h1 {
-		column-span: all;
-	}
+div.code-toolbar > .toolbar a:hover,
+div.code-toolbar > .toolbar a:focus,
+div.code-toolbar > .toolbar button:hover,
+div.code-toolbar > .toolbar button:focus,
+div.code-toolbar > .toolbar span:hover,
+div.code-toolbar > .toolbar span:focus {
+	color: inherit;
+	text-decoration: none;
+}
 
-section.download {
-	width: 50%;
+.command-line-prompt {
+	border-right: 1px solid #999;
+	display: block;
 	float: left;
+	font-size: 100%;
+	letter-spacing: -1px;
+	margin-right: 1em;
+	pointer-events: none;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
-#download {
-	overflow: hidden;
-	padding: .3em;
+.command-line-prompt > span:before {
+	color: #999;
+	content: ' ';
+	display: block;
+	padding-right: 0.8em;
 }
 
-	#download .error {
-		color: #B61500;
-		display: none;
-	}
-	#download pre {
-		height: 20em;
-		word-wrap: break-word;
-	}
+.command-line-prompt > span[data-user]:before {
+	content: "[" attr(data-user) "@" attr(data-host) "] $";
+}
 
-	#download-js .download-button {
-		border-top-right-radius: 0;
-		border-bottom-right-radius: 0;
-	}
+.command-line-prompt > span[data-user="root"]:before {
+	content: "[" attr(data-user) "@" attr(data-host) "] #";
+}
 
-	#download-css .download-button {
-		background-color: #dc9e23;
-		border-top-left-radius: 0;
-		border-bottom-left-radius: 0;
-	}
-</style>
-<script src="prefixfree.min.js"></script>
+.command-line-prompt > span[data-prompt]:before {
+	content: attr(data-prompt);
+}
 
-<script>var _gaq = [['_setAccount', 'UA-33746269-1'], ['_trackPageview']];</script>
-<script src="https://www.google-analytics.com/ga.js" async></script>
-</head>
-<body>
-
-<header>
-	<div class="intro" data-src="templates/header-main.html" data-type="text/html"></div>
-
-	<h2>Customize your download</h2>
-	<p>Select your compression level, as well as the languages and plugins you need.</p>
-</header>
-
-<section>
-	<form>
-		<p>
-			Compression level:
-			<label><input type="radio" name="compression" value="0" /> Development version</label>
-			<label><input type="radio" name="compression" value="1" checked /> Minified version</label>
-		</p>
-
-		<section id="components"></section>
-
-		<p>
-			Total filesize: <strong id="filesize"></strong> (<strong id="percent-js"></strong> JavaScript + <strong id="percent-css"></strong> CSS)
-		</p>
-		<p><strong>Note:</strong> The filesizes displayed refer to non-gizipped files and include any CSS code required. The CSS code is not minified.</p>
-
-		<section id="download">
-			<div class="error"></div>
-			<section id="download-js" class="download">
-				<pre><code class="language-javascript"></code></pre>
-				<a href="#" class="download-button" download="prism.js" target="_blank">Download JS</a>
-			</section>
-
-			<section id="download-css" class="download">
-				<pre><code class="language-css"></code></pre>
-				<a href="#" class="download-button" download="prism.css" target="_blank">Download CSS</a>
-			</section>
-		</section>
-
-	</form>
-
-</section>
-
-<footer data-src="templates/footer.html" data-type="text/html"></footer>
-
-<script src="prism.js"></script>
-<script src="utopia.js"></script>
-<script src="components.js"></script>
-<script src="code.js"></script>
-<script src="vendor/promise.js"></script>
-<script src="download.js"></script>
-
-</body>
-</html>
