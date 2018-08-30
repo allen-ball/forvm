@@ -90,20 +90,18 @@
           </div>
           <div class="col-sm-3 text-center">
             <a class="btn"
-               th:classappend="${compass.firstPage == null} ? disabled"
-               th:href="${compass.firstPage}" th:text="'|<'"/>
+               th:classappend="${compass?.firstPage == null} ? disabled"
+               th:href="${compass?.firstPage}" th:text="'|<'"/>
             <a class="btn"
-               th:classappend="${compass.prevPage == null} ? disabled"
-               th:href="${compass.prevPage}" th:text="'<'"/>
-            <th:block th:if="${param.page != null}"
-                      th:text="${param.page[0]}"/>
-            <th:block th:unless="${param.page != null}" th:text="'#'"/>
+               th:classappend="${compass?.prevPage == null} ? disabled"
+               th:href="${compass?.prevPage}" th:text="'<'"/>
+            <th:block th:text="${param?.page != null ? param.page[0] : '#'}"/>
             <a class="btn"
-               th:classappend="${compass.nextPage == null} ? disabled"
-               th:href="${compass.nextPage}" th:text="'>'"/>
+               th:classappend="${compass?.nextPage == null} ? disabled"
+               th:href="${compass?.nextPage}" th:text="'>'"/>
             <a class="btn"
-               th:classappend="${compass.lastPage == null} ? disabled"
-               th:href="${compass.lastPage}" th:text="'>|'"/>
+               th:classappend="${compass?.lastPage == null} ? disabled"
+               th:href="${compass?.lastPage}" th:text="'>|'"/>
           </div>
           <div class="col-sm text-right">
             <p sec:authorize="isAuthenticated()" sec:authentication="name"/>
