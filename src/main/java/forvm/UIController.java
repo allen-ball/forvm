@@ -20,7 +20,7 @@ import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
@@ -47,7 +47,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  * @version $Revision$
  */
 @Controller
-public class UIController implements ErrorController {
+@ComponentScan(basePackageClasses =
+                   { ball.spring.mysqld.MysqldComponent.class })
+public class UIController {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String VIEW = UIController.class.getSimpleName();
@@ -123,7 +125,7 @@ public class UIController implements ErrorController {
 
     @RequestMapping(method = POST, value = { "/preview" })
     public String previewPOST(@RequestParam("file") MultipartFile file,
-                                            Model model) {
+                              Model model) {
         try {
             String markdown = new String(file.getBytes(), UTF_8);
 
@@ -166,16 +168,6 @@ public class UIController implements ErrorController {
 
         return "redirect:/";
     }
-
-    @RequestMapping(value = { "/error" })
-    public String error(HttpServletRequest request, Model model) {
-        model.addAttribute("compass", new Compass());
-
-        return VIEW;
-    }
-
-    @Override
-    public String getErrorPath() { return "/error"; }
 
     @ExceptionHandler({ NoSuchElementException.class })
     @ResponseStatus(value = NOT_FOUND, reason = "Resource not found")
