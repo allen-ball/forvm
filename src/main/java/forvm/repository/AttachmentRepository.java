@@ -6,6 +6,7 @@
 package forvm.repository;
 
 import forvm.entity.Attachment;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,4 +21,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface AttachmentRepository
                  extends JpaRepository<Attachment,Attachment.PK> {
+    public Optional<Attachment> findByPostAndPath(long post, String path);
 }
