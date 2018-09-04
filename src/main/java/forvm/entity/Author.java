@@ -34,7 +34,7 @@ import static javax.persistence.CascadeType.ALL;
 @Entity
 @Table(catalog = "forvm", name = "authors")
 public class Author extends JSONBean {
-    private static final long serialVersionUID = -9003779079577188024L;
+    private static final long serialVersionUID = -5234636709100963538L;
 
     @Getter @Setter
     @Id @Column(length = 64, nullable = false, unique = true)
@@ -49,8 +49,12 @@ public class Author extends JSONBean {
     private PersonName name = null;
 
     @Getter @Setter
-    @Lob @Column(nullable = true)
+    @Lob @Column(nullable = false)
     private String markdown = null;
+
+    @Getter @Setter
+    @Lob @Column(nullable = true)
+    private String html = null;
 
     @OneToMany(mappedBy = "author", cascade = ALL)
     private List<Post> posts = new ArrayList<>();

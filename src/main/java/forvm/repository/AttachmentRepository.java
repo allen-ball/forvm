@@ -5,20 +5,19 @@
  */
 package forvm.repository;
 
-import forvm.entity.Post;
-import java.util.Optional;
+import forvm.entity.Attachment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * {@link Post} {@link JpaRepository}
+ * {@link Attachment} {@link JpaRepository}
  *
  * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
  * @version $Revision$
  */
 @Repository
 @Transactional(readOnly = true)
-public interface PostRepository extends JpaRepository<Post,Long> {
-    public Optional<Post> findBySlug(String slug);
+public interface AttachmentRepository
+                 extends JpaRepository<Attachment,Attachment.PK> {
 }

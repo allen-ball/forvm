@@ -16,6 +16,20 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `credentials`
+--
+
+DROP TABLE IF EXISTS `credentials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `credentials` (
+  `email` varchar(64) NOT NULL,
+  `password` longtext NOT NULL,
+  PRIMARY KEY (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `subscribers`
 --
 
@@ -27,6 +41,7 @@ CREATE TABLE `subscribers` (
   PRIMARY KEY (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 --
 -- Table structure for table `authors`
@@ -44,7 +59,8 @@ CREATE TABLE `authors` (
   `last` varchar(32) DEFAULT NULL,
   `suffix` varchar(12) DEFAULT NULL,
   `alias` longtext,
-  `markdown` longtext,
+  `markdown` longtext NOT NULL,
+  `html` longtext,
   PRIMARY KEY (`email`),
   UNIQUE KEY `UK_50058x3s3i9lcreapeth7bbsw` (`slug`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -60,26 +76,30 @@ DROP TABLE IF EXISTS `posts`;
 CREATE TABLE `posts` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `slug` varchar(255) NOT NULL,
-  `email` varchar(64) DEFAULT NULL,
+  `author` varchar(64) DEFAULT NULL,
   `markdown` longtext NOT NULL,
+  `html` longtext,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_qmmso8qxjpbxwegdtp0l90390` (`slug`),
-  KEY `FKlrpht2t0c65j1fqsna3eayc2f` (`email`),
-  CONSTRAINT `FKlrpht2t0c65j1fqsna3eayc2f` FOREIGN KEY (`email`) REFERENCES `authors` (`email`)
+  KEY `FKjc833kan3kaxrmr70yhu6v2l` (`author`),
+  CONSTRAINT `FKjc833kan3kaxrmr70yhu6v2l` FOREIGN KEY (`author`) REFERENCES `authors` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `credentials`
+-- Table structure for table `attachments`
 --
 
-DROP TABLE IF EXISTS `credentials`;
+DROP TABLE IF EXISTS `attachments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
-CREATE TABLE `credentials` (
-  `email` varchar(64) NOT NULL,
-  `password` longtext NOT NULL,
-  PRIMARY KEY (`email`)
+CREATE TABLE `attachments` (
+  `post` bigint(20) NOT NULL,
+  `path` varchar(255) NOT NULL,
+  `content` longblob NOT NULL,
+  PRIMARY KEY (`post`,`path`),
+  KEY `FK4vs617dxl7dr0run1bhjpoe5b` (`post`),
+  CONSTRAINT `FK4vs617dxl7dr0run1bhjpoe5b` FOREIGN KEY (`post`) REFERENCES `posts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -91,4 +111,4 @@ CREATE TABLE `credentials` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-27 17:39:01
+-- Dump completed on 2018-09-03 22:25:51
