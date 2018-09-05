@@ -33,12 +33,12 @@ import static javax.persistence.FetchType.LAZY;
 @Table(catalog = "forvm", name = "attachments")
 @IdClass(Attachment.PK.class)
 public class Attachment extends JSONBean {
-    private static final long serialVersionUID = -7858728595658356959L;
+    private static final long serialVersionUID = 5320807395873136832L;
 
     @Getter @Setter
     @Id @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "post", referencedColumnName = "id")
-    private Post post = null;
+    @JoinColumn(name = "article", referencedColumnName = "id")
+    private Article article = null;
 
     @Getter @Setter
     @Id @Column(length = 255, nullable = false)
@@ -51,9 +51,9 @@ public class Attachment extends JSONBean {
     @NoArgsConstructor
     @EqualsAndHashCode(callSuper = false)
     public static class PK extends JSONBean {
-        private static final long serialVersionUID = 7968965627740206684L;
+        private static final long serialVersionUID = 1926902263958869168L;
 
-        @Getter @Setter private long post = -1;
+        @Getter @Setter private long article = -1;
         @Getter @Setter private String path = null;
     }
 }

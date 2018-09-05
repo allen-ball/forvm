@@ -57,5 +57,5 @@ public class Author extends JSONBean {
     private String html = null;
 
     @OneToMany(mappedBy = "author", cascade = ALL)
-    private List<Post> posts = new ArrayList<>();
+    private List<Article> articles = new ArrayList<>();
 }

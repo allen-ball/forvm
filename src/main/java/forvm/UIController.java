@@ -5,12 +5,13 @@
  */
 package forvm;
 
+import forvm.repository.ArticleRepository;
 import forvm.repository.AuthorRepository;
-import forvm.repository.PostRepository;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
@@ -55,11 +56,11 @@ public class UIController {
     private static final String VIEW = UIController.class.getSimpleName();
 
     @Autowired private AuthorRepository authorRepository;
-    @Autowired private PostRepository postRepository;
+    @Autowired private ArticleRepository articleRepository;
     @Autowired private Parser parser;
     @Autowired private HtmlRenderer renderer;
 
-    private int posts_per_page = 6;
+    private int articles_per_page = 6;
 
     /**
      * Sole constructor.
@@ -70,31 +71,32 @@ public class UIController {
     public String root() { return "redirect:/index.html"; }
 
     @RequestMapping(value = { "/index.html", "/index.htm", "/index" })
-    public String index() { return "redirect:/posts"; }
+    public String index() { return "redirect:/articles"; }
 
-    @RequestMapping(value = { "/posts" })
-    public String posts(HttpServletRequest request,
-                        @RequestParam(required = false) Integer page,
-                        Model model) {
+    @RequestMapping(value = { "/articles" })
+    public String articles(HttpServletRequest request,
+                           @RequestParam Optional<Integer> page,
+                           Model model) {
         String view = VIEW;
 
-        if (page != null) {
-            Page<?> posts =
-                postRepository.findAll(PageRequest.of(page - 1,
-                                                      posts_per_page));
+        if (page.isPresent()) {
+            Page<?> articles =
+                articleRepository.findAll(PageRequest.of(page.get() - 1,
+                                                         articles_per_page));
 
-            model.addAttribute("posts", posts);
-            model.addAttribute("compass", new Compass(request, posts));
+            model.addAttribute("articles", articles);
+            model.addAttribute("compass", new Compass(request, articles));
         } else {
-            view = "redirect:" + request.getServletPath() + "?page=1";
+            view = "redirect:" + request.getServletPath() + "?page=" + 1;
         }
 
         return view;
     }
 
-    @RequestMapping(value = { "/post/{slug}" })
-    public String post(@PathVariable("slug") String slug, Model model) {
-        model.addAttribute("post", postRepository.findBySlug(slug).get());
+    @RequestMapping(value = { "/article/{slug}" })
+    public String article(@PathVariable String slug, Model model) {
+        model.addAttribute("article",
+                           articleRepository.findBySlug(slug).get());
         model.addAttribute("compass", new Compass());
 
         return VIEW;
@@ -109,21 +111,21 @@ public class UIController {
     }
 
     @RequestMapping(value = { "/author/{slug}" })
-    public String author(@PathVariable("slug") String slug, Model model) {
+    public String author(@PathVariable String slug, Model model) {
         model.addAttribute("author", authorRepository.findBySlug(slug).get());
         model.addAttribute("compass", new Compass());
 
         return VIEW;
     }
 
-    @RequestMapping(method = GET, value = { "/preview" })
+    @RequestMapping(method = { GET }, value = { "/preview" })
     public String preview(Model model) {
         model.addAttribute("compass", new Compass());
 
         return VIEW;
     }
 
-    @RequestMapping(method = POST, value = { "/preview" })
+    @RequestMapping(method = { POST }, value = { "/preview" })
     public String previewPOST(@RequestParam("file") MultipartFile file,
                               Model model) {
         try {
@@ -150,7 +152,7 @@ public class UIController {
         return VIEW;
     }
 
-    @RequestMapping(value = { "/login" })
+    @RequestMapping(method = { GET }, value = { "/login" })
     public String login(Model model) {
         model.addAttribute("compass", new Compass());
 

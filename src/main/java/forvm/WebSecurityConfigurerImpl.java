@@ -40,14 +40,15 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**", "/js/**", "/images/**");
+        web.ignoring()
+            .antMatchers("/css/**", "/js/**", "/images/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
             .antMatchers("/authors/**", "/author/**",
-                         "/posts/**", "/post/**")
+                         "/articles/**", "/article/**", "/attachment/**")
             .permitAll();
         http.authorizeRequests()
             .antMatchers("/preview")

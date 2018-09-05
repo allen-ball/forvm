@@ -6,8 +6,8 @@
 package forvm;
 
 import forvm.entity.Attachment;
+import forvm.repository.ArticleRepository;
 import forvm.repository.AttachmentRepository;
-import forvm.repository.PostRepository;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +38,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class AttachmentRestController {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    @Autowired private PostRepository postRepository;
+    @Autowired private ArticleRepository articleRepository;
     @Autowired private AttachmentRepository attachmentRepository;
 
     /**
@@ -46,14 +46,14 @@ public class AttachmentRestController {
      */
     public AttachmentRestController() { super(); }
 
-    @RequestMapping(method = GET, value = { "/{slug}/**" })
+    @RequestMapping(method = { GET }, value = { "/{slug}/**" })
     public byte[] get(HttpServletRequest request,
                       @PathVariable String slug) {
         String uri = request.getRequestURI();
         String path = uri.substring(uri.indexOf(slug) + slug.length());
         Optional<Attachment> attachment =
-            postRepository.findBySlug(slug)
-            .flatMap(t -> attachmentRepository.findByPostAndPath(t.getId(), path));
+            articleRepository.findBySlug(slug)
+            .flatMap(t -> attachmentRepository.findByArticleAndPath(t.getId(), path));
 
         return attachment.get().getContent();
     }

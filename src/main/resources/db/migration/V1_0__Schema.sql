@@ -67,22 +67,22 @@ CREATE TABLE `authors` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `posts`
+-- Table structure for table `articles`
 --
 
-DROP TABLE IF EXISTS `posts`;
+DROP TABLE IF EXISTS `articles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
-CREATE TABLE `posts` (
+CREATE TABLE `articles` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `slug` varchar(255) NOT NULL,
   `author` varchar(64) DEFAULT NULL,
   `markdown` longtext NOT NULL,
   `html` longtext,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UK_qmmso8qxjpbxwegdtp0l90390` (`slug`),
-  KEY `FKjc833kan3kaxrmr70yhu6v2l` (`author`),
-  CONSTRAINT `FKjc833kan3kaxrmr70yhu6v2l` FOREIGN KEY (`author`) REFERENCES `authors` (`email`)
+  UNIQUE KEY `UK_sn7al9fwhgtf98rvn8nxhjt4f` (`slug`),
+  KEY `FKnnn3icfj94npcqbymplyohntl` (`author`),
+  CONSTRAINT `FKnnn3icfj94npcqbymplyohntl` FOREIGN KEY (`author`) REFERENCES `authors` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -94,12 +94,11 @@ DROP TABLE IF EXISTS `attachments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `attachments` (
-  `post` bigint(20) NOT NULL,
+  `article` bigint(20) NOT NULL,
   `path` varchar(255) NOT NULL,
   `content` longblob NOT NULL,
-  PRIMARY KEY (`post`,`path`),
-  KEY `FK4vs617dxl7dr0run1bhjpoe5b` (`post`),
-  CONSTRAINT `FK4vs617dxl7dr0run1bhjpoe5b` FOREIGN KEY (`post`) REFERENCES `posts` (`id`)
+  PRIMARY KEY (`article`,`path`),
+  CONSTRAINT `FK5p522rel5wwly3ye8kp1htatp` FOREIGN KEY (`article`) REFERENCES `articles` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -111,4 +110,4 @@ CREATE TABLE `attachments` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-03 22:25:51
+-- Dump completed on 2018-09-05  8:31:40
