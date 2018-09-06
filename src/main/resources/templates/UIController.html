@@ -14,63 +14,7 @@
   <![endif]-->
   </head>
   <body>
-    <nav class="navbar navbar-dark fixed-top bg-dark text-white">
-      <div class="container">
-        <a class="navbar-brand"
-           th:href="${(#mvc.url('UIC#root')).build()}"
-           th:text="@pom.artifactId@"/>
-        <div class="navbar-expand">
-          <ul class="navbar-nav">
-            <li sec:authorize="hasAuthority('AUTHOR')"
-                class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown"
-                 aria-haspopup="true" aria-expanded="false"
-                 th:id="${#ids.seq('dropdown')}"
-                 th:href="@{''}" th:text="Author"/>
-              <div class="dropdown-menu"
-                   th:attr="aria-labelledby=${#ids.prev('dropdown')}">
-                <a class="dropdown-item"
-                   th:href="${(#mvc.url('UIC#preview')).build()}"
-                   th:text="Preview"/>
-              </div>
-            </li>
-            <li sec:authorize="hasAuthority('SUBSCRIBER')"
-                class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown"
-                 aria-haspopup="true" aria-expanded="false"
-                 th:classappend="'disabled'"
-                 th:id="${#ids.seq('dropdown')}"
-                 th:href="@{''}" th:text="Subscriber"/>
-              <div class="dropdown-menu"
-                   th:attr="aria-labelledby=${#ids.prev('dropdown')}">
-              </div>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown"
-                 aria-haspopup="true" aria-expanded="false"
-                 th:id="${#ids.seq('dropdown')}"
-                 th:href="@{''}" th:text="Collections"/>
-              <div class="dropdown-menu"
-                   th:attr="aria-labelledby=${#ids.prev('dropdown')}">
-                <a class="dropdown-item"
-                   th:href="${(#mvc.url('UIC#authors')).build()}"
-                   th:text="Authors"/>
-              </div>
-            </li>
-            <li sec:authorize="!isAuthenticated()" class="nav-item">
-              <a class="nav-link"
-                 th:href="${(#mvc.url('UIC#login')).build()}"
-                 th:text="Login"/>
-            </li>
-            <li sec:authorize="isAuthenticated()" class="nav-item">
-              <a class="nav-link"
-                 th:href="${(#mvc.url('UIC#logout')).build()}"
-                 th:text="Logout"/>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <th:block th:insert="~{${#execInfo.templateName + '/navbar'}}"/>
     <div class="container">
       <th:block th:switch="${#request.servletPath}">
         <th:block th:case="'/login'"
@@ -82,33 +26,7 @@
         </th:block>
       </th:block>
     </div>
-    <footer class="fixed-bottom bg-dark text-white">
-      <nav class="navbar navbar-dark">
-        <div class="container">
-          <div class="col-sm text-left">
-            <p class="col-sm" th:text="${#request.servletPath}"/>
-          </div>
-          <div class="col-sm-3 text-center">
-            <a class="btn"
-               th:classappend="${compass?.firstPage == null} ? disabled"
-               th:href="${compass?.firstPage}" th:text="'|<'"/>
-            <a class="btn"
-               th:classappend="${compass?.prevPage == null} ? disabled"
-               th:href="${compass?.prevPage}" th:text="'<'"/>
-            <th:block th:text="${param?.page != null ? param.page[0] : '#'}"/>
-            <a class="btn"
-               th:classappend="${compass?.nextPage == null} ? disabled"
-               th:href="${compass?.nextPage}" th:text="'>'"/>
-            <a class="btn"
-               th:classappend="${compass?.lastPage == null} ? disabled"
-               th:href="${compass?.lastPage}" th:text="'>|'"/>
-          </div>
-          <div class="col-sm text-right">
-            <p sec:authorize="isAuthenticated()" sec:authentication="name"/>
-          </div>
-        </div>
-      </nav>
-    </footer>
+    <th:block th:insert="~{${#execInfo.templateName + '/footer'}}"/>
     <script type="text/javascript" th:src="@{/js/jquery.js}"></script>
     <script type="text/javascript" th:src="@{/js/popper.js}"></script>
     <script type="text/javascript" th:src="@{/js/bootstrap.js}"></script>

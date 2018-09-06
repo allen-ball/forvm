@@ -1,4 +1,7 @@
 <!-- $Id$ -->
-<div class="row">
-  <p th:text="${articles}"/>
-</div>
+<table class="table table-striped">
+  <tbody>
+    <tr th:each="article : ${page}" class="row">
+    </tr>
+  </tbody>
+</table>

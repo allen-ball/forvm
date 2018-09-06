@@ -33,7 +33,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RestController
 @ComponentScan(basePackageClasses =
                    { ball.spring.mysqld.MysqldComponent.class })
-@RequestMapping(value = { "/attachment" },
+@RequestMapping(value = { "/article/{slug}/**" },
                 produces = "application/octet-stream")
 public class AttachmentRestController {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -46,7 +46,7 @@ public class AttachmentRestController {
      */
     public AttachmentRestController() { super(); }
 
-    @RequestMapping(method = { GET }, value = { "/{slug}/**" })
+    @RequestMapping(method = { GET })
     public byte[] get(HttpServletRequest request,
                       @PathVariable String slug) {
         String uri = request.getRequestURI();

@@ -1,0 +1,58 @@
+<!-- $Id$ -->
+<nav class="navbar navbar-dark fixed-top bg-dark text-white">
+  <div class="container">
+    <a class="navbar-brand"
+       th:href="${(#mvc.url('UIC#root')).build()}"
+       th:text="@pom.artifactId@"/>
+    <div class="navbar-expand">
+      <ul class="navbar-nav">
+        <li sec:authorize="hasAuthority('AUTHOR')"
+            class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+             aria-haspopup="true" aria-expanded="false"
+             th:id="${#ids.seq('dropdown')}"
+             th:href="@{''}" th:text="Author"/>
+          <div class="dropdown-menu"
+               th:attr="aria-labelledby=${#ids.prev('dropdown')}">
+            <a class="dropdown-item"
+               th:href="${(#mvc.url('UIC#preview')).build()}"
+               th:text="Preview"/>
+          </div>
+        </li>
+        <li sec:authorize="hasAuthority('SUBSCRIBER')"
+            class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+             aria-haspopup="true" aria-expanded="false"
+             th:classappend="'disabled'"
+             th:id="${#ids.seq('dropdown')}"
+             th:href="@{''}" th:text="Subscriber"/>
+          <div class="dropdown-menu"
+               th:attr="aria-labelledby=${#ids.prev('dropdown')}">
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+             aria-haspopup="true" aria-expanded="false"
+             th:id="${#ids.seq('dropdown')}"
+             th:href="@{''}" th:text="Collections"/>
+          <div class="dropdown-menu"
+               th:attr="aria-labelledby=${#ids.prev('dropdown')}">
+            <a class="dropdown-item"
+               th:href="${(#mvc.url('UIC#authors')).build()}"
+               th:text="Authors"/>
+          </div>
+        </li>
+        <li sec:authorize="!isAuthenticated()" class="nav-item">
+          <a class="nav-link"
+             th:href="${(#mvc.url('UIC#login')).build()}"
+             th:text="Login"/>
+        </li>
+        <li sec:authorize="isAuthenticated()" class="nav-item">
+          <a class="nav-link"
+             th:href="${(#mvc.url('UIC#logout')).build()}"
+             th:text="Logout"/>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

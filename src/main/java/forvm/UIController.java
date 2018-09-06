@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -73,55 +74,59 @@ public class UIController {
     @RequestMapping(value = { "/index.html", "/index.htm", "/index" })
     public String index() { return "redirect:/articles"; }
 
-    @RequestMapping(value = { "/articles" })
+    @RequestMapping(method = { GET }, value = { "/articles" })
     public String articles(HttpServletRequest request,
+                           @RequestParam Optional<String> author,
                            @RequestParam Optional<Integer> page,
-                           Model model) {
+                           RedirectAttributes attributes, Model model) {
         String view = VIEW;
 
         if (page.isPresent()) {
-            Page<?> articles =
-                articleRepository.findAll(PageRequest.of(page.get() - 1,
-                                                         articles_per_page));
+            PageRequest pr = PageRequest.of(page.get() - 1, articles_per_page);
+            Page<?> articles = articleRepository.findAll(pr);
 
-            model.addAttribute("articles", articles);
-            model.addAttribute("compass", new Compass(request, articles));
+            model.addAttribute("page", articles);
         } else {
-            view = "redirect:" + request.getServletPath() + "?page=" + 1;
+            attributes.addAttribute("page", String.valueOf(1));
+            attributes.mergeAttributes(request.getParameterMap());
+
+            view = "redirect:" + request.getServletPath();
         }
 
         return view;
     }
 
-    @RequestMapping(value = { "/article/{slug}" })
+    @RequestMapping(method = { GET }, value = { "/article/{slug}" })
     public String article(@PathVariable String slug, Model model) {
         model.addAttribute("article",
                            articleRepository.findBySlug(slug).get());
-        model.addAttribute("compass", new Compass());
 
         return VIEW;
     }
 
-    @RequestMapping(value = { "/authors" })
-    public String authors(Model model) {
-        model.addAttribute("authors", authorRepository.findAll());
-        model.addAttribute("compass", new Compass());
+    @RequestMapping(method = { GET }, value = { "/authors" })
+    public String authors(HttpServletRequest request,
+                          @RequestParam Optional<Integer> page,
+                          RedirectAttributes attributes, Model model) {
+        String view = VIEW;
 
-        return VIEW;
-    }
+        if (page.isPresent()) {
+            PageRequest pr = PageRequest.of(page.get() - 1, articles_per_page);
+            Page<?> authors = authorRepository.findAll(pr);
 
-    @RequestMapping(value = { "/author/{slug}" })
-    public String author(@PathVariable String slug, Model model) {
-        model.addAttribute("author", authorRepository.findBySlug(slug).get());
-        model.addAttribute("compass", new Compass());
+            model.addAttribute("page", authors);
+        } else {
+            attributes.addAttribute("page", String.valueOf(1));
+            attributes.mergeAttributes(request.getParameterMap());
 
-        return VIEW;
+            view = "redirect:" + request.getServletPath();
+        }
+
+        return view;
     }
 
     @RequestMapping(method = { GET }, value = { "/preview" })
     public String preview(Model model) {
-        model.addAttribute("compass", new Compass());
-
         return VIEW;
     }
 
@@ -147,15 +152,11 @@ public class UIController {
             model.addAttribute("error", exception.getMessage());
         }
 
-        model.addAttribute("compass", new Compass());
-
         return VIEW;
     }
 
     @RequestMapping(method = { GET }, value = { "/login" })
     public String login(Model model) {
-        model.addAttribute("compass", new Compass());
-
         return VIEW;
     }
 
@@ -177,70 +178,4 @@ public class UIController {
 
     @Override
     public String toString() { return super.toString(); }
-
-    /**
-     * {@bean.info}
-     */
-    protected class Compass {
-        private static final String HREF = "%s?page=%d";
-
-        private final String path;
-        private final Page<?> page;
-
-        private Compass(HttpServletRequest request, Page<?> page) {
-            this.path = (request != null) ? request.getServletPath() : null;
-            this.page = page;
-        }
-
-        private Compass() { this(null, null); }
-
-        public String getFirstPage() {
-            return href(1);
-        }
-
-        public String getPrevPage() {
-            String href = null;
-
-            if (page != null && page.hasPrevious()) {
-                href = href(page.getNumber());
-            }
-
-            return href;
-        }
-
-        public String getNextPage() {
-            String href = null;
-
-            if (page != null && page.hasNext()) {
-                href = href(page.getNumber() + 2);
-            }
-
-            return href;
-        }
-
-        public String getLastPage() {
-            String href = null;
-
-            if (page != null) {
-                href = href(Math.max(page.getTotalPages(), 1));
-            } else {
-                href = getFirstPage();
-            }
-
-            return href;
-        }
-
-        private String href(int page) {
-            String string = null;
-
-            if (path != null) {
-                string = String.format(HREF, path, page);
-            }
-
-            return string;
-        }
-
-        @Override
-        public String toString() { return super.toString(); }
-    }
 }
