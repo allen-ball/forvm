@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -69,12 +70,15 @@ public class UIController {
     public UIController() { super(); }
 
     @RequestMapping(value = { "/" })
+    @PreAuthorize("permitAll()")
     public String root() { return "redirect:/index.html"; }
 
     @RequestMapping(value = { "/index.html", "/index.htm", "/index" })
+    @PreAuthorize("permitAll()")
     public String index() { return "redirect:/articles"; }
 
     @RequestMapping(method = { GET }, value = { "/articles" })
+    @PreAuthorize("permitAll()")
     public String articles(HttpServletRequest request,
                            @RequestParam Optional<String> author,
                            @RequestParam Optional<Integer> page,
@@ -97,6 +101,7 @@ public class UIController {
     }
 
     @RequestMapping(method = { GET }, value = { "/article/{slug}" })
+    @PreAuthorize("permitAll()")
     public String article(@PathVariable String slug, Model model) {
         model.addAttribute("article",
                            articleRepository.findBySlug(slug).get());
@@ -105,6 +110,7 @@ public class UIController {
     }
 
     @RequestMapping(method = { GET }, value = { "/authors" })
+    @PreAuthorize("permitAll()")
     public String authors(HttpServletRequest request,
                           @RequestParam Optional<Integer> page,
                           RedirectAttributes attributes, Model model) {
@@ -126,11 +132,13 @@ public class UIController {
     }
 
     @RequestMapping(method = { GET }, value = { "/preview" })
+    @PreAuthorize("hasAuthority('AUTHOR')")
     public String preview(Model model) {
         return VIEW;
     }
 
     @RequestMapping(method = { POST }, value = { "/preview" })
+    @PreAuthorize("hasAuthority('AUTHOR')")
     public String previewPOST(@RequestParam("file") MultipartFile file,
                               Model model) {
         try {
@@ -156,11 +164,13 @@ public class UIController {
     }
 
     @RequestMapping(method = { GET }, value = { "/login" })
+    @PreAuthorize("permitAll()")
     public String login(Model model) {
         return VIEW;
     }
 
     @RequestMapping(value = { "/logout" })
+    @PreAuthorize("permitAll()")
     public String logout (HttpServletRequest request,
                           HttpServletResponse response) {
         Authentication authentication =

@@ -1,3 +1,8 @@
+2018-09-06  Allen D. Ball  <ball@sol.local>
+
+	* Use @EnableGlobalMethodSecurity and @PreAuthorize annotations to
+	enable and implement method level security.
+
 2018-09-05  Allen D. Ball  <ball@sol.local>
 
 	* Renamed "post" to "article" to avoid confusion with RESTful

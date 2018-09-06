@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +48,7 @@ public class AttachmentRestController {
     public AttachmentRestController() { super(); }
 
     @RequestMapping(method = { GET })
+    @PreAuthorize("permitAll()")
     public byte[] get(HttpServletRequest request,
                       @PathVariable String slug) {
         String uri = request.getRequestURI();

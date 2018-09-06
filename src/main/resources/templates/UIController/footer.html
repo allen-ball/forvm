@@ -25,7 +25,10 @@
            th:text="'>|'"/>
       </div>
       <div class="col-sm text-right">
-        <p sec:authorize="isAuthenticated()" sec:authentication="name"/>
+        <th:block sec:authorize="isAuthenticated()">
+          <span sec:authentication="name"/>
+          <span sec:authentication="authorities"/>
+        </th:block>
       </div>
     </div>
   </nav>
