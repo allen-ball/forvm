@@ -37,7 +37,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(catalog = "forvm", name = "articles")
 public class Article extends JSONBean {
-    private static final long serialVersionUID = 1376655751849819968L;
+    private static final long serialVersionUID = 569978408816156978L;
 
     @Getter @Setter
     @Id @GeneratedValue(strategy = IDENTITY)
@@ -59,6 +59,7 @@ public class Article extends JSONBean {
     @Lob @Column(nullable = true)
     private String html = null;
 
+    @Getter
     @OneToMany(mappedBy = "article", cascade = ALL)
     private List<Attachment> attachments = new ArrayList<>();
 }
