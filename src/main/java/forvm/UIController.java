@@ -62,7 +62,7 @@ public class UIController {
     @Autowired private Parser parser;
     @Autowired private HtmlRenderer renderer;
 
-    private int articles_per_page = 6;
+    private int page_size = 6;
 
     /**
      * Sole constructor.
@@ -79,20 +79,20 @@ public class UIController {
 
     @RequestMapping(method = { GET }, value = { "/articles" })
     @PreAuthorize("permitAll()")
-    public String articles(HttpServletRequest request,
+    public String articles(Model model, RedirectAttributes redirect,
+                           HttpServletRequest request,
                            @RequestParam Optional<String> author,
-                           @RequestParam Optional<Integer> page,
-                           RedirectAttributes attributes, Model model) {
+                           @RequestParam Optional<Integer> page) {
         String view = VIEW;
 
         if (page.isPresent()) {
-            PageRequest pr = PageRequest.of(page.get() - 1, articles_per_page);
+            PageRequest pr = PageRequest.of(page.get() - 1, page_size);
             Page<?> articles = articleRepository.findAll(pr);
 
             model.addAttribute("page", articles);
         } else {
-            attributes.addAttribute("page", String.valueOf(1));
-            attributes.mergeAttributes(request.getParameterMap());
+            redirect.addAttribute("page", String.valueOf(1));
+            redirect.mergeAttributes(request.getParameterMap());
 
             view = "redirect:" + request.getServletPath();
         }
@@ -102,28 +102,28 @@ public class UIController {
 
     @RequestMapping(method = { GET }, value = { "/article/{slug}" })
     @PreAuthorize("permitAll()")
-    public String article(@PathVariable String slug, Model model) {
-        model.addAttribute("article",
-                           articleRepository.findBySlug(slug).get());
+    public String article(Model model, @PathVariable String slug) {
+        model
+            .addAttribute("article", articleRepository.findBySlug(slug).get());
 
         return VIEW;
     }
 
     @RequestMapping(method = { GET }, value = { "/authors" })
     @PreAuthorize("permitAll()")
-    public String authors(HttpServletRequest request,
-                          @RequestParam Optional<Integer> page,
-                          RedirectAttributes attributes, Model model) {
+    public String authors(Model model, RedirectAttributes redirect,
+                          HttpServletRequest request,
+                          @RequestParam Optional<Integer> page) {
         String view = VIEW;
 
         if (page.isPresent()) {
-            PageRequest pr = PageRequest.of(page.get() - 1, articles_per_page);
+            PageRequest pr = PageRequest.of(page.get() - 1, page_size);
             Page<?> authors = authorRepository.findAll(pr);
 
             model.addAttribute("page", authors);
         } else {
-            attributes.addAttribute("page", String.valueOf(1));
-            attributes.mergeAttributes(request.getParameterMap());
+            redirect.addAttribute("page", String.valueOf(1));
+            redirect.mergeAttributes(request.getParameterMap());
 
             view = "redirect:" + request.getServletPath();
         }
@@ -133,14 +133,11 @@ public class UIController {
 
     @RequestMapping(method = { GET }, value = { "/preview" })
     @PreAuthorize("hasAuthority('AUTHOR')")
-    public String preview(Model model) {
-        return VIEW;
-    }
+    public String preview() { return VIEW; }
 
     @RequestMapping(method = { POST }, value = { "/preview" })
     @PreAuthorize("hasAuthority('AUTHOR')")
-    public String previewPOST(@RequestParam("file") MultipartFile file,
-                              Model model) {
+    public String previewPOST(Model model, @RequestParam MultipartFile file) {
         try {
             String markdown = new String(file.getBytes(), UTF_8);
 
@@ -165,14 +162,12 @@ public class UIController {
 
     @RequestMapping(method = { GET }, value = { "/login" })
     @PreAuthorize("permitAll()")
-    public String login(Model model) {
-        return VIEW;
-    }
+    public String login() { return VIEW; }
 
     @RequestMapping(value = { "/logout" })
     @PreAuthorize("permitAll()")
-    public String logout (HttpServletRequest request,
-                          HttpServletResponse response) {
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response) {
         Authentication authentication =
             SecurityContextHolder.getContext().getAuthentication();
 

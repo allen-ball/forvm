@@ -3,7 +3,7 @@
   <div class="container">
     <a class="navbar-brand"
        th:href="${(#mvc.url('UIC#root')).build()}"
-       th:text="@pom.artifactId@"/>
+       th:text="${'@pom.artifactId@'}"/>
     <div class="navbar-expand">
       <ul class="navbar-nav">
         <li sec:authorize="hasAuthority('AUTHOR')"
@@ -11,7 +11,7 @@
           <a class="nav-link dropdown-toggle" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false"
              th:id="${#ids.seq('dropdown')}"
-             th:href="@{''}" th:text="Author"/>
+             href="#" th:text="Author"/>
           <div class="dropdown-menu"
                th:attr="aria-labelledby=${#ids.prev('dropdown')}">
             <a class="dropdown-item"
@@ -25,7 +25,7 @@
              aria-haspopup="true" aria-expanded="false"
              th:classappend="'disabled'"
              th:id="${#ids.seq('dropdown')}"
-             th:href="@{''}" th:text="Subscriber"/>
+             href="#" th:text="Subscriber"/>
           <div class="dropdown-menu"
                th:attr="aria-labelledby=${#ids.prev('dropdown')}">
           </div>
@@ -34,7 +34,7 @@
           <a class="nav-link dropdown-toggle" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false"
              th:id="${#ids.seq('dropdown')}"
-             th:href="@{''}" th:text="Collections"/>
+             href="#" th:text="Collections"/>
           <div class="dropdown-menu"
                th:attr="aria-labelledby=${#ids.prev('dropdown')}">
             <a class="dropdown-item"
