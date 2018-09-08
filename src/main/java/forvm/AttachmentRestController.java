@@ -49,13 +49,12 @@ public class AttachmentRestController {
 
     @RequestMapping(method = { GET })
     @PreAuthorize("permitAll()")
-    public byte[] get(HttpServletRequest request,
-                      @PathVariable String slug) {
+    public byte[] get(HttpServletRequest request, @PathVariable String slug) {
         String uri = request.getRequestURI();
         String path = uri.substring(uri.indexOf(slug) + slug.length());
         Optional<Attachment> attachment =
             articleRepository.findBySlug(slug)
-            .flatMap(t -> attachmentRepository.findByArticleAndPath(t.getId(), path));
+            .flatMap(t -> attachmentRepository.findByArticleAndPath(t, path));
 
         return attachment.get().getContent();
     }
