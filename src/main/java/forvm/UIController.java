@@ -21,6 +21,7 @@ import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -52,11 +53,14 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 @ComponentScan(basePackageClasses =
                    { ball.spring.mysqld.MysqldComponent.class })
-public class UIController {
+public class UIController extends BootstrapUI {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private static final String VIEW = UIController.class.getSimpleName();
+    private static final String[] CSS =
+        new String[] { "/css/prism.css", "/css/style.css" };
+    private static final String[] JS = new String[] { "/js/prism.js" };
 
+    @Value("${application.name}") private String brand;
     @Autowired private AuthorRepository authorRepository;
     @Autowired private ArticleRepository articleRepository;
     @Autowired private Parser parser;
@@ -68,6 +72,18 @@ public class UIController {
      * Sole constructor.
      */
     public UIController() { super(); }
+
+    @Override
+    public String[] css() { return CSS; }
+
+    @Override
+    public String[] js() { return JS; }
+
+    @Override
+    public String brand() { return brand; }
+
+    @Override
+    public String template() { return getClass().getPackage().getName(); }
 
     @RequestMapping(value = { "/" })
     @PreAuthorize("permitAll()")
@@ -182,7 +198,4 @@ public class UIController {
     @ExceptionHandler({ NoSuchElementException.class })
     @ResponseStatus(value = NOT_FOUND, reason = "Resource not found")
     public void handleNOT_FOUND() { }
-
-    @Override
-    public String toString() { return super.toString(); }
 }

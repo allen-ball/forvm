@@ -6,7 +6,7 @@
   <table class="table table-striped">
     <tbody>
       <tr th:each="article : ${articles}" class="row">
-        <td class="col-sm text-left">
+        <td class="col-sm">
           <div th:remove="tag" th:utext="${article.html}"/>
         </td>
       </tr>
@@ -21,7 +21,7 @@
           <a th:href="@{/articles(author=${author.slug})}"
              th:text="${author.name}"/>
         </td>
-        <td class="col-sm text-left">
+        <td class="col-sm">
           <div th:remove="tag" th:utext="${author.html}"/>
         </td>
       </tr>
