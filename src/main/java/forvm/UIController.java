@@ -89,6 +89,7 @@ public class UIController {
             PageRequest pr = PageRequest.of(page.get() - 1, page_size);
             Page<?> articles = articleRepository.findAll(pr);
 
+            model.addAttribute("articles", articles);
             model.addAttribute("page", articles);
         } else {
             redirect.addAttribute("page", String.valueOf(1));
@@ -120,6 +121,7 @@ public class UIController {
             PageRequest pr = PageRequest.of(page.get() - 1, page_size);
             Page<?> authors = authorRepository.findAll(pr);
 
+            model.addAttribute("authors", authors);
             model.addAttribute("page", authors);
         } else {
             redirect.addAttribute("page", String.valueOf(1));
