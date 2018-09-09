@@ -5,12 +5,13 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/prism.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <th:block th:with="stylesheets = ${new String[] { '/css/bootstrap.css' }}"
+              th:insert="~{${#execInfo.templateName + '/stylesheets'}}"/>
+    <th:block th:with="stylesheets = ${new String[] { '/css/prism.css', '/css/style.css' }}"
+              th:insert="~{${#execInfo.templateName + '/stylesheets'}}"/>
 <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <th:block th:with="scripts = ${new String[] { 'https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js', 'https://oss.maxcdn.com/respond/1.4.2/respond.min.js' }}"
+              th:insert="~{${#execInfo.templateName + '/scripts'}}"/>
   <![endif]-->
   </head>
   <body>
@@ -27,9 +28,9 @@
       </th:block>
     </div>
     <th:block th:insert="~{${#execInfo.templateName + '/footer'}}"/>
-    <script type="text/javascript" th:src="@{/js/jquery.js}"></script>
-    <script type="text/javascript" th:src="@{/js/popper.js}"></script>
-    <script type="text/javascript" th:src="@{/js/bootstrap.js}"></script>
-    <script type="text/javascript" th:src="@{/js/prism.js}"></script>
+    <th:block th:with="scripts = ${new String[] { '/js/jquery.js', '/js/popper.js', '/js/bootstrap.js' }}"
+              th:insert="~{${#execInfo.templateName + '/scripts'}}"/>
+    <th:block th:with="scripts = ${new String[] { '/js/prism.js' }}"
+              th:insert="~{${#execInfo.templateName + '/scripts'}}"/>
   </body>
 </html>

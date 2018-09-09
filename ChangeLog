@@ -2,7 +2,7 @@
 
 	* src/main/java/forvm/APIRestController.java:
 	Interim check-in: Happy-path author and article posting APIs but
-	still need resourceand parameter checks including link
+	still need resource and parameter checks including link
 	re-writing.
 
 	* src/main/java/forvm/WebSecurityConfigurerImpl.java:
