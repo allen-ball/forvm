@@ -11,13 +11,17 @@ import forvm.entity.Attachment;
 import forvm.entity.Author;
 import forvm.repository.ArticleRepository;
 import forvm.repository.AuthorRepository;
+import java.net.URI;
 import java.security.AccessControlException;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
@@ -27,6 +31,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tika.Tika;
 import org.commonmark.ext.front.matter.YamlFrontMatterVisitor;
+import org.commonmark.node.AbstractVisitor;
+import org.commonmark.node.Image;
+import org.commonmark.node.Link;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
@@ -61,6 +68,11 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 public class APIRestController {
     private static final Logger LOGGER = LogManager.getLogger();
 
+    private static final String README_MD = "README.md";
+    private static final String FILE = "file";
+    private static final String SLASH = "/";
+    private static final URI ROOT = URI.create(SLASH);
+
     @Autowired private AuthorRepository authorRepository;
     @Autowired private ArticleRepository articleRepository;
     @Autowired private Tika tika;
@@ -93,11 +105,8 @@ public class APIRestController {
         String slug = FileImpl.getNameBase(name);
         String markdown = new String(file.getBytes(), UTF_8);
         Node document = parser.parse(markdown);
-        YamlFrontMatterVisitor visitor = new YamlFrontMatterVisitor();
-
-        document.accept(visitor);
-
-        Map<String,List<String>> map = visitor.getData();
+        Map<String,List<String>> yaml =
+            new YamlFrontMatterVisitorImpl(document).getData();
         StringBuilder html = new StringBuilder();
 
         renderer.render(document, html);
@@ -133,7 +142,7 @@ public class APIRestController {
                     zip =
                         new ZipFile(new SeekableInMemoryByteChannel(bytes),
                                     name, UTF_8.name(), true);
-                    source = zip.getEntry("README.md");
+                    source = zip.getEntry(README_MD);
                     markdown =
                         new Scanner(zip.getInputStream(source), UTF_8.name())
                         .useDelimiter("\\A").next();
@@ -147,15 +156,28 @@ public class APIRestController {
                 throw new UnsupportedMediaTypeException("unknown");
             }
 
+            TreeMap<String,String> map = new TreeMap<>();
+
+            if (zip != null) {
+                for (ZipArchiveEntry entry :
+                         Collections.list(zip.getEntries())) {
+                    if (! Arrays.asList(README_MD).contains(entry.getName())) {
+                        if (! map.containsKey(entry.getName())) {
+                            URI uri =
+                                ROOT.resolve(entry.getName()).normalize();
+
+                            map.put(entry.getName(), uri.getPath());
+                        }
+                    }
+                }
+            }
+
             Node document = parser.parse(markdown);
-            YamlFrontMatterVisitor visitor = new YamlFrontMatterVisitor();
+            Map<String,List<String>> yaml =
+                new YamlFrontMatterVisitorImpl(document).getData();
 
-            document.accept(visitor);
-
-            Map<String,List<String>> map = visitor.getData();
-
-            if (map.containsKey("slug")) {
-                slug = map.get("slug").stream().collect(Collectors.joining());
+            if (yaml.containsKey("slug")) {
+                slug = yaml.get("slug").stream().collect(Collectors.joining());
             }
 
             Article article = null;
@@ -185,6 +207,10 @@ public class APIRestController {
                 throw new ForbiddenException(slug);
             }
 
+            URI prefix = URI.create("/article/" + article.getSlug() + "/");
+
+            new LinkVisitor(document, prefix, map);
+
             article.setMarkdown(markdown);
             article.getAttachments().clear();
 
@@ -192,12 +218,7 @@ public class APIRestController {
                 for (ZipArchiveEntry entry :
                          Collections.list(zip.getEntries())) {
                     if ((! entry.equals(source)) && (! entry.isDirectory())) {
-                        String path = entry.getName();
-
-                        if (! path.startsWith("/")) {
-                            path = "/" + path;
-                        }
-
+                        String path = map.get(entry.getName());
                         byte[] content =
                             IOUtils.toByteArray(zip.getInputStream(entry));
 
@@ -270,5 +291,60 @@ public class APIRestController {
         private UnsupportedMediaTypeException(String message) {
             super(message, null);
         }
+    }
+
+    private class YamlFrontMatterVisitorImpl extends YamlFrontMatterVisitor {
+        protected YamlFrontMatterVisitorImpl(Node document) {
+            super();
+
+            document.accept(this);
+        }
+
+        @Override
+        public String toString() { return super.toString(); }
+    }
+
+    private class LinkVisitor extends AbstractVisitor {
+        private final URI prefix;
+        private final Map<String,String> map;
+
+        protected LinkVisitor(Node document,
+                              URI prefix, Map<String,String> map) {
+            super();
+
+            this.prefix = Objects.requireNonNull(prefix);
+            this.map = Objects.requireNonNull(map);
+
+            document.accept(this);
+        }
+
+        @Override
+        public void visit(Image node) {
+            super.visit(node);
+
+            node.setDestination(href(node.getDestination()));
+        }
+
+        @Override
+        public void visit(Link node) {
+            super.visit(node);
+
+            node.setDestination(href(node.getDestination()));
+        }
+
+        private String href(String destination) {
+            URI uri = URI.create(destination).normalize();
+
+            if ((! uri.isAbsolute()) || FILE.equals(uri.getScheme())) {
+                if (! uri.getPath().startsWith(SLASH)) {
+                    destination = prefix.resolve(uri.getPath()).getPath();
+                }
+            }
+
+            return destination;
+        }
+
+        @Override
+        public String toString() { return super.toString(); }
     }
 }

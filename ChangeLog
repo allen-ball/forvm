@@ -1,9 +1,9 @@
-2018-09-07  Allen D. Ball  <ball@sol.local>
+2018-09-10  Allen D. Ball  <ball@sol.local>
 
 	* src/main/java/forvm/APIRestController.java:
-	Interim check-in: Happy-path author and article posting APIs but
-	still need resource and parameter checks including link
-	re-writing.
+	Completed [PUT]/api/v1/author and [POST,PUT]/api/v1/article APIs.
+
+2018-09-07  Allen D. Ball  <ball@sol.local>
 
 	* src/main/java/forvm/WebSecurityConfigurerImpl.java:
 	Require HTTP Basic Authentication for /api/**.
