@@ -5,12 +5,12 @@
  */
 package forvm;
 
+import ball.spring.BootstrapUI;
 import forvm.repository.ArticleRepository;
 import forvm.repository.AuthorRepository;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,16 +31,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -83,7 +80,9 @@ public class UIController extends BootstrapUI {
     public String brand() { return brand; }
 
     @Override
-    public String template() { return getClass().getPackage().getName(); }
+    public String template() {
+        return getClass().getPackage().getName().replaceAll("[.]", "-");
+    }
 
     @RequestMapping(value = { "/" })
     @PreAuthorize("permitAll()")
@@ -194,8 +193,4 @@ public class UIController extends BootstrapUI {
 
         return "redirect:/";
     }
-
-    @ExceptionHandler({ NoSuchElementException.class })
-    @ResponseStatus(value = NOT_FOUND, reason = "Resource not found")
-    public void handleNOT_FOUND() { }
 }
