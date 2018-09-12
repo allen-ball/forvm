@@ -32,6 +32,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.tika.Tika;
 import org.commonmark.ext.front.matter.YamlFrontMatterVisitor;
 import org.commonmark.node.AbstractVisitor;
+import org.commonmark.node.CustomNode;
 import org.commonmark.node.Image;
 import org.commonmark.node.Link;
 import org.commonmark.node.Node;
@@ -106,7 +107,7 @@ public class APIRestController {
         String markdown = new String(file.getBytes(), UTF_8);
         Node document = parser.parse(markdown);
         Map<String,List<String>> yaml =
-            new YamlFrontMatterVisitorImpl(document).getData();
+            new FrontMatterVisitor(document).getData();
         StringBuilder html = new StringBuilder();
 
         renderer.render(document, html);
@@ -174,7 +175,7 @@ public class APIRestController {
 
             Node document = parser.parse(markdown);
             Map<String,List<String>> yaml =
-                new YamlFrontMatterVisitorImpl(document).getData();
+                new FrontMatterVisitor(document).getData();
 
             if (yaml.containsKey("slug")) {
                 slug = yaml.get("slug").stream().collect(Collectors.joining());
@@ -193,6 +194,8 @@ public class APIRestController {
                 article.setAuthor(authorRepository
                                   .findById(principal.getName())
                                   .get());
+                article.setTitle(yaml.get("title")
+                                 .stream().collect(Collectors.joining()));
                 break;
 
             case PUT:
@@ -209,7 +212,7 @@ public class APIRestController {
 
             URI prefix = URI.create("/article/" + article.getSlug() + "/");
 
-            new LinkVisitor(document, prefix, map);
+            new DestinationRewriteVisitor(document, prefix, map);
 
             article.setMarkdown(markdown);
             article.getAttachments().clear();
@@ -293,23 +296,29 @@ public class APIRestController {
         }
     }
 
-    private class YamlFrontMatterVisitorImpl extends YamlFrontMatterVisitor {
-        protected YamlFrontMatterVisitorImpl(Node document) {
+    private class FrontMatterVisitor extends YamlFrontMatterVisitor {
+        protected FrontMatterVisitor(Node document) {
             super();
 
             document.accept(this);
         }
 
         @Override
+        public void visit(CustomNode node) {
+            super.visit(node);
+        }
+
+        @Override
         public String toString() { return super.toString(); }
     }
 
-    private class LinkVisitor extends AbstractVisitor {
+    private class DestinationRewriteVisitor extends AbstractVisitor {
         private final URI prefix;
         private final Map<String,String> map;
 
-        protected LinkVisitor(Node document,
-                              URI prefix, Map<String,String> map) {
+        protected DestinationRewriteVisitor(Node document,
+                                            URI prefix,
+                                            Map<String,String> map) {
             super();
 
             this.prefix = Objects.requireNonNull(prefix);
@@ -322,17 +331,17 @@ public class APIRestController {
         public void visit(Image node) {
             super.visit(node);
 
-            node.setDestination(href(node.getDestination()));
+            node.setDestination(rewrite(node.getDestination()));
         }
 
         @Override
         public void visit(Link node) {
             super.visit(node);
 
-            node.setDestination(href(node.getDestination()));
+            node.setDestination(rewrite(node.getDestination()));
         }
 
-        private String href(String destination) {
+        private String rewrite(String destination) {
             URI uri = URI.create(destination).normalize();
 
             if ((! uri.isAbsolute()) || FILE.equals(uri.getScheme())) {

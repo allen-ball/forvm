@@ -7,7 +7,10 @@
     <tbody>
       <tr th:each="article : ${articles}" class="row">
         <td class="col-sm">
-          <div th:remove="tag" th:utext="${article.html}"/>
+          <a class="row h1" th:href="@{/article/{slug}(slug=${article.slug})}"
+             th:text="${article.title}"/>
+          <a class="row" th:href="@{/articles(author=${article.author.slug})}"
+             th:text="${article.author.name}"/>
         </td>
       </tr>
     </tbody>

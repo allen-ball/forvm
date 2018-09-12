@@ -37,7 +37,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(catalog = "forvm", name = "articles")
 public class Article extends JSONBean {
-    private static final long serialVersionUID = 569978408816156978L;
+    private static final long serialVersionUID = 4208894685459789190L;
 
     @Getter @Setter
     @Id @GeneratedValue(strategy = IDENTITY)
@@ -50,6 +50,10 @@ public class Article extends JSONBean {
     @Getter @Setter
     @ManyToOne(fetch = LAZY) @JoinColumn(name = "author")
     private Author author = null;
+
+    @Getter @Setter
+    @Lob @Column(nullable = false)
+    private String title = null;
 
     @Getter @Setter
     @Lob @Column(nullable = false)

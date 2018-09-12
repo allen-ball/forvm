@@ -77,6 +77,7 @@ CREATE TABLE `articles` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `slug` varchar(255) NOT NULL,
   `author` varchar(64) DEFAULT NULL,
+  `title` longtext NOT NULL,
   `markdown` longtext NOT NULL,
   `html` longtext,
   PRIMARY KEY (`id`),

@@ -1,3 +1,7 @@
+2018-09-12  Allen D. Ball  <ball@sol.local>
+
+	* Added `title` to Article.
+
 2018-09-10  Allen D. Ball  <ball@sol.local>
 
 	* src/main/java/forvm/APIRestController.java:
