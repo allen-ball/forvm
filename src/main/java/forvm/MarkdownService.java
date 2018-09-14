@@ -220,9 +220,10 @@ public class MarkdownService {
 
             if ((! uri.isAbsolute()) || FILE.equals(uri.getScheme())) {
                 if (! uri.getPath().startsWith(SLASH)) {
-                    String path = prefix.resolve(uri.getPath()).getPath();
-
-                    link = link.withStatus(LinkStatus.VALID).withUrl(path);
+                    link =
+                        link
+                        .withStatus(LinkStatus.VALID)
+                        .withUrl(prefix.resolve(uri).toString());
                 }
             }
 
