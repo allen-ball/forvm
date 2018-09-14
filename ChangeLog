@@ -1,3 +1,7 @@
+2018-09-14  Allen D. Ball  <ball@sol.local>
+
+	* Switched from commonmark-java to flexmark-java.
+
 2018-09-12  Allen D. Ball  <ball@sol.local>
 
 	* Added `title` to Article.

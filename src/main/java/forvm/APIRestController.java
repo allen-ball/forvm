@@ -6,20 +6,19 @@
 package forvm;
 
 import ball.io.FileImpl;
+import com.vladsch.flexmark.ast.Document;
 import forvm.entity.Article;
 import forvm.entity.Attachment;
 import forvm.entity.Author;
 import forvm.repository.ArticleRepository;
 import forvm.repository.AuthorRepository;
 import java.net.URI;
-import java.security.AccessControlException;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -30,14 +29,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tika.Tika;
-import org.commonmark.ext.front.matter.YamlFrontMatterVisitor;
-import org.commonmark.node.AbstractVisitor;
-import org.commonmark.node.CustomNode;
-import org.commonmark.node.Image;
-import org.commonmark.node.Link;
-import org.commonmark.node.Node;
-import org.commonmark.parser.Parser;
-import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpMethod;
@@ -70,15 +61,13 @@ public class APIRestController {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String README_MD = "README.md";
-    private static final String FILE = "file";
     private static final String SLASH = "/";
     private static final URI ROOT = URI.create(SLASH);
 
     @Autowired private AuthorRepository authorRepository;
     @Autowired private ArticleRepository articleRepository;
     @Autowired private Tika tika;
-    @Autowired private Parser parser;
-    @Autowired private HtmlRenderer renderer;
+    @Autowired private MarkdownService service;
 
     /**
      * Sole constructor.
@@ -105,12 +94,9 @@ public class APIRestController {
         String name = file.getOriginalFilename();
         String slug = FileImpl.getNameBase(name);
         String markdown = new String(file.getBytes(), UTF_8);
-        Node document = parser.parse(markdown);
-        Map<String,List<String>> yaml =
-            new FrontMatterVisitor(document).getData();
-        StringBuilder html = new StringBuilder();
-
-        renderer.render(document, html);
+        Document document = service.parse(markdown);
+        Map<String,List<String>> yaml = service.getYamlFrom(document);
+        CharSequence html = service.htmlRender(document, null);
 
         author.setSlug(slug);
         author.setMarkdown(markdown);
@@ -173,9 +159,8 @@ public class APIRestController {
                 }
             }
 
-            Node document = parser.parse(markdown);
-            Map<String,List<String>> yaml =
-                new FrontMatterVisitor(document).getData();
+            Document document = service.parse(markdown);
+            Map<String,List<String>> yaml = service.getYamlFrom(document);
 
             if (yaml.containsKey("slug")) {
                 slug = yaml.get("slug").stream().collect(Collectors.joining());
@@ -210,10 +195,6 @@ public class APIRestController {
                 throw new ForbiddenException(slug);
             }
 
-            URI prefix = URI.create("/article/" + article.getSlug() + "/");
-
-            new DestinationRewriteVisitor(document, prefix, map);
-
             article.setMarkdown(markdown);
             article.getAttachments().clear();
 
@@ -236,9 +217,8 @@ public class APIRestController {
                 }
             }
 
-            StringBuilder html = new StringBuilder();
-
-            renderer.render(document, html);
+            URI prefix = URI.create("/article/" + article.getSlug() + "/");
+            CharSequence html = service.htmlRender(document, prefix);
 
             article.setHtml(html.toString());
 
@@ -294,66 +274,5 @@ public class APIRestController {
         private UnsupportedMediaTypeException(String message) {
             super(message, null);
         }
-    }
-
-    private class FrontMatterVisitor extends YamlFrontMatterVisitor {
-        protected FrontMatterVisitor(Node document) {
-            super();
-
-            document.accept(this);
-        }
-
-        @Override
-        public void visit(CustomNode node) {
-            super.visit(node);
-        }
-
-        @Override
-        public String toString() { return super.toString(); }
-    }
-
-    private class DestinationRewriteVisitor extends AbstractVisitor {
-        private final URI prefix;
-        private final Map<String,String> map;
-
-        protected DestinationRewriteVisitor(Node document,
-                                            URI prefix,
-                                            Map<String,String> map) {
-            super();
-
-            this.prefix = Objects.requireNonNull(prefix);
-            this.map = Objects.requireNonNull(map);
-
-            document.accept(this);
-        }
-
-        @Override
-        public void visit(Image node) {
-            super.visit(node);
-
-            node.setDestination(rewrite(node.getDestination()));
-        }
-
-        @Override
-        public void visit(Link node) {
-            super.visit(node);
-
-            node.setDestination(rewrite(node.getDestination()));
-        }
-
-        private String rewrite(String destination) {
-            URI uri = URI.create(destination).normalize();
-
-            if ((! uri.isAbsolute()) || FILE.equals(uri.getScheme())) {
-                if (! uri.getPath().startsWith(SLASH)) {
-                    destination = prefix.resolve(uri.getPath()).getPath();
-                }
-            }
-
-            return destination;
-        }
-
-        @Override
-        public String toString() { return super.toString(); }
     }
 }

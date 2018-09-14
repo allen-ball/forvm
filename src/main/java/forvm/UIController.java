@@ -6,9 +6,9 @@
 package forvm;
 
 import ball.spring.BootstrapUI;
+import com.vladsch.flexmark.ast.Document;
 import forvm.repository.ArticleRepository;
 import forvm.repository.AuthorRepository;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,10 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.commonmark.ext.front.matter.YamlFrontMatterVisitor;
-import org.commonmark.node.Node;
-import org.commonmark.parser.Parser;
-import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
@@ -60,8 +56,7 @@ public class UIController extends BootstrapUI {
     @Value("${application.name}") private String brand;
     @Autowired private AuthorRepository authorRepository;
     @Autowired private ArticleRepository articleRepository;
-    @Autowired private Parser parser;
-    @Autowired private HtmlRenderer renderer;
+    @Autowired private MarkdownService service;
 
     private int page_size = 6;
 
@@ -160,14 +155,9 @@ public class UIController extends BootstrapUI {
 
             model.addAttribute("markdown", markdown);
 
-            Node document = parser.parse(markdown);
-            YamlFrontMatterVisitor visitor = new YamlFrontMatterVisitor();
-
-            document.accept(visitor);
-
-            StringBuilder html = new StringBuilder();
-
-            renderer.render(document, html);
+            Document document = service.parse(markdown);
+            Map<String,List<String>> yaml = service.getYamlFrom(document);
+            CharSequence html = service.htmlRender(document, null);
 
             model.addAttribute("html", html);
         } catch (Exception exception) {

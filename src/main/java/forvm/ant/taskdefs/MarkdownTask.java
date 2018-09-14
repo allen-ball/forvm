@@ -11,13 +11,13 @@ import ball.util.PropertiesImpl;
 import ball.util.ant.taskdefs.AbstractClasspathTask;
 import ball.util.ant.taskdefs.AntTask;
 import ball.util.ant.taskdefs.NotNull;
-import forvm.MarkdownConfiguration;
+import com.vladsch.flexmark.ast.Document;
+import forvm.MarkdownService;
 import java.io.File;
-import java.io.Reader;
 import java.nio.file.Files;
+import java.util.List;
+import java.util.Map;
 import org.apache.tools.ant.BuildException;
-import org.commonmark.ext.front.matter.YamlFrontMatterVisitor;
-import org.commonmark.node.Node;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -31,7 +31,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @version $Revision$
  */
 public abstract class MarkdownTask extends AbstractClasspathTask {
-    protected MarkdownConfiguration markdown = new MarkdownConfiguration();
+    protected MarkdownService service = new MarkdownService();
 
     /**
      * Sole constructor.
@@ -59,7 +59,7 @@ public abstract class MarkdownTask extends AbstractClasspathTask {
     @AntTask("markdown-parse")
     public static class Parse extends MarkdownTask {
         private File file = null;
-        protected Node document = null;
+        protected Document document = null;
 
         /**
          * Sole constructor.
@@ -78,13 +78,11 @@ public abstract class MarkdownTask extends AbstractClasspathTask {
 
                 byte[] bytes = Files.readAllBytes(getFile().toPath());
 
-                document = markdown.parser().parse(new String(bytes, UTF_8));
+                document = service.parse(new String(bytes, UTF_8));
 
-                YamlFrontMatterVisitor visitor = new YamlFrontMatterVisitor();
+                Map<String,List<String>> yaml = service.getYamlFrom(document);
 
-                document.accept(visitor);
-
-                log(new MapTableModel(visitor.getData()));
+                log(new MapTableModel(yaml));
             } catch (BuildException exception) {
                 throw exception;
             } catch (Throwable throwable) {
@@ -113,7 +111,7 @@ public abstract class MarkdownTask extends AbstractClasspathTask {
             try {
                 super.execute();
 
-                log(markdown.renderer().render(document));
+                log(service.htmlRender(document, null).toString());
             } catch (BuildException exception) {
                 throw exception;
             } catch (Throwable throwable) {
