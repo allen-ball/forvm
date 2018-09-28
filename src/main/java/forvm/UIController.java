@@ -161,7 +161,7 @@ public class UIController extends BootstrapUI {
 
             model.addAttribute("html", html);
         } catch (Exception exception) {
-            model.addAttribute("error", exception.getMessage());
+            model.addAttribute("exception", exception.getMessage());
         }
 
         return VIEW;

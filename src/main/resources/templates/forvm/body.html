@@ -36,7 +36,7 @@
     <div class="jumbotron">
       <div class="row justify-content-center">
         <div class="col-sm-6">
-          <form class="form-signin" th:action="@{/login}" method="post">
+          <form class="form-signin" th:action="@{''}" method="post">
             <input type="hidden"
                    th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <input type="email" th:name="username"
@@ -67,7 +67,9 @@
   <th:block th:case="'/preview'">
     <th:block th:switch="${#request.method}">
       <th:block th:case="'POST'">
-        <p th:if="${error != null}" th:text="${error}"/>
+        <th:block th:if="${exception != null}">
+          <p th:text="${exception}"/>
+        </th:block>
         <article th:if="${html != null}">
           <div th:remove="tag" th:utext="${html}"/>
         </article>
