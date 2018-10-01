@@ -1,3 +1,7 @@
+2018-10-01  Allen D. Ball  <ball@sol.local>
+
+	* Added (mostly) generic form processing.
+
 2018-09-14  Allen D. Ball  <ball@sol.local>
 
 	* Switched from commonmark-java to flexmark-java.

@@ -27,10 +27,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -48,6 +48,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
                    { ball.spring.mysqld.MysqldComponent.class })
 public class UIController extends BootstrapUI {
     private static final Logger LOGGER = LogManager.getLogger();
+
+    private static final String FORM = "form";
+    private static final String PAGE = "page";
 
     private static final String[] CSS =
         new String[] { "/css/prism.css", "/css/style.css" };
@@ -100,9 +103,9 @@ public class UIController extends BootstrapUI {
             Page<?> articles = articleRepository.findAll(pr);
 
             model.addAttribute("articles", articles);
-            model.addAttribute("page", articles);
+            model.addAttribute(PAGE, articles);
         } else {
-            redirect.addAttribute("page", String.valueOf(1));
+            redirect.addAttribute(PAGE, String.valueOf(1));
             redirect.mergeAttributes(request.getParameterMap());
 
             view = "redirect:" + request.getServletPath();
@@ -132,9 +135,9 @@ public class UIController extends BootstrapUI {
             Page<?> authors = authorRepository.findAll(pr);
 
             model.addAttribute("authors", authors);
-            model.addAttribute("page", authors);
+            model.addAttribute(PAGE, authors);
         } else {
-            redirect.addAttribute("page", String.valueOf(1));
+            redirect.addAttribute(PAGE, String.valueOf(1));
             redirect.mergeAttributes(request.getParameterMap());
 
             view = "redirect:" + request.getServletPath();
@@ -145,21 +148,33 @@ public class UIController extends BootstrapUI {
 
     @RequestMapping(method = { GET }, value = { "/preview" })
     @PreAuthorize("hasAuthority('AUTHOR')")
-    public String preview() { return VIEW; }
+    public String preview(Model model) {
+        model.addAttribute(FORM, new PreviewForm());
+
+        return VIEW;
+    }
 
     @RequestMapping(method = { POST }, value = { "/preview" })
     @PreAuthorize("hasAuthority('AUTHOR')")
-    public String previewPOST(Model model, @RequestParam MultipartFile file) {
+    public String previewPOST(Model model,
+                              PreviewForm form, BindingResult result) {
         try {
-            String markdown = new String(file.getBytes(), UTF_8);
+            if (! result.hasErrors()) {
+                String markdown = new String(form.getFile().getBytes(), UTF_8);
 
-            model.addAttribute("markdown", markdown);
+                model.addAttribute("markdown", markdown);
 
-            Document document = service.parse(markdown);
-            Map<String,List<String>> yaml = service.getYamlFrom(document);
-            CharSequence html = service.htmlRender(document, null);
+                Document document = service.parse(markdown);
+                Map<String,List<String>> yaml = service.getYamlFrom(document);
 
-            model.addAttribute("html", html);
+                model.addAttribute("yaml", yaml);
+
+                CharSequence html = service.htmlRender(document, null);
+
+                model.addAttribute("html", html);
+            } else {
+                model.addAttribute(FORM, form);
+            }
         } catch (Exception exception) {
             model.addAttribute("exception", exception.getMessage());
         }
@@ -169,7 +184,11 @@ public class UIController extends BootstrapUI {
 
     @RequestMapping(method = { GET }, value = { "/login" })
     @PreAuthorize("permitAll()")
-    public String login() { return VIEW; }
+    public String login(Model model) {
+        model.addAttribute(FORM, new LoginForm());
+
+        return VIEW;
+    }
 
     @RequestMapping(value = { "/logout" })
     @PreAuthorize("permitAll()")
