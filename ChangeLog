@@ -1,5 +1,7 @@
 2018-10-22  Allen D. Ball  <ball@sol.local>
 
+	* Added "change password" functionality.
+
 	* src/main/java/forvm/ChangePasswordForm.java,
 	src/main/resources/templates/forvm/ChangePasswordForm.html:
 	Initial wriitng.

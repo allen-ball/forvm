@@ -7,8 +7,10 @@ package forvm;
 
 import ball.spring.BootstrapUI;
 import com.vladsch.flexmark.ast.Document;
+import forvm.entity.Credential;
 import forvm.repository.ArticleRepository;
 import forvm.repository.AuthorRepository;
+import forvm.repository.CredentialRepository;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,6 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,6 +52,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class UIController extends BootstrapUI {
     private static final Logger LOGGER = LogManager.getLogger();
 
+    private static final String EXCEPTION = "exception";
     private static final String FORM = "form";
     private static final String PAGE = "page";
 
@@ -59,7 +63,9 @@ public class UIController extends BootstrapUI {
     @Value("${application.name}") private String brand;
     @Autowired private AuthorRepository authorRepository;
     @Autowired private ArticleRepository articleRepository;
+    @Autowired private CredentialRepository credentialRepository;
     @Autowired private MarkdownService service;
+    @Autowired private PasswordEncoder encoder;
 
     private int page_size = 6;
 
@@ -176,7 +182,7 @@ public class UIController extends BootstrapUI {
                 model.addAttribute(FORM, form);
             }
         } catch (Exception exception) {
-            model.addAttribute("exception", exception.getMessage());
+            model.addAttribute(EXCEPTION, exception.getMessage());
         }
 
         return VIEW;
@@ -186,6 +192,46 @@ public class UIController extends BootstrapUI {
     @PreAuthorize("permitAll()")
     public String login(Model model) {
         model.addAttribute(FORM, new LoginForm());
+
+        return VIEW;
+    }
+
+    @RequestMapping(method = { GET }, value = { "/password" })
+    @PreAuthorize("isAuthenticated()")
+    public String password(Model model) {
+        model.addAttribute(FORM, new ChangePasswordForm());
+
+        return VIEW;
+    }
+
+    @RequestMapping(method = { POST }, value = { "/password" })
+    @PreAuthorize("isAuthenticated()")
+    public String passwordPOST(Model model,
+                               ChangePasswordForm form, BindingResult result) {
+        try {
+            if (result.hasErrors()) {
+                throw new RuntimeException(String.valueOf(result.getAllErrors()));
+            }
+
+            if (! (form.getNewPassword() != null
+                   && form.getNewPassword().equals(form.getRepeatPassword()))) {
+                throw new RuntimeException("Repeated password does not match new password");
+            }
+
+            Credential credential =
+                credentialRepository.findById(form.getUsername()).get();
+
+            if (! encoder.matches(form.getPassword(), credential.getPassword())) {
+                throw new RuntimeException("invalid password");
+            }
+
+            credential.setPassword(encoder.encode(form.getNewPassword()));
+
+            credentialRepository.save(credential);
+        } catch (Exception exception) {
+            model.addAttribute(FORM, form);
+            model.addAttribute(EXCEPTION, exception);
+        }
 
         return VIEW;
     }
