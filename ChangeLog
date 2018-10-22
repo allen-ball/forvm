@@ -1,3 +1,9 @@
+2018-10-22  Allen D. Ball  <ball@sol.local>
+
+	* src/main/java/forvm/ChangePasswordForm.java,
+	src/main/resources/templates/forvm/ChangePasswordForm.html:
+	Initial wriitng.
+
 2018-10-01  Allen D. Ball  <ball@sol.local>
 
 	* Added (mostly) generic form processing.
