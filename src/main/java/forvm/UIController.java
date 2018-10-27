@@ -222,7 +222,7 @@ public class UIController extends BootstrapUI {
                 credentialRepository.findById(form.getUsername()).get();
 
             if (! encoder.matches(form.getPassword(), credential.getPassword())) {
-                throw new RuntimeException("invalid password");
+                throw new RuntimeException("Invalid password");
             }
 
             credential.setPassword(encoder.encode(form.getNewPassword()));
