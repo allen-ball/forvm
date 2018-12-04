@@ -1,3 +1,9 @@
+2018-12-04  Allen D. Ball  <ball@sol.local>
+
+	* pom.xml:
+	Added GOOGLE_APPLICATION_CREDENTIALS profile to assist testing
+	against GCP resources.
+
 2018-10-22  Allen D. Ball  <ball@sol.local>
 
 	* Added "change password" functionality.
