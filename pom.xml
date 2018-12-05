@@ -30,7 +30,20 @@
           <artifactId>mysql-socket-factory</artifactId>
           <scope>runtime</scope>
         </dependency>
+        <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.flywaydb</groupId>
+          <artifactId>flyway-core</artifactId>
+          <scope>runtime</scope>
+        </dependency>
       </dependencies>
+      <build>
+        <defaultGoal>clean install spring-boot:run</defaultGoal>
+      </build>
     </profile>
   </profiles>
   <properties>
@@ -56,11 +69,6 @@
     <dependency>
       <groupId>com.vladsch.flexmark</groupId>
       <artifactId>flexmark-all</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
