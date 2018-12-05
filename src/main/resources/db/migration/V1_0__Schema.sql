@@ -53,12 +53,7 @@ DROP TABLE IF EXISTS `authors`;
 CREATE TABLE `authors` (
   `email` varchar(64) NOT NULL,
   `slug` varchar(255) NOT NULL,
-  `title` varchar(12) DEFAULT NULL,
-  `first` varchar(32) DEFAULT NULL,
-  `middle` varchar(32) DEFAULT NULL,
-  `last` varchar(32) DEFAULT NULL,
-  `suffix` varchar(12) DEFAULT NULL,
-  `alias` longtext,
+  `name` longtext,
   `markdown` longtext NOT NULL,
   `html` longtext,
   PRIMARY KEY (`email`),

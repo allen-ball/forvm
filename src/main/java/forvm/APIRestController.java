@@ -92,15 +92,34 @@ public class APIRestController {
         }
 
         String name = file.getOriginalFilename();
-        String slug = FileImpl.getNameBase(name);
         String markdown = new String(file.getBytes(), UTF_8);
         Document document = service.parse(markdown);
         Map<String,List<String>> yaml = service.getYamlFrom(document);
-        CharSequence html = service.htmlRender(document, null);
+
+        if (yaml.containsKey("email")) {
+            String email =
+                yaml.get("email").stream().collect(Collectors.joining());
+
+            if (! author.getEmail().equals(email)) {
+                throw new ForbiddenException(email);
+            }
+        }
+
+        String slug = FileImpl.getNameBase(name);
+
+        if (yaml.containsKey("slug")) {
+            slug = yaml.get("slug").stream().collect(Collectors.joining());
+        }
 
         author.setSlug(slug);
+
+        if (yaml.containsKey("name")) {
+            author.setName(yaml.get("name")
+                           .stream().collect(Collectors.joining()));
+        }
+
         author.setMarkdown(markdown);
-        author.setHtml(html.toString());
+        author.setHtml(service.htmlRender(document, null).toString());
 
         authorRepository.save(author);
 

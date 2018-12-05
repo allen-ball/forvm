@@ -25,7 +25,7 @@
       <tr th:each="author : ${authors}" class="row">
         <td class="col-sm-2 text-left">
           <a th:href="@{/articles(author=${author.slug})}"
-             th:text="${author.name}"/>
+             th:text="${author.name ?: author.slug}"/>
         </td>
         <td class="col-sm">
           <div th:remove="tag" th:utext="${author.html}"/>
