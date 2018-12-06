@@ -193,11 +193,13 @@ public class APIRestController {
                     throw new ConflictException(slug);
                 }
 
+                Author author =
+                    authorRepository.findById(principal.getName()).get();
+
                 article = new Article();
+                article.setAuthor(author);
+                article.setEmail(article.getAuthor().getEmail());
                 article.setSlug(slug);
-                article.setAuthor(authorRepository
-                                  .findById(principal.getName())
-                                  .get());
                 article.setTitle(yaml.get("title")
                                  .stream().collect(Collectors.joining()));
                 break;

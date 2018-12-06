@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -36,20 +37,17 @@ import static javax.persistence.GenerationType.IDENTITY;
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(catalog = "forvm", name = "articles")
+@IdClass(Article.PK.class)
 public class Article extends JSONBean {
-    private static final long serialVersionUID = 4208894685459789190L;
+    private static final long serialVersionUID = 3932015275027666636L;
 
     @Getter @Setter
-    @Id @GeneratedValue(strategy = IDENTITY)
-    private long id = -1;
+    @Id @Column(length = 64, nullable = false)
+    private String email = null;
 
     @Getter @Setter
-    @Column(length = 255, nullable = false, unique = true)
+    @Id @Column(length = 255, nullable = false, unique = true)
     private String slug = null;
-
-    @Getter @Setter
-    @ManyToOne(fetch = LAZY) @JoinColumn(name = "author")
-    private Author author = null;
 
     @Getter @Setter
     @Lob @Column(nullable = false)
@@ -64,6 +62,28 @@ public class Article extends JSONBean {
     private String html = null;
 
     @Getter
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "email", insertable = false, updatable = false)
+    private Author author = null;
+
+    public void setAuthor(Author author) {
+        this.author = author;
+
+        if (author != null) {
+            setEmail(author.getEmail());
+        }
+    }
+
+    @Getter
     @OneToMany(mappedBy = "article", cascade = ALL)
     private List<Attachment> attachments = new ArrayList<>();
+
+    @NoArgsConstructor
+    @EqualsAndHashCode(callSuper = false)
+    public static class PK extends JSONBean {
+        private static final long serialVersionUID = 3053196702554146437L;
+
+        @Getter @Setter private String email = null;
+        @Getter @Setter private String slug = null;
+    }
 }
