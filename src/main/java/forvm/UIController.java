@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -105,8 +106,20 @@ public class UIController extends BootstrapUI {
         String view = VIEW;
 
         if (page.isPresent()) {
-            PageRequest pr = PageRequest.of(page.get() - 1, page_size);
-            Page<?> articles = articleRepository.findAll(pr);
+            PageRequest pr =
+                PageRequest.of(page.get() - 1, page_size,
+                               Sort.Direction.DESC, "slug");
+            Page<?> articles = null;
+
+            if (author.isPresent()) {
+                String slug = author.get();
+
+                articles =
+                    articleRepository
+                    .findByAuthor(pr, authorRepository.findBySlug(slug).get());
+            } else {
+                articles = articleRepository.findAll(pr);
+            }
 
             model.addAttribute("articles", articles);
             model.addAttribute(PAGE, articles);
