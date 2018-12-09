@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -37,13 +38,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import static ball.util.StringUtil.isNil;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -74,66 +78,143 @@ public class APIRestController {
      */
     public APIRestController() { super(); }
 
-    @RequestMapping(method = { PUT }, value = { "/author" })
+    @RequestMapping(method = { PUT },
+                    value = { "/author", "/author/{slug}" })
     @PreAuthorize("hasAuthority('AUTHOR')")
     @Transactional
     public ResponseEntity<String> author(Principal principal,
                                          HttpMethod method,
+                                         @PathVariable Optional<String> slug,
                                          @RequestParam MultipartFile file) throws Exception {
-        Author author = null;
+        String email = principal.getName();
+        String name = file.getOriginalFilename();
+
+        if (! slug.isPresent()) {
+            slug = Optional.of(FileImpl.getNameBase(name));
+        }
+
+        byte[] bytes = file.getBytes();
+        String type = tika.detect(bytes, name);
+        ZipFile zip = null;
+
+        try {
+            ZipArchiveEntry source = null;
+            String markdown = null;
+
+            if (type != null) {
+                switch (type) {
+                case "application/zip":
+                    zip =
+                        new ZipFile(new SeekableInMemoryByteChannel(bytes),
+                                    name, UTF_8.name(), true);
+                    source = zip.getEntry(README_MD);
+                    markdown =
+                        new Scanner(zip.getInputStream(source), UTF_8.name())
+                        .useDelimiter("\\A").next();
+                    break;
+
+                default:
+                    markdown = new String(bytes, UTF_8);
+                    break;
+                }
+            } else {
+                throw new UnsupportedMediaTypeException("unknown");
+            }
+
+            Author author = null;
+
+            switch (method) {
+            case PUT:
+                author = authorRepository.findById(email).get();
+                break;
+
+            default:
+                throw new MethodNotAllowedException(String.valueOf(method));
+            }
+
+            Document document = service.parse(markdown);
+            Map<String,List<String>> yaml = service.getYamlFrom(document);
+
+            if (yaml.containsKey("email")) {
+                String string =
+                    yaml.get("email").stream().collect(Collectors.joining());
+
+                if (! author.getEmail().equals(string)) {
+                    throw new ForbiddenException(string);
+                }
+            }
+
+            author.setEmail(email);
+            author.setSlug(slug.get());
+
+            if (yaml.containsKey("name")) {
+                author.setName(yaml.get("name")
+                               .stream().collect(Collectors.joining()));
+            }
+
+            author.setMarkdown(markdown);
+
+            if (zip != null) {
+                for (ZipArchiveEntry entry :
+                         Collections.list(zip.getEntries())) {
+                    throw new IllegalArgumentException(entry.getName());
+                }
+            }
+
+            author.setHtml(service.htmlRender(document, null).toString());
+
+            authorRepository.save(author);
+        } finally {
+            if (zip != null) {
+                zip.close();
+            }
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(method = { DELETE }, value = { "/article/{slug}" })
+    @PreAuthorize("hasAuthority('AUTHOR')")
+    @Transactional
+    public ResponseEntity<String> article(Principal principal,
+                                          HttpMethod method,
+                                          @PathVariable String slug) throws Exception {
+        String email = principal.getName();
+        Article article = null;
 
         switch (method) {
-        case PUT:
-            author = authorRepository.findById(principal.getName()).get();
+        case DELETE:
+            article = articleRepository.findBySlug(slug).get();
+
+            if (article.getAuthor().getEmail().equals(email)) {
+                articleRepository.delete(article);
+            } else {
+                throw new ForbiddenException(slug);
+            }
             break;
 
         default:
             throw new MethodNotAllowedException(String.valueOf(method));
         }
 
-        String name = file.getOriginalFilename();
-        String markdown = new String(file.getBytes(), UTF_8);
-        Document document = service.parse(markdown);
-        Map<String,List<String>> yaml = service.getYamlFrom(document);
-
-        if (yaml.containsKey("email")) {
-            String email =
-                yaml.get("email").stream().collect(Collectors.joining());
-
-            if (! author.getEmail().equals(email)) {
-                throw new ForbiddenException(email);
-            }
-        }
-
-        String slug = FileImpl.getNameBase(name);
-
-        if (yaml.containsKey("slug")) {
-            slug = yaml.get("slug").stream().collect(Collectors.joining());
-        }
-
-        author.setSlug(slug);
-
-        if (yaml.containsKey("name")) {
-            author.setName(yaml.get("name")
-                           .stream().collect(Collectors.joining()));
-        }
-
-        author.setMarkdown(markdown);
-        author.setHtml(service.htmlRender(document, null).toString());
-
-        authorRepository.save(author);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(method = { POST, PUT }, value = { "/article" })
+    @RequestMapping(method = { POST, PUT },
+                    value = { "/article", "/article/{slug}" })
     @PreAuthorize("hasAuthority('AUTHOR')")
     @Transactional
     public ResponseEntity<String> article(Principal principal,
                                           HttpMethod method,
+                                          @PathVariable Optional<String> slug,
                                           @RequestParam MultipartFile file) throws Exception {
+        String email = principal.getName();
         String name = file.getOriginalFilename();
-        String slug = FileImpl.getNameBase(name);
+
+        if (! slug.isPresent()) {
+            slug = Optional.of(FileImpl.getNameBase(name));
+        }
+
         byte[] bytes = file.getBytes();
         String type = tika.detect(bytes, name);
         ZipFile zip = null;
@@ -178,44 +259,40 @@ public class APIRestController {
                 }
             }
 
-            Document document = service.parse(markdown);
-            Map<String,List<String>> yaml = service.getYamlFrom(document);
-
-            if (yaml.containsKey("slug")) {
-                slug = yaml.get("slug").stream().collect(Collectors.joining());
-            }
-
+            Author author = authorRepository.findById(email).get();
             Article article = null;
 
             switch (method) {
             case POST:
-                if (articleRepository.findBySlug(slug).isPresent()) {
-                    throw new ConflictException(slug);
+                if (articleRepository.findBySlug(slug.get()).isPresent()) {
+                    throw new ConflictException(slug.get());
                 }
-
-                Author author =
-                    authorRepository.findById(principal.getName()).get();
 
                 article = new Article();
                 article.setAuthor(author);
                 article.setEmail(article.getAuthor().getEmail());
-                article.setSlug(slug);
-                article.setTitle(yaml.get("title")
-                                 .stream().collect(Collectors.joining()));
                 break;
 
             case PUT:
-                article = articleRepository.findBySlug(slug).get();
+                article = articleRepository.findBySlug(slug.get()).get();
                 break;
 
             default:
                 throw new MethodNotAllowedException(String.valueOf(method));
             }
 
-            if (! article.getAuthor().getEmail().equals(principal.getName())) {
-                throw new ForbiddenException(slug);
+            if (! article.getAuthor().getEmail().equals(email)) {
+                throw new ForbiddenException(slug.get());
             }
 
+            article.setSlug(slug.get());
+
+            Document document = service.parse(markdown);
+            Map<String,List<String>> yaml = service.getYamlFrom(document);
+            String title =
+                yaml.get("title").stream().collect(Collectors.joining());
+
+            article.setTitle(title);
             article.setMarkdown(markdown);
             article.getAttachments().clear();
 
@@ -252,7 +329,17 @@ public class APIRestController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+/*
+    private String slugify(String string) {
+        String slug =
+            string.toLowerCase()
+            .replaceAll("[\\p{Space}]+", " ")
+            .trim()
+            .replaceAll("[^\\p{Alnum}]", "-");
 
+        return slug;
+    }
+*/
     @ExceptionHandler({ NoSuchElementException.class })
     @ResponseStatus(value = HttpStatus.NOT_FOUND,
                     reason = "Resource not found")
