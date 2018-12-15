@@ -28,6 +28,7 @@ import lombok.Setter;
 public class Subscriber extends JSONBean {
     private static final long serialVersionUID = 7653301177108322391L;
 
+    /** @serial */
     @Getter @Setter
     @Id @Column(length = 64, nullable = false, unique = true)
     private String email = null;

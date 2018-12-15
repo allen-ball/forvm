@@ -41,26 +41,32 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Article extends JSONBean {
     private static final long serialVersionUID = 3932015275027666636L;
 
+    /** @serial */
     @Getter @Setter
     @Id @Column(length = 64, nullable = false)
     private String email = null;
 
+    /** @serial */
     @Getter @Setter
     @Id @Column(length = 255, nullable = false, unique = true)
     private String slug = null;
 
+    /** @serial */
     @Getter @Setter
     @Lob @Column(nullable = false)
     private String title = null;
 
+    /** @serial */
     @Getter @Setter
     @Lob @Column(nullable = false)
     private String markdown = null;
 
+    /** @serial */
     @Getter @Setter
     @Lob @Column(nullable = true)
     private String html = null;
 
+    /** @serial */
     @Getter
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "email", insertable = false, updatable = false)
@@ -74,6 +80,7 @@ public class Article extends JSONBean {
         }
     }
 
+    /** @serial */
     @Getter
     @OneToMany(mappedBy = "article", cascade = ALL)
     private List<Attachment> attachments = new ArrayList<>();
@@ -83,7 +90,7 @@ public class Article extends JSONBean {
     public static class PK extends JSONBean {
         private static final long serialVersionUID = 3053196702554146437L;
 
-        @Getter @Setter private String email = null;
-        @Getter @Setter private String slug = null;
+        /** @serial */ @Getter @Setter private String email = null;
+        /** @serial */ @Getter @Setter private String slug = null;
     }
 }

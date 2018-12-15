@@ -35,26 +35,32 @@ import static javax.persistence.CascadeType.ALL;
 public class Author extends JSONBean {
     private static final long serialVersionUID = -4572928690438354380L;
 
+    /** @serial */
     @Getter @Setter
     @Id @Column(length = 64, nullable = false, unique = true)
     private String email = null;
 
+    /** @serial */
     @Getter @Setter
     @Column(length = 255, nullable = false, unique = true)
     private String slug = null;
 
+    /** @serial */
     @Getter @Setter
     @Lob @Column(nullable = true)
     private String name = null;
 
+    /** @serial */
     @Getter @Setter
     @Lob @Column(nullable = false)
     private String markdown = null;
 
+    /** @serial */
     @Getter @Setter
     @Lob @Column(nullable = true)
     private String html = null;
 
+    /** @serial */
     @OneToMany(mappedBy = "author", cascade = ALL)
     private List<Article> articles = new ArrayList<>();
 }

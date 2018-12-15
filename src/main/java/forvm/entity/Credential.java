@@ -31,11 +31,13 @@ import lombok.Setter;
 public class Credential extends JSONBean {
     private static final long serialVersionUID = -4744967204003834531L;
 
+    /** @serial */
     @Getter @Setter
     @Id @Column(length = 64, nullable = false, unique = true)
     @NotBlank @Email
     private String email = null;
 
+    /** @serial */
     @Getter @Setter
     @Lob @Column(nullable = false)
     @NotBlank

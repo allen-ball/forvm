@@ -36,22 +36,27 @@ import static javax.persistence.FetchType.LAZY;
 public class Attachment extends JSONBean {
     private static final long serialVersionUID = -4239090769692766154L;
 
+    /** @serial */
     @Getter @Setter
     @Id @Column(length = 64, nullable = false)
     private String email = null;
 
+    /** @serial */
     @Getter @Setter
     @Id @Column(length = 255, nullable = false)
     private String slug = null;
 
+    /** @serial */
     @Getter @Setter
     @Id @Column(length = 255, nullable = false)
     private String path = null;
 
+    /** @serial */
     @Getter @Setter
     @Lob @Column(nullable = false)
     private byte[] content = null;
 
+    /** @serial */
     @Getter
     @ManyToOne(fetch = LAZY)
     @JoinColumns({
@@ -74,8 +79,8 @@ public class Attachment extends JSONBean {
     public static class PK extends JSONBean {
         private static final long serialVersionUID = 805706754108867472L;
 
-        @Getter @Setter private String email = null;
-        @Getter @Setter private String slug = null;
-        @Getter @Setter private String path = null;
+        /** @serial */ @Getter @Setter private String email = null;
+        /** @serial */ @Getter @Setter private String slug = null;
+        /** @serial */ @Getter @Setter private String path = null;
     }
 }
