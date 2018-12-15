@@ -19,19 +19,32 @@ import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.parser.ParserEmulationProfile;
 import com.vladsch.flexmark.util.options.MutableDataHolder;
 import com.vladsch.flexmark.util.options.MutableDataSet;
+import forvm.entity.Article;
+import forvm.entity.Attachment;
+import forvm.entity.Author;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Scanner;
 import java.util.Set;
+import java.util.stream.Collectors;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipFile;
+import org.apache.commons.compress.utils.SeekableInMemoryByteChannel;
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tika.Tika;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Markdown {@link Service}
@@ -97,10 +110,165 @@ public class MarkdownService {
             .set(HtmlRenderer.GENERATE_HEADER_ID, true);
     }
 
+    private static final String README_MD = "README.md";
+    private static final String SLASH = "/";
+    private static final URI ROOT = URI.create(SLASH);
+
+    @Autowired private Tika tika;
+
     /**
      * Sole constructor.
      */
     public MarkdownService() { }
+
+    /**
+     * Method to compile the parameters into an {@link Author}.
+     *
+     * @param   name            The name of the input file.
+     * @param   contents        The contents of the input file.
+     * @param   slug            The {@link Author}'s slug.
+     * @param   author          The {@link Author}'s entity to update.
+     *
+     * @throws  Exception       If any {@link Exception} is encountered.
+     */
+    public void compile(String name, byte[] contents,
+                        String slug, Author author) throws Exception {
+        ZipFile zip = null;
+
+        try {
+            String markdown = null;
+
+            switch (String.valueOf(tika.detect(contents, name))) {
+            case "application/zip":
+                zip = new ZipFileImpl(name, contents);
+                markdown = getEntryAsUTF8String(zip, README_MD);
+                break;
+
+            default:
+                markdown = new String(contents, UTF_8);
+                break;
+            }
+
+            Document document = parse(markdown);
+            Map<String,List<String>> yaml = getYamlFrom(document);
+
+            if (yaml.containsKey("email")) {
+                String string =
+                    yaml.get("email").stream().collect(Collectors.joining());
+
+                author.setEmail(string);
+            }
+
+            author.setSlug(slug);
+
+            if (yaml.containsKey("name")) {
+                author.setName(yaml.get("name")
+                               .stream().collect(Collectors.joining()));
+            }
+
+            author.setMarkdown(markdown);
+
+            if (zip != null) {
+                for (ZipArchiveEntry entry :
+                         Collections.list(zip.getEntries())
+                         .stream()
+                         .filter(t -> (! t.isDirectory()))
+                         .filter(t -> (! t.getName().equals(README_MD)))
+                         .collect(Collectors.toList())) {
+                    throw new IllegalArgumentException(entry.getName());
+                }
+            }
+
+            author.setHtml(htmlRender(document, null).toString());
+        } finally {
+            if (zip != null) {
+                zip.close();
+            }
+        }
+    }
+
+    private String getEntryAsUTF8String(ZipFile zip,
+                                        String name) throws Exception {
+        ZipArchiveEntry entry = zip.getEntry(name);
+        Scanner scanner = new Scanner(zip.getInputStream(entry), UTF_8.name());
+
+        return scanner.useDelimiter("\\A").next();
+
+    }
+
+    /**
+     * Method to compile the parameters into an {@link Article}.
+     *
+     * @param   name            The name of the input file.
+     * @param   contents        The contents of the input file.
+     * @param   prefix          The {@link Article}'s path prefix.
+     * @param   slug            The {@link Article}'s slug.
+     * @param   article         The {@link Article}'s entity to update.
+     *
+     * @throws  Exception       If any {@link Exception} is encountered.
+     */
+    public void compile(String name, byte[] contents,
+                        String prefix, String slug,
+                        Article article) throws Exception {
+        ZipFile zip = null;
+
+        try {
+            String markdown = null;
+
+            switch (String.valueOf(tika.detect(contents, name))) {
+            case "application/zip":
+                zip = new ZipFileImpl(name, contents);
+                markdown = getEntryAsUTF8String(zip, README_MD);
+                break;
+
+            default:
+                markdown = new String(contents, UTF_8);
+                break;
+            }
+
+            article.setSlug(slug);
+
+            Document document = parse(markdown);
+            Map<String,List<String>> yaml = getYamlFrom(document);
+            String title =
+                yaml.get("title").stream().collect(Collectors.joining());
+
+            article.setTitle(title);
+            article.setMarkdown(markdown);
+            article.getAttachments().clear();
+
+            if (zip != null) {
+                for (ZipArchiveEntry entry :
+                         Collections.list(zip.getEntries())
+                         .stream()
+                         .filter(t -> (! t.isDirectory()))
+                         .filter(t -> (! t.getName().equals(README_MD)))
+                         .collect(Collectors.toList())) {
+                    String path =
+                        ROOT.resolve(entry.getName()).normalize().getPath();
+                    byte[] content =
+                        IOUtils.toByteArray(zip.getInputStream(entry));
+                    Attachment attachment = new Attachment();
+
+                    attachment.setArticle(article);
+                    attachment.setPath(path);
+                    attachment.setContent(content);
+
+                    article.getAttachments().add(attachment);
+                }
+            }
+
+            CharSequence html =
+                htmlRender(document,
+                           URI.create(prefix + "/" + article.getSlug() + "/"));
+
+            article.setHtml(html.toString());
+        } finally {
+            if (zip != null) {
+                zip.close();
+            }
+        }
+    }
 
     /**
      * See {@link Parser#parseReader(Reader)}.
@@ -172,6 +340,16 @@ public class MarkdownService {
 
     @Override
     public String toString() { return super.toString(); }
+
+    private class ZipFileImpl extends ZipFile {
+        public ZipFileImpl(String name, byte[] contents) throws IOException {
+            super(new SeekableInMemoryByteChannel(contents),
+                  name, UTF_8.name(), true);
+        }
+
+        @Override
+        public String toString() { return super.toString(); }
+    }
 
     private class LinkResolverFactoryImpl implements LinkResolverFactory {
         private final URI prefix;

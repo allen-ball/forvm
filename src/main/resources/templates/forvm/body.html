@@ -37,6 +37,3 @@
 <th:block th:if="${exception != null}">
   <p th:text="${exception}"/>
 </th:block>
-<article th:if="${html != null}">
-  <div th:remove="tag" th:utext="${html}"/>
-</article>

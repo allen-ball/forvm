@@ -1,3 +1,7 @@
+2018-12-14  Allen D. Ball  <ball@sol.local>
+
+	* Re-worked [POST]/preview to also serve attachments.
+
 2018-12-08  Allen D. Ball  <ball@sol.local>
 
 	* src/main/java/forvm/APIRestController.java:

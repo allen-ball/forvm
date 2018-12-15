@@ -5,12 +5,14 @@
  */
 package forvm;
 
+import forvm.entity.Article;
 import forvm.entity.Attachment;
 import forvm.repository.ArticleRepository;
 import forvm.repository.AttachmentRepository;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +36,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RestController
 @ComponentScan(basePackageClasses =
                    { ball.spring.mysqld.MysqldComponent.class })
-@RequestMapping(value = { "/article/{slug}/**" },
-                produces = "application/octet-stream")
+@RequestMapping(produces = "application/octet-stream")
 public class AttachmentRestController {
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -47,14 +48,31 @@ public class AttachmentRestController {
      */
     public AttachmentRestController() { super(); }
 
-    @RequestMapping(method = { GET })
+    @RequestMapping(method = { GET }, value = { "/article/{slug}/**" })
     @PreAuthorize("permitAll()")
-    public byte[] get(HttpServletRequest request, @PathVariable String slug) {
+    public byte[] get(HttpServletRequest request,
+                      @PathVariable String slug) throws Exception {
         String uri = request.getRequestURI();
         String path = uri.substring(uri.indexOf(slug) + slug.length());
         Optional<Attachment> attachment =
             articleRepository.findBySlug(slug)
             .flatMap(t -> attachmentRepository.findByArticleAndPath(t, path));
+
+        return attachment.get().getContent();
+    }
+
+    @RequestMapping(method = { GET }, value = { "/preview/{slug}/**" })
+    @PreAuthorize("hasAuthority('AUTHOR')")
+    public byte[] get(HttpSession session,
+                      HttpServletRequest request,
+                      @PathVariable String slug) throws Exception {
+        String uri = request.getRequestURI();
+        String path = uri.substring(uri.indexOf(slug) + slug.length());
+        Optional<Attachment> attachment =
+            Optional.ofNullable((Article) session.getAttribute(slug)).get()
+            .getAttachments().stream()
+            .filter(t -> t.getPath().equalsIgnoreCase(path))
+            .findFirst();
 
         return attachment.get().getContent();
     }

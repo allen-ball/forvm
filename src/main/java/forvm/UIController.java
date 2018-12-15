@@ -5,17 +5,18 @@
  */
 package forvm;
 
+import ball.io.FileImpl;
 import ball.spring.BootstrapUI;
-import com.vladsch.flexmark.ast.Document;
+import forvm.entity.Article;
 import forvm.entity.Credential;
 import forvm.repository.ArticleRepository;
 import forvm.repository.AuthorRepository;
 import forvm.repository.CredentialRepository;
-import java.util.List;
-import java.util.Map;
+import java.security.Principal;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -99,10 +99,11 @@ public class UIController extends BootstrapUI {
 
     @RequestMapping(method = { GET }, value = { "/articles" })
     @PreAuthorize("permitAll()")
-    public String articles(Model model, RedirectAttributes redirect,
+    public String articles(Model model,
                            HttpServletRequest request,
                            @RequestParam Optional<String> author,
-                           @RequestParam Optional<Integer> page) {
+                           @RequestParam Optional<Integer> page,
+                           RedirectAttributes redirect) {
         String view = VIEW;
 
         if (page.isPresent()) {
@@ -144,9 +145,10 @@ public class UIController extends BootstrapUI {
 
     @RequestMapping(method = { GET }, value = { "/authors" })
     @PreAuthorize("permitAll()")
-    public String authors(Model model, RedirectAttributes redirect,
+    public String authors(Model model,
                           HttpServletRequest request,
-                          @RequestParam Optional<Integer> page) {
+                          @RequestParam Optional<Integer> page,
+                          RedirectAttributes redirect) {
         String view = VIEW;
 
         if (page.isPresent()) {
@@ -176,21 +178,29 @@ public class UIController extends BootstrapUI {
     @RequestMapping(method = { POST }, value = { "/preview" })
     @PreAuthorize("hasAuthority('AUTHOR')")
     public String previewPOST(Model model,
+                              Principal principal, HttpSession session,
+                              HttpServletRequest request,
                               PreviewForm form, BindingResult result) {
+        String view = VIEW;
+
         try {
             if (! result.hasErrors()) {
-                String markdown = new String(form.getFile().getBytes(), UTF_8);
+                String email = principal.getName();
+                String name = form.getFile().getOriginalFilename();
+                String slug = FileImpl.getNameBase(name);
+                Article article = new Article();
 
-                model.addAttribute("markdown", markdown);
+                article.setAuthor(authorRepository.findById(email).get());
+                article.setEmail(article.getAuthor().getEmail());
 
-                Document document = service.parse(markdown);
-                Map<String,List<String>> yaml = service.getYamlFrom(document);
+                String prefix = request.getServletPath();
 
-                model.addAttribute("yaml", yaml);
+                service.compile(name, form.getFile().getBytes(),
+                                prefix, slug, article);
 
-                CharSequence html = service.htmlRender(document, null);
+                session.setAttribute(article.getSlug(), article);
 
-                model.addAttribute("html", html);
+                view = "redirect:" + prefix + "/" + article.getSlug();
             } else {
                 model.addAttribute(FORM, form);
             }
@@ -198,12 +208,25 @@ public class UIController extends BootstrapUI {
             model.addAttribute(EXCEPTION, exception.getMessage());
         }
 
+        return view;
+    }
+
+    @RequestMapping(method = { GET }, value = { "/preview/{slug}" })
+    @PreAuthorize("hasAuthority('AUTHOR')")
+    public String article(Model model,
+                          HttpSession session,
+                          @PathVariable String slug) {
+        Optional<Article> article =
+            Optional.ofNullable((Article) session.getAttribute(slug));
+
+        model.addAttribute("article", article.get());
+
         return VIEW;
     }
 
     @RequestMapping(method = { GET }, value = { "/login" })
     @PreAuthorize("permitAll()")
-    public String login(Model model) {
+    public String login(Model model, HttpSession session) {
         model.addAttribute(FORM, new LoginForm());
 
         return VIEW;
