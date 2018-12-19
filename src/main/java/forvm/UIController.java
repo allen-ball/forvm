@@ -95,9 +95,19 @@ public class UIController extends BootstrapUI {
 
     @RequestMapping(value = { "/index.html", "/index.htm", "/index" })
     @PreAuthorize("permitAll()")
-    public String index() { return "redirect:/articles"; }
+    public String index() { return "redirect:/articles/"; }
 
-    @RequestMapping(method = { GET }, value = { "/articles" })
+    @RequestMapping(value = {
+                        "/articles", "/article/{slug}",
+                        "/authors",
+                        "/preview", "/preview/{slug}"
+                    })
+    @PreAuthorize("permitAll()")
+    public String redirect(HttpServletRequest request) {
+        return "redirect:" + request.getServletPath() + "/";
+    }
+
+    @RequestMapping(method = { GET }, value = { "/articles/" })
     @PreAuthorize("permitAll()")
     public String articles(Model model,
                            HttpServletRequest request,
@@ -134,7 +144,7 @@ public class UIController extends BootstrapUI {
         return view;
     }
 
-    @RequestMapping(method = { GET }, value = { "/article/{slug}" })
+    @RequestMapping(method = { GET }, value = { "/article/{slug}/" })
     @PreAuthorize("permitAll()")
     public String article(Model model, @PathVariable String slug) {
         model
@@ -143,7 +153,7 @@ public class UIController extends BootstrapUI {
         return VIEW;
     }
 
-    @RequestMapping(method = { GET }, value = { "/authors" })
+    @RequestMapping(method = { GET }, value = { "/authors/" })
     @PreAuthorize("permitAll()")
     public String authors(Model model,
                           HttpServletRequest request,
@@ -167,7 +177,7 @@ public class UIController extends BootstrapUI {
         return view;
     }
 
-    @RequestMapping(method = { GET }, value = { "/preview" })
+    @RequestMapping(method = { GET }, value = { "/preview/" })
     @PreAuthorize("hasAuthority('AUTHOR')")
     public String preview(Model model) {
         model.addAttribute(FORM, new PreviewForm());
@@ -175,7 +185,7 @@ public class UIController extends BootstrapUI {
         return VIEW;
     }
 
-    @RequestMapping(method = { POST }, value = { "/preview" })
+    @RequestMapping(method = { POST }, value = { "/preview/" })
     @PreAuthorize("hasAuthority('AUTHOR')")
     public String previewPOST(Model model,
                               Principal principal, HttpSession session,
@@ -193,14 +203,14 @@ public class UIController extends BootstrapUI {
                 article.setAuthor(authorRepository.findById(email).get());
                 article.setEmail(article.getAuthor().getEmail());
 
-                String prefix = request.getServletPath();
-
                 service.compile(name, form.getFile().getBytes(),
-                                prefix, slug, article);
+                                request.getServletPath(), slug, article);
 
                 session.setAttribute(article.getSlug(), article);
 
-                view = "redirect:" + prefix + "/" + article.getSlug();
+                view =
+                    "redirect:" + request.getServletPath()
+                    + article.getSlug() + "/";
             } else {
                 model.addAttribute(FORM, form);
             }
@@ -211,7 +221,7 @@ public class UIController extends BootstrapUI {
         return view;
     }
 
-    @RequestMapping(method = { GET }, value = { "/preview/{slug}" })
+    @RequestMapping(method = { GET }, value = { "/preview/{slug}/" })
     @PreAuthorize("hasAuthority('AUTHOR')")
     public String article(Model model,
                           HttpSession session,

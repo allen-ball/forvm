@@ -1,3 +1,8 @@
+2018-12-18  Allen D. Ball  <ball@sol.local>
+
+	* Normalize article paths so attachment paths may be trivially
+	calculated.
+
 2018-12-14  Allen D. Ball  <ball@sol.local>
 
 	* Re-worked [POST]/preview to also serve attachments.

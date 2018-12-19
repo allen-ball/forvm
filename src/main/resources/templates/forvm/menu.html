@@ -8,7 +8,7 @@
        href="#" th:text="'Author'"/>
     <div class="dropdown-menu"
          th:attr="aria-labelledby=${#ids.prev('dropdown')}">
-      <a class="dropdown-item" th:href="@{/preview}" th:text="'Preview'"/>
+      <a class="dropdown-item" th:href="@{/preview/}" th:text="'Preview'"/>
     </div>
   </li>
   <li sec:authorize="hasAuthority('SUBSCRIBER')"
@@ -29,7 +29,7 @@
        href="#" th:text="'Collections'"/>
     <div class="dropdown-menu"
          th:attr="aria-labelledby=${#ids.prev('dropdown')}">
-      <a class="dropdown-item" th:href="@{/authors}" th:text="'Authors'"/>
+      <a class="dropdown-item" th:href="@{/authors/}" th:text="'Authors'"/>
     </div>
   </li>
   <li sec:authorize="!isAuthenticated()" class="nav-item">

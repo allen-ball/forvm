@@ -258,9 +258,9 @@ public class MarkdownService {
                 }
             }
 
-            CharSequence html =
-                htmlRender(document,
-                           URI.create(prefix + "/" + article.getSlug() + "/"));
+            String path = prefix + "/" + article.getSlug() + "/";
+            URI uri = URI.create(path.replaceAll("[/]+", "/"));
+            CharSequence html = htmlRender(document, uri);
 
             article.setHtml(html.toString());
         } finally {
