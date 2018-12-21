@@ -20,7 +20,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -57,11 +56,6 @@ public class UIController extends BootstrapUI {
     private static final String FORM = "form";
     private static final String PAGE = "page";
 
-    private static final String[] CSS =
-        new String[] { "/css/prism.css", "/css/style.css" };
-    private static final String[] JS = new String[] { "/js/prism.js" };
-
-    @Value("${application.name}") private String brand;
     @Autowired private AuthorRepository authorRepository;
     @Autowired private ArticleRepository articleRepository;
     @Autowired private CredentialRepository credentialRepository;
@@ -74,15 +68,6 @@ public class UIController extends BootstrapUI {
      * Sole constructor.
      */
     public UIController() { super(); }
-
-    @Override
-    public String[] css() { return CSS; }
-
-    @Override
-    public String[] js() { return JS; }
-
-    @Override
-    public String brand() { return brand; }
 
     @Override
     public String template() {
