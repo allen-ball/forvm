@@ -1,3 +1,7 @@
+2018-12-22  Allen D. Ball  <ball@sol.local>
+
+	* Load PrismJS from org.webjars.npm:prismjs.
+
 2018-12-18  Allen D. Ball  <ball@sol.local>
 
 	* Normalize article paths so attachment paths may be trivially
