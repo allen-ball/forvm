@@ -5,7 +5,6 @@
  */
 package forvm;
 
-import ball.io.FileImpl;
 import ball.spring.BootstrapUI;
 import forvm.entity.Article;
 import forvm.entity.Credential;
@@ -17,6 +16,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -182,7 +182,7 @@ public class UIController extends BootstrapUI {
             if (! result.hasErrors()) {
                 String email = principal.getName();
                 String name = form.getFile().getOriginalFilename();
-                String slug = FileImpl.getNameBase(name);
+                String slug = FilenameUtils.getBaseName(name);
                 Article article = new Article();
 
                 article.setAuthor(authorRepository.findById(email).get());

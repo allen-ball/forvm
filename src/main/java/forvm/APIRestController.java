@@ -5,7 +5,6 @@
  */
 package forvm;
 
-import ball.io.FileImpl;
 import forvm.entity.Article;
 import forvm.entity.Author;
 import forvm.repository.ArticleRepository;
@@ -13,6 +12,7 @@ import forvm.repository.AuthorRepository;
 import java.security.Principal;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +79,7 @@ public class APIRestController {
         String name = file.getOriginalFilename();
 
         if (! slug.isPresent()) {
-            slug = Optional.of(FileImpl.getNameBase(name));
+            slug = Optional.of(FilenameUtils.getBaseName(name));
         }
 
         service.compile(name, file.getBytes(), slug.get(), author);
@@ -131,7 +131,7 @@ public class APIRestController {
         String name = file.getOriginalFilename();
 
         if (! slug.isPresent()) {
-            slug = Optional.of(FileImpl.getNameBase(name));
+            slug = Optional.of(FilenameUtils.getBaseName(name));
         }
 
         Article article = null;
