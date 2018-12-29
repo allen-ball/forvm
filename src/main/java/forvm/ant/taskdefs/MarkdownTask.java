@@ -6,10 +6,9 @@
 package forvm.ant.taskdefs;
 
 import ball.swing.table.MapTableModel;
-import ball.util.MapUtil;
-import ball.util.PropertiesImpl;
 import ball.util.ant.taskdefs.AbstractClasspathTask;
 import ball.util.ant.taskdefs.AntTask;
+import ball.util.ant.taskdefs.ConfigurableAntTask;
 import ball.util.ant.taskdefs.NotNull;
 import com.vladsch.flexmark.ast.Document;
 import forvm.MarkdownService;
@@ -30,25 +29,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
  * @version $Revision$
  */
-public abstract class MarkdownTask extends AbstractClasspathTask {
+public abstract class MarkdownTask extends AbstractClasspathTask
+                                   implements ConfigurableAntTask {
     protected MarkdownService service = new MarkdownService();
 
     /**
      * Sole constructor.
      */
-    protected MarkdownTask() {
-        super();
-    }
-
-    @Override
-    public void init() throws BuildException {
-        super.init();
-
-        PropertiesImpl properties = new PropertiesImpl();
-
-        MapUtil.copy(getProject().getProperties(), properties);
-        properties.configure(this);
-    }
+    protected MarkdownTask() { super(); }
 
     /**
      * {@link.uri http://ant.apache.org/ Ant}
