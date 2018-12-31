@@ -57,7 +57,6 @@ public abstract class MarkdownTask extends AbstractClasspathTask
         @NotNull
         public File getFile() { return file; }
         public void setFile(File file) { this.file = file; }
-        public void setFile(String string) { setFile(new File(string)); }
 
         @Override
         public void execute() throws BuildException {
