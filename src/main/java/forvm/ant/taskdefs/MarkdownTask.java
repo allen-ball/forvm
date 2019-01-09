@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2018 Allen D. Ball.  All rights reserved.
+ * Copyright 2018, 2019 Allen D. Ball.  All rights reserved.
  */
 package forvm.ant.taskdefs;
 
@@ -16,9 +16,14 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.apache.tools.ant.BuildException;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static lombok.AccessLevel.PROTECTED;
 
 /**
  * Abstract base class for {@link.uri http://ant.apache.org/ Ant}
@@ -29,14 +34,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
  * @version $Revision$
  */
+@NoArgsConstructor(access = PROTECTED)
 public abstract class MarkdownTask extends AbstractClasspathTask
                                    implements ConfigurableAntTask {
     protected MarkdownService service = new MarkdownService();
-
-    /**
-     * Sole constructor.
-     */
-    protected MarkdownTask() { super(); }
 
     /**
      * {@link.uri http://ant.apache.org/ Ant}
@@ -45,18 +46,11 @@ public abstract class MarkdownTask extends AbstractClasspathTask
      * {@bean.info}
      */
     @AntTask("markdown-parse")
+    @NoArgsConstructor @ToString
     public static class Parse extends MarkdownTask {
+        @NotNull @Getter @Setter
         private File file = null;
         protected Document document = null;
-
-        /**
-         * Sole constructor.
-         */
-        public Parse() { super(); }
-
-        @NotNull
-        public File getFile() { return file; }
-        public void setFile(File file) { this.file = file; }
 
         @Override
         public void execute() throws BuildException {
@@ -86,13 +80,8 @@ public abstract class MarkdownTask extends AbstractClasspathTask
      * {@bean.info}
      */
     @AntTask("markdown-render")
+    @NoArgsConstructor @ToString
     public static class Render extends Parse {
-
-        /**
-         * Sole constructor.
-         */
-        public Render() { super(); }
-
         @Override
         public void execute() throws BuildException {
             try {
