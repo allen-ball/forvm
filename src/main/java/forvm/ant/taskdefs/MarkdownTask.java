@@ -10,7 +10,7 @@ import ball.util.ant.taskdefs.AbstractClasspathTask;
 import ball.util.ant.taskdefs.AntTask;
 import ball.util.ant.taskdefs.ConfigurableAntTask;
 import ball.util.ant.taskdefs.NotNull;
-import com.vladsch.flexmark.ast.Document;
+import com.vladsch.flexmark.util.ast.Document;
 import forvm.MarkdownService;
 import java.io.File;
 import java.nio.file.Files;
