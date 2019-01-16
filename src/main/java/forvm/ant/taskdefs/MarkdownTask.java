@@ -54,9 +54,9 @@ public abstract class MarkdownTask extends AbstractClasspathTask
 
         @Override
         public void execute() throws BuildException {
-            try {
-                super.execute();
+            super.execute();
 
+            try {
                 byte[] bytes = Files.readAllBytes(getFile().toPath());
 
                 document = service.parse(new String(bytes, UTF_8));
@@ -84,9 +84,9 @@ public abstract class MarkdownTask extends AbstractClasspathTask
     public static class Render extends Parse {
         @Override
         public void execute() throws BuildException {
-            try {
-                super.execute();
+            super.execute();
 
+            try {
                 log(service.htmlRender(document, null).toString());
             } catch (BuildException exception) {
                 throw exception;
