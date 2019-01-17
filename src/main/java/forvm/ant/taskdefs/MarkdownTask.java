@@ -6,8 +6,9 @@
 package forvm.ant.taskdefs;
 
 import ball.swing.table.MapTableModel;
-import ball.util.ant.taskdefs.AbstractClasspathTask;
+import ball.util.ant.taskdefs.AnnotatedAntTask;
 import ball.util.ant.taskdefs.AntTask;
+import ball.util.ant.taskdefs.ClasspathDelegateAntTask;
 import ball.util.ant.taskdefs.ConfigurableAntTask;
 import ball.util.ant.taskdefs.NotNull;
 import com.vladsch.flexmark.util.ast.Document;
@@ -20,7 +21,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Task;
+import org.apache.tools.ant.util.ClasspathUtils;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static lombok.AccessLevel.PROTECTED;
@@ -35,9 +39,26 @@ import static lombok.AccessLevel.PROTECTED;
  * @version $Revision$
  */
 @NoArgsConstructor(access = PROTECTED)
-public abstract class MarkdownTask extends AbstractClasspathTask
-                                   implements ConfigurableAntTask {
+public abstract class MarkdownTask extends Task
+                                   implements AnnotatedAntTask,
+                                              ClasspathDelegateAntTask,
+                                              ConfigurableAntTask {
+    @Getter @Setter @Accessors(chain = true, fluent = true)
+    private ClasspathUtils.Delegate delegate = null;
     protected MarkdownService service = new MarkdownService();
+
+    @Override
+    public void init() throws BuildException {
+        super.init();
+        ClasspathDelegateAntTask.super.init();
+        ConfigurableAntTask.super.init();
+    }
+
+    @Override
+    public void execute() throws BuildException {
+        super.execute();
+        AnnotatedAntTask.super.execute();
+    }
 
     /**
      * {@link.uri http://ant.apache.org/ Ant}
