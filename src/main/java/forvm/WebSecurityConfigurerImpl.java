@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2018 Allen D. Ball.  All rights reserved.
+ * Copyright 2018, 2019 Allen D. Ball.  All rights reserved.
  */
 package forvm;
 
@@ -22,6 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * {@link org.springframework.security.config.annotation.web.WebSecurityConfigurer}
  * abstract base class
+ *
+ * <p>{@injected.fields}</p>
  *
  * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
  * @version $Revision$

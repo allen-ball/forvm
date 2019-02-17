@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2018 Allen D. Ball.  All rights reserved.
+ * Copyright 2018, 2019 Allen D. Ball.  All rights reserved.
  */
 package forvm;
 
@@ -29,6 +29,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
  * Attachment {@link RestController} implementation
+ *
+ * <p>{@injected.fields}</p>
  *
  * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
  * @version $Revision$

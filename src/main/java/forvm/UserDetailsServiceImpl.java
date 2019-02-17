@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2018 Allen D. Ball.  All rights reserved.
+ * Copyright 2018, 2019 Allen D. Ball.  All rights reserved.
  */
 package forvm;
 
@@ -27,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * {@link UserDetailsService} implementation
+ *
+ * <p>{@injected.fields}</p>
  *
  * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
  * @version $Revision$
