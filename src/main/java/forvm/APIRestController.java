@@ -37,7 +37,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 /**
  * API {@link RestController} implementation
  *
- * <p>{@injected.fields}</p>
+ * {@injected.fields}
  *
  * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
  * @version $Revision$

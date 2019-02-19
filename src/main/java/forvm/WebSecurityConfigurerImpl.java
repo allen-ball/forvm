@@ -23,7 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * {@link org.springframework.security.config.annotation.web.WebSecurityConfigurer}
  * abstract base class
  *
- * <p>{@injected.fields}</p>
+ * {@injected.fields}
  *
  * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
  * @version $Revision$

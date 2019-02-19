@@ -49,7 +49,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Markdown {@link Service}
  *
- * <p>{@injected.fields}</p>
+ * {@injected.fields}
  *
  * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
  * @version $Revision$

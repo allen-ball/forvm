@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * {@link UserDetailsService} implementation
  *
- * <p>{@injected.fields}</p>
+ * {@injected.fields}
  *
  * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
  * @version $Revision$
