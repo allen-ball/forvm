@@ -33,7 +33,7 @@ import static lombok.AccessLevel.PROTECTED;
  * Abstract base class for {@link.uri http://ant.apache.org/ Ant}
  * {@link org.apache.tools.ant.Task}s to parse and/or render markdown.
  *
- * {@bean.info}
+ * {@ant.task}
  *
  * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
  * @version $Revision$
@@ -64,7 +64,7 @@ public abstract class MarkdownTask extends Task
      * {@link.uri http://ant.apache.org/ Ant}
      * {@link org.apache.tools.ant.Task} to parse markdown.
      *
-     * {@bean.info}
+     * {@ant.task}
      */
     @AntTask("markdown-parse")
     @NoArgsConstructor @ToString
@@ -98,7 +98,7 @@ public abstract class MarkdownTask extends Task
      * {@link.uri http://ant.apache.org/ Ant}
      * {@link org.apache.tools.ant.Task} to render markdown to HTML.
      *
-     * {@bean.info}
+     * {@ant.task}
      */
     @AntTask("markdown-render")
     @NoArgsConstructor @ToString
