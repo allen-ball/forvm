@@ -1,3 +1,8 @@
+/*
+ * $Id$
+ *
+ * Copyright 2019 Allen D. Ball.  All rights reserved.
+ */
 /**
  * Classes representing forvm database entities.
  *
