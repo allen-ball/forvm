@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 /**
  * {@link Module} service provider for {@link forvm.entity}.
  *
- * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
+ * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}
  * @version $Revision$
  */
 @ServiceProviderFor({ Module.class })

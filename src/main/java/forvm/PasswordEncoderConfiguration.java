@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * {@link PasswordEncoder} {@link Configuration}
  *
- * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
+ * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}
  * @version $Revision$
  */
 @Configuration

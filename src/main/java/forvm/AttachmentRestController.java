@@ -34,7 +34,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
  *
  * {@injected.fields}
  *
- * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
+ * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}
  * @version $Revision$
  */
 @RestController

@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * {@link Article} {@link JpaRepository}
  *
- * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
+ * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}
  * @version $Revision$
  */
 @Repository

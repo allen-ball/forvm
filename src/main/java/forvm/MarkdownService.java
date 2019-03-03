@@ -53,7 +53,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  *
  * {@injected.fields}
  *
- * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
+ * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}
  * @version $Revision$
  */
 @Service
