@@ -34,6 +34,8 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.compress.utils.SeekableInMemoryByteChannel;
@@ -55,6 +57,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @version $Revision$
  */
 @Service
+@NoArgsConstructor @ToString
 public class MarkdownService {
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -117,11 +120,6 @@ public class MarkdownService {
     private static final URI ROOT = URI.create(SLASH);
 
     @Autowired private Tika tika;
-
-    /**
-     * Sole constructor.
-     */
-    public MarkdownService() { }
 
     /**
      * Method to compile the parameters into an {@link Author}.
@@ -339,9 +337,6 @@ public class MarkdownService {
 
         return visitor.getData();
     }
-
-    @Override
-    public String toString() { return super.toString(); }
 
     private class ZipFileImpl extends ZipFile {
         public ZipFileImpl(String name, byte[] contents) throws IOException {

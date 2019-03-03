@@ -16,6 +16,8 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,6 +53,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 @ComponentScan(basePackageClasses =
                    { ball.spring.mysqld.MysqldComponent.class })
+@NoArgsConstructor @ToString
 public class UIController extends BootstrapUI {
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -65,11 +68,6 @@ public class UIController extends BootstrapUI {
     @Autowired private PasswordEncoder encoder;
 
     private int page_size = 6;
-
-    /**
-     * Sole constructor.
-     */
-    public UIController() { super(); }
 
     @Override
     public String template() {

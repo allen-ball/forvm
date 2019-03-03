@@ -12,6 +12,8 @@ import forvm.repository.AuthorRepository;
 import java.security.Principal;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,17 +48,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @ComponentScan(basePackageClasses =
                    { ball.spring.mysqld.MysqldComponent.class })
 @RequestMapping(value = { "/api/v1" }, produces = "application/json")
+@NoArgsConstructor @ToString
 public class APIRestController {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Autowired private AuthorRepository authorRepository;
     @Autowired private ArticleRepository articleRepository;
     @Autowired private MarkdownService service;
-
-    /**
-     * Sole constructor.
-     */
-    public APIRestController() { super(); }
 
     @RequestMapping(method = { PUT },
                     value = { "/author", "/author/{slug}" })
@@ -177,9 +175,6 @@ public class APIRestController {
     @ExceptionHandler({ SecurityException.class })
     @ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "Forbidden")
     public void handleFORBIDDEN() { }
-
-    @Override
-    public String toString() { return super.toString(); }
 
     @ResponseStatus(value = HttpStatus.CONFLICT)
     public static class ConflictException extends RuntimeException {

@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2018 Allen D. Ball.  All rights reserved.
+ * Copyright 2018, 2019 Allen D. Ball.  All rights reserved.
  */
 package forvm.entity;
 
@@ -21,10 +21,10 @@ import lombok.Setter;
  * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
  * @version $Revision$
  */
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(catalog = "forvm", name = "subscribers")
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class Subscriber extends JSONBean {
     private static final long serialVersionUID = 7653301177108322391L;
 

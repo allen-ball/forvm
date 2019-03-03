@@ -13,6 +13,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,16 +41,12 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @ComponentScan(basePackageClasses =
                    { ball.spring.mysqld.MysqldComponent.class })
 @RequestMapping(produces = "application/octet-stream")
+@NoArgsConstructor @ToString
 public class AttachmentRestController {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Autowired private ArticleRepository articleRepository;
     @Autowired private AttachmentRepository attachmentRepository;
-
-    /**
-     * Sole constructor.
-     */
-    public AttachmentRestController() { super(); }
 
     @RequestMapping(method = { GET }, value = { "/article/{slug}/**" })
     @PreAuthorize("permitAll()")
@@ -82,7 +80,4 @@ public class AttachmentRestController {
     @ExceptionHandler({ NoSuchElementException.class })
     @ResponseStatus(value = NOT_FOUND, reason = "Resource not found")
     public void handleNOT_FOUND() { }
-
-    @Override
-    public String toString() { return super.toString(); }
 }

@@ -13,6 +13,8 @@ import forvm.repository.CredentialRepository;
 import forvm.repository.SubscriberRepository;
 import java.util.HashSet;
 import java.util.Optional;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +36,13 @@ import org.springframework.transaction.annotation.Transactional;
  * @version $Revision$
  */
 @Service
+@NoArgsConstructor @ToString
 public class UserDetailsServiceImpl implements UserDetailsService {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Autowired private CredentialRepository credentialRepository;
     @Autowired private AuthorRepository authorRepository;
     @Autowired private SubscriberRepository subscriberRepository;
-
-    /**
-     * Sole constructor.
-     */
-    public UserDetailsServiceImpl() { }
 
     @Override
     @Transactional(readOnly = true)
@@ -69,7 +67,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return user;
     }
-
-    @Override
-    public String toString() { return super.toString(); }
 }

@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2018 Allen D. Ball.  All rights reserved.
+ * Copyright 2018, 2019 Allen D. Ball.  All rights reserved.
  */
 package forvm.entity;
 
@@ -28,11 +28,11 @@ import static javax.persistence.FetchType.LAZY;
  * @author {@link.uri mailto:ball@iprotium.com Allen D. Ball}
  * @version $Revision$
  */
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(catalog = "forvm", name = "attachments")
 @IdClass(Attachment.PK.class)
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class Attachment extends JSONBean {
     private static final long serialVersionUID = -4239090769692766154L;
 

@@ -5,6 +5,7 @@
  */
 package forvm;
 
+import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static lombok.AccessLevel.PRIVATE;
+
 /**
  * {@link org.springframework.security.config.annotation.web.WebSecurityConfigurer}
  * abstract base class
@@ -31,14 +34,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@NoArgsConstructor(access = PRIVATE)
 public abstract class WebSecurityConfigurerImpl
                       extends WebSecurityConfigurerAdapter {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Autowired private UserDetailsService userDetailsService;
     @Autowired private PasswordEncoder passwordEncoder;
-
-    private WebSecurityConfigurerImpl() { super(); }
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
