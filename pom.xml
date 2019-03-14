@@ -22,6 +22,10 @@
       <activation>
         <property><name>env.GOOGLE_APPLICATION_CREDENTIALS</name></property>
       </activation>
+      <properties>
+        <maven.source.skip>true</maven.source.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+      </properties>
       <dependencies>
         <dependency>
           <groupId>com.google.cloud.sql</groupId>
@@ -35,7 +39,7 @@
         </dependency>
       </dependencies>
       <build>
-        <defaultGoal>clean install spring-boot:run</defaultGoal>
+        <defaultGoal>clean package spring-boot:run</defaultGoal>
       </build>
     </profile>
   </profiles>
