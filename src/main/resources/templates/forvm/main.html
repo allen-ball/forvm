@@ -17,7 +17,9 @@
   </table>
 </th:block>
 <th:block th:if="${#ctx.containsVariable('article')}">
-  <div th:remove="tag" th:utext="${article.html}"/>
+  <article>
+    <div th:remove="tag" th:utext="${article.html}"/>
+  </article>
 </th:block>
 <th:block th:if="${#ctx.containsVariable('authors')}">
   <table class="table table-striped">
