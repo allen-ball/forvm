@@ -14,7 +14,7 @@
     <groupId>ball</groupId>
     <artifactId>parent</artifactId>
     <version>3</version>
-    <relativePath/>
+    <relativePath>../ball/parent/pom.xml</relativePath>
   </parent>
   <profiles>
     <profile>
