@@ -40,7 +40,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RestController
 @ComponentScan(basePackageClasses =
                    { ball.spring.mysqld.MysqldComponent.class })
-@RequestMapping(produces = "application/octet-stream")
 @NoArgsConstructor @ToString
 public class AttachmentRestController {
     private static final Logger LOGGER = LogManager.getLogger();
