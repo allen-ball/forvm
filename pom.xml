@@ -91,6 +91,8 @@
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-javadoc-plugin</artifactId>
               <configuration>
+                <doclet>com.sun.tools.doclets.formats.html.HtmlDoclet</doclet>
+                <docletPath>${tools.jar}</docletPath>
                 <taglet>ball.tools.javadoc.MavenBootstrapTaglet</taglet>
                 <tagletArtifacts>
                   <tagletArtifact>
