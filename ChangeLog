@@ -1,3 +1,7 @@
+2019-03-27  Allen D. Ball  <ball@sol.local>
+
+	* pom.xml: Released version 1.0.0.
+
 2018-12-22  Allen D. Ball  <ball@sol.local>
 
 	* Load PrismJS from org.webjars.npm:prismjs.
