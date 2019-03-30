@@ -67,7 +67,7 @@ public class UIController extends BootstrapUI {
     @Autowired private MarkdownService service;
     @Autowired private PasswordEncoder encoder;
 
-    private int page_size = 6;
+    private int page_size = 8;
 
     @Override
     public String template() {
