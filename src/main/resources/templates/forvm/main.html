@@ -3,9 +3,9 @@
   <th:block th:insert="~{${template + '/' + form.class.simpleName}}"/>
 </th:block>
 <th:block th:if="${#ctx.containsVariable('articles')}">
-  <table class="table table-striped">
+  <table>
     <tbody>
-      <tr th:each="article : ${articles}" class="row">
+      <tr th:each="article : ${articles}">
         <td class="col-sm">
           <a class="row h1" th:href="@{/article/{slug}/(slug=${article.slug})}"
              th:text="${article.title}"/>
@@ -22,9 +22,9 @@
   </article>
 </th:block>
 <th:block th:if="${#ctx.containsVariable('authors')}">
-  <table class="table table-striped">
+  <table>
     <tbody>
-      <tr th:each="author : ${authors}" class="row">
+      <tr th:each="author : ${authors}">
         <td class="col-sm-2 text-left">
           <a th:href="@{/articles/(author=${author.slug})}"
              th:text="${author.name ?: author.slug}"/>
