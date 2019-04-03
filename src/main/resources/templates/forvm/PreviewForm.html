@@ -12,12 +12,10 @@
         <input type="file" th:name="file"
                th:id="${#ids.seq('file')}"
                th:placeholder="'markdown file'"
-               class="form-control-file" required autofocus/>
-        <label class="sr-only"
-               th:for="${#ids.prev('file')}"
+               required autofocus/>
+        <label th:for="${#ids.prev('file')}"
                th:text="'markdown file'"/>
-        <button class="btn btn-lg btn-primary btn-block"
-                type="submit" th:text="'Submit'"/>
+        <button type="submit" th:text="'Submit'"/>
       </form>
     </div>
   </div>

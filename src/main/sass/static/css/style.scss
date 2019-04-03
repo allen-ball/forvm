@@ -23,11 +23,31 @@ body {
     padding-top: 0px;
   }
 }
+/*
+ * HTML5Template.html
+ * forvm/menu.html
+ */
+/* header { @extend .navbar, .navbar-dark, .fixed-top, .bg-dark, .text-white; } */
+header > nav { @extend .navbar-expand, .container; }
+header > nav > a { @extend .navbar-brand; }
+header > nav > ul { @extend .navbar-nav; }
 
-/* body > header { @extend .navbar, .navbar-dark, .fixed-top, .bg-dark, .text-white; } */
-body > main { @extend .container; }
+main { @extend .container; }
 /*
  * forvm/main.html
  */
 main > table { @extend .table, .table-striped; }
 main > table > tbody > tr { @extend .row; }
+/*
+ * forvm/*Form.html
+ */
+form > button { @extend .btn, .btn-lg, .btn-primary, .btn-block; }
+form > input[type=file] { @extend .form-control-file; }
+form > input { @extend .form-control; }
+form > label { @extend .sr-only; }
+/*
+ * HTML5Template/footer.html
+ */
+footer { @extend .fixed-bottom, .bg-dark, .text-white; }
+footer > nav { @extend .navbar, .navbar-dark, .container; }
+footer > nav > span > a { @extend .btn, .btn-link; }

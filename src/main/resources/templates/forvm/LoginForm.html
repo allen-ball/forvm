@@ -8,17 +8,13 @@
         <input type="email" th:name="username"
                th:id="${#ids.seq('username')}"
                th:placeholder="'E\'mail Address'"
-               class="form-control" required autofocus/>
-        <label class="sr-only"
-               th:for="${#ids.prev('username')}"
-               th:text="'E\'mail Address'"/>
+               required autofocus/>
+        <label th:for="${#ids.prev('username')}" th:text="'E\'mail Address'"/>
         <input type="password" th:name="password"
                th:id="${#ids.seq('password')}" th:placeholder="'Password'"
-               class="form-control" required autofocus/>
-        <label class="sr-only"
-               th:for="${#ids.prev('password')}" th:text="'Password'"/>
-        <button class="btn btn-lg btn-primary btn-block"
-                type="submit" th:text="'Login'"/>
+               required autofocus/>
+        <label th:for="${#ids.prev('password')}" th:text="'Password'"/>
+        <button type="submit" th:text="'Login'"/>
       </form>
     </div>
   </div>
