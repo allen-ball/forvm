@@ -27,7 +27,6 @@ body {
  * HTML5Template.html
  * forvm/menu.html
  */
-/* header { @extend .navbar, .navbar-dark, .fixed-top, .bg-dark, .text-white; } */
 header > nav { @extend .navbar-expand, .container; }
 header > nav > a { @extend .navbar-brand; }
 header > nav > ul { @extend .navbar-nav; }
