@@ -1,8 +1,7 @@
 <!--/* $Id$ */-->
 <ul>
-  <li sec:authorize="hasAuthority('AUTHOR')"
-      class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+  <li class="dropdown" sec:authorize="hasAuthority('AUTHOR')">
+    <a class="dropdown-toggle" data-toggle="dropdown"
        aria-haspopup="true" aria-expanded="false"
        th:id="${#ids.seq('dropdown')}"
        href="#" th:text="'Author'"/>
@@ -13,9 +12,8 @@
       </li>
     </ul>
   </li>
-  <li sec:authorize="hasAuthority('SUBSCRIBER')"
-      class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+  <li class="dropdown" sec:authorize="hasAuthority('SUBSCRIBER')">
+    <a class="dropdown-toggle" data-toggle="dropdown"
        aria-haspopup="true" aria-expanded="false"
        th:classappend="'disabled'"
        th:id="${#ids.seq('dropdown')}"
@@ -24,8 +22,8 @@
         th:attr="aria-labelledby=${#ids.prev('dropdown')}">
     </ul>
   </li>
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+  <li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown"
        aria-haspopup="true" aria-expanded="false"
        th:id="${#ids.seq('dropdown')}"
        href="#" th:text="'Collections'"/>
@@ -36,21 +34,23 @@
       </li>
     </ul>
   </li>
-  <li sec:authorize="!isAuthenticated()" class="nav-item">
-    <a class="nav-link" th:href="@{/login}" th:text="'Login'"/>
+  <li sec:authorize="!isAuthenticated()">
+    <a th:href="@{/login}" th:text="'Login'"/>
   </li>
-  <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+  <li class="dropdown" sec:authorize="isAuthenticated()">
+    <a class="dropdown-toggle" data-toggle="dropdown"
        aria-haspopup="true" aria-expanded="false"
        th:id="${#ids.seq('dropdown')}"
        href="#" th:text="'Account'"/>
     <ul class="dropdown-menu"
         th:attr="aria-labelledby=${#ids.prev('dropdown')}">
       <li>
-        <a class="dropdown-item" th:href="@{/password}" th:text="'Change Password'"/>
+        <a class="dropdown-item"
+           th:href="@{/password}" th:text="'Change Password'"/>
       </li>
       <li>
-        <a class="dropdown-item" th:href="@{/logout}" th:text="'Logout'"/>
+        <a class="dropdown-item"
+           th:href="@{/logout}" th:text="'Logout'"/>
       </li>
     </ul>
   </li>
