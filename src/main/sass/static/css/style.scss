@@ -30,8 +30,8 @@ body {
 header > nav { @extend .navbar-expand-md, .container; }
 header > nav > a:first-child { @extend .navbar-brand; }
 header > nav > ul { @extend .navbar-nav; }
-nav > ul > li { @extend .nav-item; }
-nav > ul > li > a { @extend .nav-link; }
+header > nav > ul > li { @extend .nav-item; }
+header > nav > ul > li > a { @extend .nav-link; }
 /*
  * HTML5Template/body/main.html
  */
