@@ -1,5 +1,7 @@
 2019-04-06  Allen D. Ball  <ball@sol.local>
 
+	* pom.xml: Released version 1.1.0.
+
 	* Use Bootstrap for mark-up.
 
 2019-04-01  Allen D. Ball  <ball@sol.local>
