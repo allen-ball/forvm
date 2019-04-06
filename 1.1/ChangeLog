@@ -1,0 +1,130 @@
+2019-04-06  Allen D. Ball  <ball@sol.local>
+
+	* pom.xml: Released version 1.1.0.
+
+	* Use Bootstrap for mark-up.
+
+2019-04-01  Allen D. Ball  <ball@sol.local>
+
+	* pom.xml: Started development of 1.1-SNAPSHOT.
+
+2019-03-30  Allen D. Ball  <ball@sol.local>
+
+	* Released version 1.0.1: Display 8 entries per page.
+
+2019-03-27  Allen D. Ball  <ball@sol.local>
+
+	* pom.xml: Released version 1.0.0.
+
+2018-12-22  Allen D. Ball  <ball@sol.local>
+
+	* Load PrismJS from org.webjars.npm:prismjs.
+
+2018-12-18  Allen D. Ball  <ball@sol.local>
+
+	* Normalize article paths so attachment paths may be trivially
+	calculated.
+
+2018-12-14  Allen D. Ball  <ball@sol.local>
+
+	* Re-worked [POST]/preview to also serve attachments.
+
+2018-12-08  Allen D. Ball  <ball@sol.local>
+
+	* src/main/java/forvm/APIRestController.java:
+	Added PUT /author/{slug}, DELETE /article/{slug}", and POST/PUT
+	/article/{slug} APIs.
+
+2018-12-04  Allen D. Ball  <ball@sol.local>
+
+	* pom.xml:
+	Added GOOGLE_APPLICATION_CREDENTIALS profile to assist testing
+	against GCP resources.
+
+2018-10-22  Allen D. Ball  <ball@sol.local>
+
+	* Added "change password" functionality.
+
+	* src/main/java/forvm/ChangePasswordForm.java,
+	src/main/resources/templates/forvm/ChangePasswordForm.html:
+	Initial wriitng.
+
+2018-10-01  Allen D. Ball  <ball@sol.local>
+
+	* Added (mostly) generic form processing.
+
+2018-09-14  Allen D. Ball  <ball@sol.local>
+
+	* Switched from commonmark-java to flexmark-java.
+
+2018-09-12  Allen D. Ball  <ball@sol.local>
+
+	* Added `title` to Article.
+
+2018-09-10  Allen D. Ball  <ball@sol.local>
+
+	* src/main/java/forvm/APIRestController.java:
+	Completed [PUT]/api/v1/author and [POST,PUT]/api/v1/article APIs.
+
+2018-09-07  Allen D. Ball  <ball@sol.local>
+
+	* src/main/java/forvm/WebSecurityConfigurerImpl.java:
+	Require HTTP Basic Authentication for /api/**.
+
+2018-09-06  Allen D. Ball  <ball@sol.local>
+
+	* Use @EnableGlobalMethodSecurity and @PreAuthorize annotations to
+	enable and implement method level security.
+
+2018-09-05  Allen D. Ball  <ball@sol.local>
+
+	* Renamed "post" to "article" to avoid confusion with RESTful
+	semantics.
+
+2018-09-04  Allen D. Ball  <ball@sol.local>
+
+	* src/main/java/forvm/AttachmentRestController.java:
+	Initial writing.
+
+2018-08-29  Allen D. Ball  <ball@sol.local>
+
+	* src/main/java/forvm/MarkdownConfiguration.java:
+	Added author "preview" functionality.
+
+2018-08-28  Allen D. Ball  <ball@sol.local>
+
+	* src/main/java/forvm/entity/Credential.java:
+	Added javax.validation.constraints annotations.
+
+	* Mapped one:many Author->Posts relationship.
+
+2018-08-27  Allen D. Ball  <ball@sol.local>
+
+	* src/main/java/forvm/UIController.java:
+	Completed pagination implementation for /posts/.
+
+2018-08-26  Allen D. Ball  <ball@sol.local>
+
+	* Added navigation.
+
+	* Added SUBSCRIBER and AUTHOR roles to security model.
+
+	* Integrated spring-boot-starter-security and added Login/Logout
+	functionality.
+
+2018-08-25  Allen D. Ball  <ball@sol.local>
+
+	* src/main/java/forvm/UIController.java: Outlined navigation.
+
+2018-08-24  Allen D. Ball  <ball@sol.local>
+
+	* src/main/java/forvm/entity/, src/main/java/forvm/repository/:
+	Added findBySlug(String) methods to JpaRepository interfaces and
+	synchronized with V1_0__Schema.sql.
+
+	* src/main/java/forvm/UIController.java:
+	Stubbed out Web UI paths (with @PathVariable annotations).
+
+	* src/main/java/forvm/ant/taskdefs/MarkdownTask.java:
+	Added <markdown-parse/> and <markdown-render/> Ant Tasks.
+

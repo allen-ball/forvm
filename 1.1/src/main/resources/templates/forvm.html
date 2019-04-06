@@ -1,0 +1,41 @@
+<!--/* $Id$ */-->
+<th:block th:if="${form != null}">
+  <th:block th:insert="~{${#execInfo.templateName + '/' + form.class.simpleName}}"/>
+</th:block>
+<th:block th:if="${#ctx.containsVariable('articles')}">
+  <table>
+    <tbody>
+      <tr th:each="article : ${articles}">
+        <td class="col-sm">
+          <a class="row h1" th:href="@{/article/{slug}/(slug=${article.slug})}"
+             th:text="${article.title}"/>
+          <a class="row" th:href="@{/articles/(author=${article.author.slug})}"
+             th:text="${article.author.name}"/>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</th:block>
+<th:block th:if="${#ctx.containsVariable('article')}">
+  <article>
+    <div th:remove="tag" th:utext="${article.html}"/>
+  </article>
+</th:block>
+<th:block th:if="${#ctx.containsVariable('authors')}">
+  <table>
+    <tbody>
+      <tr th:each="author : ${authors}">
+        <td class="col-sm-2 text-left">
+          <a th:href="@{/articles/(author=${author.slug})}"
+             th:text="${author.name ?: author.slug}"/>
+        </td>
+        <td class="col-sm">
+          <div th:remove="tag" th:utext="${author.html}"/>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</th:block>
+<th:block th:if="${exception != null}">
+  <p th:text="${exception}"/>
+</th:block>

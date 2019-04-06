@@ -1,0 +1,58 @@
+/* $Id$ */
+
+/* @import "/webjars/bootstrap/css/bootstrap.css"; */
+@import "META-INF/resources/webjars/bootstrap/4.3.1/scss/bootstrap";
+
+@import "/webjars/prismjs/themes/prism-tomorrow.css";
+@import "/webjars/prismjs/plugins/toolbar/prism-toolbar.css";
+@import "/webjars/prismjs/plugins/autolinker/prism-autolinker.css";
+@import "/webjars/prismjs/plugins/command-line/prism-command-line.css";
+@import "/webjars/prismjs/plugins/line-highlight/prism-line-highlight.css";
+@import "/webjars/prismjs/plugins/line-numbers/prism-line-numbers.css";
+@import "/webjars/prismjs/plugins/previewers/prism-previewers.css";
+@import "/webjars/prismjs/plugins/unescaped-markup/prism-unescaped-markup.css";
+@import "/webjars/prismjs/plugins/wpd/prism-wpd.css";
+
+body {
+  padding-top: 60px;
+  margin-bottom: 60px;
+}
+
+@media (max-width: 979px) {
+  body {
+    padding-top: 0px;
+  }
+}
+/*
+ * HTML5Template
+ */
+header > nav { @extend .navbar-expand-md, .container; }
+header > nav > a:first-child { @extend .navbar-brand; }
+header > nav > ul { @extend .navbar-nav; }
+header > nav > ul > li { @extend .nav-item; }
+header > nav > ul > li > a { @extend .nav-link; }
+
+main { @extend .container; }
+main > div { @extend .jumbotron; }
+main > div > section { @extend .text-center; }
+
+footer { @extend .fixed-bottom, .bg-dark, .text-white; }
+footer > nav { @extend .navbar, .navbar-dark, .container; }
+footer > nav > span:first-child { @extend .col-sm, .text-left; }
+footer > nav > span:nth-child(2) { @extend .col-sm-3; }
+footer > nav > span:last-child { @extend .col-sm, .text-right; }
+footer > nav > span > a { @extend .btn, .btn-link; }
+/*
+ * forvm.html
+ */
+main > table { @extend .table, .table-striped; }
+main > table > tbody > tr { @extend .row; }
+/*
+ * forvm/*Form.html
+ */
+main > div > div { @extend .row, .justify-content-center; }
+main > div > div > div { @extend .col-sm-6; }
+form > input[type=file] { @extend .form-control-file; }
+form > input { @extend .form-control; }
+form > label { @extend .sr-only; }
+form > button { @extend .btn, .btn-lg, .btn-primary, .btn-block; }

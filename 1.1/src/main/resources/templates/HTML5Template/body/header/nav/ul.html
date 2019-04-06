@@ -1,0 +1,57 @@
+<!--/* $Id$ */-->
+<ul>
+  <li class="dropdown" sec:authorize="hasAuthority('AUTHOR')">
+    <a class="dropdown-toggle" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false"
+       th:id="${#ids.seq('dropdown')}"
+       href="#" th:text="'Author'"/>
+    <ul class="dropdown-menu"
+        th:attr="aria-labelledby=${#ids.prev('dropdown')}">
+      <li>
+        <a class="dropdown-item" th:href="@{/preview/}" th:text="'Preview'"/>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown" sec:authorize="hasAuthority('SUBSCRIBER')">
+    <a class="dropdown-toggle" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false"
+       th:classappend="'disabled'"
+       th:id="${#ids.seq('dropdown')}"
+       href="#" th:text="'Subscriber'"/>
+    <ul class="dropdown-menu"
+        th:attr="aria-labelledby=${#ids.prev('dropdown')}">
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false"
+       th:id="${#ids.seq('dropdown')}"
+       href="#" th:text="'Collections'"/>
+    <ul class="dropdown-menu"
+        th:attr="aria-labelledby=${#ids.prev('dropdown')}">
+      <li>
+        <a class="dropdown-item" th:href="@{/authors/}" th:text="'Authors'"/>
+      </li>
+    </ul>
+  </li>
+  <li sec:authorize="!isAuthenticated()">
+    <a th:href="@{/login}" th:text="'Login'"/>
+  </li>
+  <li class="dropdown" sec:authorize="isAuthenticated()">
+    <a class="dropdown-toggle" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false"
+       th:id="${#ids.seq('dropdown')}"
+       href="#" th:text="'Account'"/>
+    <ul class="dropdown-menu"
+        th:attr="aria-labelledby=${#ids.prev('dropdown')}">
+      <li>
+        <a class="dropdown-item"
+           th:href="@{/password}" th:text="'Change Password'"/>
+      </li>
+      <li>
+        <a class="dropdown-item"
+           th:href="@{/logout}" th:text="'Logout'"/>
+      </li>
+    </ul>
+  </li>
+</ul>

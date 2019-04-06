@@ -1,0 +1,27 @@
+<!--/* $Id$ */-->
+<div>
+  <div>
+    <div>
+      <form th:action="@{''}" method="post">
+        <input type="hidden"
+               th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <input type="email" th:name="username"
+               th:id="${#ids.seq('username')}"
+               th:placeholder="'E\'mail Address'"
+               required autofocus/>
+        <label th:for="${#ids.prev('username')}" th:text="'E\'mail Address'"/>
+        <input type="password" th:name="password"
+               th:id="${#ids.seq('password')}" th:placeholder="'Password'"
+               required autofocus/>
+        <label th:for="${#ids.prev('password')}" th:text="'Password'"/>
+        <button type="submit" th:text="'Login'"/>
+      </form>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-sm-6">
+      <p th:if="${param.error}">Invalid username and password.</p>
+      <p th:if="${param.logout}">You have been logged out.</p>
+    </div>
+  </div>
+</div>
