@@ -1,6 +1,6 @@
 <!--/* $Id$ */-->
 <th:block th:if="${form != null}">
-  <th:block th:insert="~{${template + '/' + form.class.simpleName}}"/>
+  <th:block th:insert="~{${#execInfo.templateName + '/' + form.class.simpleName}}"/>
 </th:block>
 <th:block th:if="${#ctx.containsVariable('articles')}">
   <table>

@@ -69,11 +69,6 @@ public class UIController extends HTML5Template {
 
     private int page_size = 8;
 
-    @Override
-    public String template() {
-        return getClass().getPackage().getName().replaceAll("[.]", "-");
-    }
-
     @RequestMapping(value = { "/" })
     @PreAuthorize("permitAll()")
     public String root() { return "redirect:/index.html"; }
