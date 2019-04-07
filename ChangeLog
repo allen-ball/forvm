@@ -1,3 +1,11 @@
+2019-04-07  Allen D. Ball  <ball@sol.local>
+
+	* Released version 1.1.1.
+
+	* pom.xml:
+	Do not include dependencies on spring-boot-starter-actuator or
+	spring-boot-devtools in release artifact.
+
 2019-04-06  Allen D. Ball  <ball@sol.local>
 
 	* pom.xml: Released version 1.1.0.
