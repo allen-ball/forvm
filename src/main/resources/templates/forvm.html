@@ -18,7 +18,7 @@
 </th:block>
 <th:block th:if="${#ctx.containsVariable('article')}">
   <article>
-    <div th:remove="tag" th:utext="${article.html}"/>
+    [(${article.html})]
   </article>
 </th:block>
 <th:block th:if="${#ctx.containsVariable('authors')}">
@@ -30,7 +30,7 @@
              th:text="${author.name ?: author.slug}"/>
         </td>
         <td class="col-sm">
-          <div th:remove="tag" th:utext="${author.html}"/>
+          [(${author.html})]
         </td>
       </tr>
     </tbody>
