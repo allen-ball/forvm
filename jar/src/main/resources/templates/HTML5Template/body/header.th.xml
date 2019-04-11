@@ -2,6 +2,5 @@
 <!-- $Id$ -->
 <thlogic>
   <attr sel="header"
-        th:class="'navbar navbar-dark fixed-top bg-dark text-white'">
-  </attr>
+        th:class="'navbar navbar-dark fixed-top bg-dark text-white'"/>
 </thlogic>
