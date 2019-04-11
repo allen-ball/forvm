@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<thlogic>
+  <attr sel="header"
+        th:class="'navbar navbar-dark fixed-top bg-dark text-white'">
+  </attr>
+</thlogic>
