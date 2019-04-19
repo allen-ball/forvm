@@ -34,12 +34,3 @@ header > nav > ul > li > ul > li > a { @extend .bg-dark, .text-white; }
 main { @extend .container; }
 main > div { @extend .jumbotron; }
 main > div > section { @extend .text-center; }
-/*
- * forvm/*Form.html
- */
-main > div > div { @extend .row, .justify-content-center; }
-main > div > div > div { @extend .col-sm-6; }
-form > input[type=file] { @extend .form-control-file; }
-form > input { @extend .form-control; }
-form > label { @extend .sr-only; }
-form > button { @extend .btn, .btn-lg, .btn-primary, .btn-block; }
