@@ -26,22 +26,14 @@ body {
 /*
  * HTML5Template
  */
-header > nav { @extend .navbar-expand-md, .container; }
-header > nav > a:first-child { @extend .navbar-brand; }
-header > nav > ul { @extend .navbar-nav; }
-header > nav > ul > li { @extend .nav-item; }
-header > nav > ul > li > a { @extend .nav-link; }
+header, footer { @extend .bg-dark, .text-white; }
+header > nav > ul > li > button { @extend .bg-dark, .text-white; }
+header > nav > ul > li > ul { @extend .bg-dark, .text-white; }
+header > nav > ul > li > ul > li > a { @extend .bg-dark, .text-white; }
 
 main { @extend .container; }
 main > div { @extend .jumbotron; }
 main > div > section { @extend .text-center; }
-
-footer { @extend .fixed-bottom, .bg-dark, .text-white; }
-footer > nav { @extend .navbar, .navbar-dark, .container; }
-footer > nav > span:first-child { @extend .col-sm, .text-left; }
-footer > nav > span:nth-child(2) { @extend .col-sm-3; }
-footer > nav > span:last-child { @extend .col-sm, .text-right; }
-footer > nav > span > a { @extend .btn, .btn-link; }
 /*
  * forvm.html
  */

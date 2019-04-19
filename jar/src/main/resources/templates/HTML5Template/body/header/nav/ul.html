@@ -1,57 +1,30 @@
 <!--/* $Id$ */-->
 <ul>
-  <li class="dropdown" sec:authorize="hasAuthority('AUTHOR')">
-    <a class="dropdown-toggle" data-toggle="dropdown"
-       aria-haspopup="true" aria-expanded="false"
-       th:id="${#ids.seq('dropdown')}"
-       href="#" th:text="'Author'"/>
-    <ul class="dropdown-menu"
-        th:attr="aria-labelledby=${#ids.prev('dropdown')}">
-      <li>
-        <a class="dropdown-item" th:href="@{/preview/}" th:text="'Preview'"/>
-      </li>
+  <li sec:authorize="hasAuthority('AUTHOR')">
+    <button th:text="'Author'"/>
+    <ul>
+      <li><a th:text="'Preview'" th:href="@{/preview/}"/></li>
     </ul>
   </li>
-  <li class="dropdown" sec:authorize="hasAuthority('SUBSCRIBER')">
-    <a class="dropdown-toggle" data-toggle="dropdown"
-       aria-haspopup="true" aria-expanded="false"
-       th:classappend="'disabled'"
-       th:id="${#ids.seq('dropdown')}"
-       href="#" th:text="'Subscriber'"/>
-    <ul class="dropdown-menu"
-        th:attr="aria-labelledby=${#ids.prev('dropdown')}">
+  <li sec:authorize="hasAuthority('SUBSCRIBER')">
+    <button th:text="'Subscriber'" th:classappend="'disabled'"/>
+    <ul>
     </ul>
   </li>
-  <li class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown"
-       aria-haspopup="true" aria-expanded="false"
-       th:id="${#ids.seq('dropdown')}"
-       href="#" th:text="'Collections'"/>
-    <ul class="dropdown-menu"
-        th:attr="aria-labelledby=${#ids.prev('dropdown')}">
-      <li>
-        <a class="dropdown-item" th:href="@{/authors/}" th:text="'Authors'"/>
-      </li>
+  <li>
+    <button th:text="'Collections'"/>
+    <ul>
+      <li><a th:text="'Authors'" th:href="@{/authors/}"/></li>
     </ul>
   </li>
   <li sec:authorize="!isAuthenticated()">
-    <a th:href="@{/login}" th:text="'Login'"/>
+    <a th:text="'Login'" th:href="@{/login}"/>
   </li>
-  <li class="dropdown" sec:authorize="isAuthenticated()">
-    <a class="dropdown-toggle" data-toggle="dropdown"
-       aria-haspopup="true" aria-expanded="false"
-       th:id="${#ids.seq('dropdown')}"
-       href="#" th:text="'Account'"/>
-    <ul class="dropdown-menu"
-        th:attr="aria-labelledby=${#ids.prev('dropdown')}">
-      <li>
-        <a class="dropdown-item"
-           th:href="@{/password}" th:text="'Change Password'"/>
-      </li>
-      <li>
-        <a class="dropdown-item"
-           th:href="@{/logout}" th:text="'Logout'"/>
-      </li>
+  <li sec:authorize="isAuthenticated()">
+    <button th:text="'Account'"/>
+    <ul>
+      <li><a th:text="'Change Password'" th:href="@{/password}"/></li>
+      <li><a th:text="'Logout'" th:href="@{/logout}"/></li>
     </ul>
   </li>
 </ul>
