@@ -2,41 +2,33 @@
 <th:block th:if="${#ctx.containsVariable('form')}">
   <th:block th:insert="~{${#execInfo.templateName + '/' + form.class.simpleName}}"/>
 </th:block>
-<th:block th:if="${#ctx.containsVariable('articles')}">
-  <table>
-    <tbody>
-      <tr th:ref="article-row" th:each="article : ${articles}">
-        <td>
-          <a th:href="@{/article/{slug}/(slug=${article.slug})}">
-            <h1 th:text="${article.title}"/>
-          </a>
-          <a th:text="${article.author.name}"
-             th:href="@{/articles/(author=${article.author.slug})}"/>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</th:block>
-<th:block th:if="${#ctx.containsVariable('article')}">
-  <article>
-    [(${article.html})]
-  </article>
-</th:block>
-<th:block th:if="${#ctx.containsVariable('authors')}">
-  <table>
-    <tbody>
-      <tr th:ref="author-row" th:each="author : ${authors}">
-        <td>
-          <a th:text="${author.name ?: author.slug}"
-             th:href="@{/articles/(author=${author.slug})}"/>
-        </td>
-        <td>
-          [(${author.html})]
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</th:block>
-<th:block th:if="${#ctx.containsVariable('exception')}">
-  <p th:text="${exception}"/>
-</th:block>
+<table  th:if="${#ctx.containsVariable('articles')}">
+  <tbody>
+    <tr th:ref="article-row" th:each="article : ${articles}">
+      <td>
+        <a th:href="@{/article/{slug}/(slug=${article.slug})}">
+          <h1 th:text="${article.title}"/>
+        </a>
+        <a th:text="${article.author.name}"
+           th:href="@{/articles/(author=${article.author.slug})}"/>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<article th:if="${#ctx.containsVariable('article')}">
+  [(${article.html})]
+</article>
+<table th:if="${#ctx.containsVariable('authors')}">
+  <tbody>
+    <tr th:ref="author-row" th:each="author : ${authors}">
+      <td>
+        <a th:text="${author.name ?: author.slug}"
+           th:href="@{/articles/(author=${author.slug})}"/>
+      </td>
+      <td>
+        [(${author.html})]
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p th:if="${#ctx.containsVariable('exception')}" th:text="${exception}"/>
