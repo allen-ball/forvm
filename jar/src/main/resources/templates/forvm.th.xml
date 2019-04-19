@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<thlogic>
+  <attr sel="table" th:class="'table table-striped'">
+    <attr sel="/tbody">
+      <attr sel="/tr" th:class="'row'"/>
+      <attr sel="article-row">
+        <attr sel="/td[0]" th:class="'col-sm'">
+          <attr sel="/a" th:class="'row'"/>
+        </attr>
+      </attr>
+      <attr sel="author-row">
+        <attr sel="/td[0]" th:class="'col-sm-2 text-left'"/>
+        <attr sel="/td[1]" th:class="'col-sm'"/>
+      </attr>
+    </attr>
+  </attr>
+</thlogic>

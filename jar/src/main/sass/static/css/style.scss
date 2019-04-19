@@ -35,11 +35,6 @@ main { @extend .container; }
 main > div { @extend .jumbotron; }
 main > div > section { @extend .text-center; }
 /*
- * forvm.html
- */
-main > table { @extend .table, .table-striped; }
-main > table > tbody > tr { @extend .row; }
-/*
  * forvm/*Form.html
  */
 main > div > div { @extend .row, .justify-content-center; }

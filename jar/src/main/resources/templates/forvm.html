@@ -5,14 +5,13 @@
 <th:block th:if="${#ctx.containsVariable('articles')}">
   <table>
     <tbody>
-      <tr th:each="article : ${articles}">
-        <td class="col-sm">
-          <a class="row" th:href="@{/article/{slug}/(slug=${article.slug})}">
+      <tr th:ref="article-row" th:each="article : ${articles}">
+        <td>
+          <a th:href="@{/article/{slug}/(slug=${article.slug})}">
             <h1 th:text="${article.title}"/>
           </a>
-          <a class="row"
-             th:href="@{/articles/(author=${article.author.slug})}"
-             th:text="${article.author.name}"/>
+          <a th:text="${article.author.name}"
+             th:href="@{/articles/(author=${article.author.slug})}"/>
         </td>
       </tr>
     </tbody>
@@ -26,18 +25,18 @@
 <th:block th:if="${#ctx.containsVariable('authors')}">
   <table>
     <tbody>
-      <tr th:each="author : ${authors}">
-        <td class="col-sm-2 text-left">
+      <tr th:ref="author-row" th:each="author : ${authors}">
+        <td>
           <a th:text="${author.name ?: author.slug}"
              th:href="@{/articles/(author=${author.slug})}"/>
         </td>
-        <td class="col-sm">
+        <td>
           [(${author.html})]
         </td>
       </tr>
     </tbody>
   </table>
 </th:block>
-<th:block th:if="${exception != null}">
+<th:block th:if="${#ctx.containsVariable('exception')}">
   <p th:text="${exception}"/>
 </th:block>
