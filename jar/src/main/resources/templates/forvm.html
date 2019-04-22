@@ -1,34 +1,173 @@
 <!--/* $Id$ */-->
-<th:block th:if="${#ctx.containsVariable('form')}">
-  <th:block th:insert="~{${#execInfo.templateName + '/' + form.class.simpleName}}"/>
-</th:block>
-<table  th:if="${#ctx.containsVariable('articles')}">
-  <tbody>
-    <tr th:ref="article-row" th:each="article : ${articles}">
-      <td>
-        <a th:href="@{/article/{slug}/(slug=${article.slug})}">
-          <h1 th:text="${article.title}"/>
-        </a>
-        <a th:text="${article.author.name}"
-           th:href="@{/articles/(author=${article.author.slug})}"/>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<article th:if="${#ctx.containsVariable('article')}">
-  [(${article.html})]
-</article>
-<table th:if="${#ctx.containsVariable('authors')}">
-  <tbody>
-    <tr th:ref="author-row" th:each="author : ${authors}">
-      <td>
-        <a th:text="${author.name ?: author.slug}"
-           th:href="@{/articles/(author=${author.slug})}"/>
-      </td>
-      <td>
-        [(${author.html})]
-      </td>
-    </tr>
-  </tbody>
-</table>
-<p th:if="${#ctx.containsVariable('exception')}" th:text="${exception}"/>
+<head>
+  <link rel="stylesheet" th:href="@{/webjars/prismjs/themes/prism-tomorrow.css}"/>
+  <link rel="stylesheet" th:href="@{/webjars/prismjs/plugins/toolbar/prism-toolbar.css}"/>
+  <link rel="stylesheet" th:href="@{/webjars/prismjs/plugins/autolinker/prism-autolinker.css}"/>
+  <link rel="stylesheet" th:href="@{/webjars/prismjs/plugins/command-line/prism-command-line.css}"/>
+  <link rel="stylesheet" th:href="@{/webjars/prismjs/plugins/line-highlight/prism-line-highlight.css}"/>
+  <link rel="stylesheet" th:href="@{/webjars/prismjs/plugins/line-numbers/prism-line-numbers.css}"/>
+  <link rel="stylesheet" th:href="@{/webjars/prismjs/plugins/previewers/prism-previewers.css}"/>
+  <link rel="stylesheet" th:href="@{/webjars/prismjs/plugins/unescaped-markup/prism-unescaped-markup.css}"/>
+  <link rel="stylesheet" th:href="@{/webjars/prismjs/plugins/wpd/prism-wpd.css}"/>
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+  <script th:src="@{/js/plugins.js}" th:text="''"/>
+</head>
+<body>
+  <header>
+    <nav th:with="brand = ${@environment.getProperty('application.brand')}">
+      <a th:href="@{/}" th:text="${brand ?: 'Home'}"/>
+      <ul>
+        <li sec:authorize="hasAuthority('AUTHOR')">
+          <button th:text="'Author'"/>
+          <ul>
+            <li><a th:text="'Preview'" th:href="@{/preview/}"/></li>
+          </ul>
+        </li>
+        <li sec:authorize="hasAuthority('SUBSCRIBER')">
+          <button th:text="'Subscriber'" th:classappend="'disabled'"/>
+          <ul>
+          </ul>
+        </li>
+        <li>
+          <button th:text="'Collections'"/>
+          <ul>
+            <li><a th:text="'Authors'" th:href="@{/authors/}"/></li>
+          </ul>
+        </li>
+        <li sec:authorize="!isAuthenticated()">
+          <a th:text="'Login'" th:href="@{/login}"/>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <button sec:authentication="name"/>
+          <ul>
+            <li><a th:text="'Change Password'" th:href="@{/password}"/></li>
+            <li><a th:text="'Logout'" th:href="@{/logout}"/></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <th:block th:if="${#ctx.containsVariable('form')}">
+      <th:block th:insert="~{${#execInfo.templateName + '/' + form.class.simpleName}}"/>
+    </th:block>
+    <table th:if="${#ctx.containsVariable('articles')}">
+      <tbody>
+        <tr th:ref="article-row" th:each="article : ${articles}">
+          <td>
+            <a th:href="@{/article/{slug}/(slug=${article.slug})}">
+              <h1 th:text="${article.title}"/>
+            </a>
+            <a th:text="${article.author.name}"
+               th:href="@{/articles/(author=${article.author.slug})}"/>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <article th:if="${#ctx.containsVariable('article')}">
+      [(${article.html})]
+    </article>
+    <table th:if="${#ctx.containsVariable('authors')}">
+      <tbody>
+        <tr th:ref="author-row" th:each="author : ${authors}">
+          <td>
+            <a th:text="${author.name ?: author.slug}"
+               th:href="@{/articles/(author=${author.slug})}"/>
+          </td>
+          <td>
+            [(${author.html})]
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p th:if="${#ctx.containsVariable('exception')}" th:text="${exception}"/>
+  </main>
+  <footer>
+    <nav>
+      <span th:text="${#request.servletPath}"/>
+      <span>
+        <a th:classappend="${page == null} ? disabled"
+           th:href="@{''(page=${1})}"
+           th:text="'|<'"/>
+        <a th:classappend="${! (page != null && page.hasPrevious())} ? disabled"
+           th:href="@{''(page=${(page != null) ? (page.number + 0) : 1})}"
+           th:text="'<'"/>
+        <th:block th:text="${page != null ? (page.number + 1) : '#'}"/>
+        <a th:classappend="${! (page != null && page.hasNext())} ? disabled"
+           th:href="@{''(page=${(page != null) ? (page.number + 2) : 1})}"
+           th:text="'>'"/>
+        <a th:classappend="${page == null} ? disabled"
+           th:href="@{''(page=${page?.totalPages > 0 ? page.totalPages : 1})}"
+           th:text="'>|'"/>
+      </span>
+      <span>
+        <th:block sec:authorize="isAuthenticated()">
+          <span sec:authentication="authorities"/>
+        </th:block>
+      </span>
+    </nav>
+  </footer>
+  <script th:src="@{/webjars/jquery/jquery.js}" th:text="''"/>
+  <script th:src="@{/webjars/bootstrap/js/bootstrap.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/prism.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-markup.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-css.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-clike.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-javascript.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-apacheconf.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-c.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-asciidoc.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-csharp.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-bash.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-bison.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-brainfuck.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-cpp.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-clojure.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-ruby.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-css-extras.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-diff.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-markup-templating.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-erlang.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-git.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-groovy.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-http.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-ini.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-java.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-javastacktrace.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-json.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-kotlin.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-latex.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-markdown.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-lisp.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-lua.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-makefile.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-nginx.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-perl.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-php.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-php-extras.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-sql.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-properties.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-python.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-sass.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-scheme.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/components/prism-yaml.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/toolbar/prism-toolbar.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/autolinker/prism-autolinker.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/autoloader/prism-autoloader.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/command-line/prism-command-line.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/custom-class/prism-custom-class.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/data-uri-highlight/prism-data-uri-highlight.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/file-highlight/prism-file-highlight.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/highlight-keywords/prism-highlight-keywords.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/jsonp-highlight/prism-jsonp-highlight.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/keep-markup/prism-keep-markup.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/line-highlight/prism-line-highlight.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/line-numbers/prism-line-numbers.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/previewers/prism-previewers.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/remove-initial-line-feed/prism-remove-initial-line-feed.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/show-language/prism-show-language.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/unescaped-markup/prism-unescaped-markup.js}" th:text="''"/>
+  <script th:src="@{/webjars/prismjs/plugins/wpd/prism-wpd.js}" th:text="''"/>
+</body>

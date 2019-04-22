@@ -1,17 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <thlogic>
-  <attr sel="table" th:class="'table table-striped'">
-    <attr sel="/tbody">
-      <attr sel="/tr" th:class="'row'"/>
-      <attr sel="article-row">
-        <attr sel="/td[0]" th:class="'col-sm'">
-          <attr sel="/a" th:class="'row'"/>
+  <attr sel="body">
+    <attr sel="/header" th:class="'navbar navbar-dark fixed-top'">
+      <attr sel="/nav" th:class="'navbar-expand-md container'">
+        <attr sel="/a[0]" th:class="'navbar-brand'"/>
+        <attr sel="/ul" th:class="'navbar-nav'">
+          <attr sel="/li" th:class="'nav-item dropdown'">
+            <attr sel="/a" th:class="'nav-link'"/>
+            <attr sel="/button" th:class="'btn dropdown-toggle'"
+                  th:id="${#ids.seq('dropdown')}" th:data-toggle="'dropdown'"
+                  th:aria-haspopup="true" th:aria-expanded="false"/>
+            <attr sel="/ul" th:class="'dropdown-menu'"
+                  th:aria-labelledby="${#ids.prev('dropdown')}">
+              <attr sel="/li" th:class="'nav-item'">
+                <attr sel="/a" th:class="'dropdown-item'"/>
+              </attr>
+            </attr>
+          </attr>
         </attr>
       </attr>
-      <attr sel="author-row">
-        <attr sel="/td[0]" th:class="'col-sm-2 text-left'"/>
-        <attr sel="/td[1]" th:class="'col-sm'"/>
+    </attr>
+    <attr sel="main" th:class="'container'">
+      <attr sel="/div" th:class="'jumbotron'">
+        <attr sel="/div" th:class="'text-center'"/>
+      </attr>
+      <attr sel="/table" th:class="'table table-striped'">
+        <attr sel="/tbody">
+          <attr sel="/tr" th:class="'row'"/>
+          <attr sel="article-row">
+            <attr sel="/td[0]" th:class="'col-sm'">
+              <attr sel="/a" th:class="'row'"/>
+            </attr>
+          </attr>
+          <attr sel="author-row">
+            <attr sel="/td[0]" th:class="'col-sm-2 text-left'"/>
+            <attr sel="/td[1]" th:class="'col-sm'"/>
+          </attr>
+        </attr>
+      </attr>
+    </attr>
+    <attr sel="/footer" th:class="'fixed-bottom'">
+      <attr sel="/nav" th:class="'navbar navbar-dark container'">
+        <attr sel="/span[0]" th:class="'col-sm text-left'"/>
+        <attr sel="/span[1]" th:class="'col-sm-3'"/>
+        <attr sel="/span[2]" th:class="'col-sm text-right'"/>
+        <attr sel="/span">
+          <attr sel="/a" th:class="'btn btn-link'"/>
+        </attr>
       </attr>
     </attr>
   </attr>

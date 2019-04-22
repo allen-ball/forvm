@@ -3,16 +3,6 @@
 /* @import "/webjars/bootstrap/css/bootstrap.css"; */
 @import "META-INF/resources/webjars/bootstrap/4.3.1/scss/bootstrap";
 
-@import "/webjars/prismjs/themes/prism-tomorrow.css";
-@import "/webjars/prismjs/plugins/toolbar/prism-toolbar.css";
-@import "/webjars/prismjs/plugins/autolinker/prism-autolinker.css";
-@import "/webjars/prismjs/plugins/command-line/prism-command-line.css";
-@import "/webjars/prismjs/plugins/line-highlight/prism-line-highlight.css";
-@import "/webjars/prismjs/plugins/line-numbers/prism-line-numbers.css";
-@import "/webjars/prismjs/plugins/previewers/prism-previewers.css";
-@import "/webjars/prismjs/plugins/unescaped-markup/prism-unescaped-markup.css";
-@import "/webjars/prismjs/plugins/wpd/prism-wpd.css";
-
 body {
   padding-top: 60px;
   margin-bottom: 60px;
@@ -30,7 +20,3 @@ header, footer { @extend .bg-dark, .text-white; }
 header > nav > ul > li > button { @extend .bg-dark, .text-white; }
 header > nav > ul > li > ul { @extend .bg-dark, .text-white; }
 header > nav > ul > li > ul > li > a { @extend .bg-dark, .text-white; }
-
-main { @extend .container; }
-main > div { @extend .jumbotron; }
-main > div > section { @extend .text-center; }
