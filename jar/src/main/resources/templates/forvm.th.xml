@@ -2,49 +2,50 @@
 <!-- $Id$ -->
 <thlogic>
   <attr sel="body">
-    <attr sel="/header" th:class="'fixed-top navbar navbar-dark'">
-      <attr sel="/nav" th:class="'container navbar-expand-md'"/>
-      <attr sel="nav/a[0]" th:class="'navbar-brand'"/>
-      <attr sel="nav/ul" th:class="'navbar-nav'"/>
-      <attr sel="nav/ul/li" th:class="'navbar-item dropdown'"/>
-      <attr sel="nav/ul/li/a" th:class="'btn nav-link'"/>
+    <attr sel="/header" th:classappend="'fixed-top navbar navbar-dark'">
+      <attr sel="/nav" th:classappend="'container navbar-expand-md'"/>
+      <attr sel="nav/a[0]" th:classappend="'navbar-brand'"/>
+      <attr sel="nav/ul" th:classappend="'navbar-nav'"/>
+      <attr sel="nav/ul/li" th:classappend="'navbar-item dropdown'"/>
+      <attr sel="nav/ul/li/a" th:classappend="'btn nav-link'"/>
       <attr sel="nav//ul/li/button"
-            th:class="'btn dropdown-toggle'"
+            th:classappend="'btn dropdown-toggle'"
             th:id="${#ids.seq('dropdown')}"
             th:data-toggle="'dropdown'"
             th:aria-haspopup="true" th:aria-expanded="false"/>
       <attr sel="nav//ul/li/ul"
-            th:class="'dropdown-menu'"
+            th:classappend="'dropdown-menu'"
             th:aria-labelledby="${#ids.prev('dropdown')}"/>
-      <attr sel="nav//ul/li/ul/li" th:class="'nav-item dropdown'"/>
-      <attr sel="nav//ul/li/ul/li/a" th:class="'btn nav-link dropdown-item'"/>
+      <attr sel="nav//ul/li/ul/li" th:classappend="'nav-item dropdown'"/>
+      <attr sel="nav//ul/li/ul/li/a"
+            th:classappend="'btn nav-link dropdown-item'"/>
     </attr>
-    <attr sel="main" th:class="'container'">
-      <attr sel="/div" th:class="'jumbotron'">
-        <attr sel="/div" th:class="'text-center'"/>
+    <attr sel="main" th:classappend="'container'">
+      <attr sel="/div" th:classappend="'jumbotron'">
+        <attr sel="/div" th:classappend="'text-center'"/>
       </attr>
-      <attr sel="/table" th:class="'table table-striped'">
+      <attr sel="/table" th:classappend="'table table-striped'">
         <attr sel="/tbody">
-          <attr sel="/tr" th:class="'row'"/>
+          <attr sel="/tr" th:classappend="'row'"/>
           <attr sel="article-row">
-            <attr sel="/td[0]" th:class="'col-sm'">
-              <attr sel="/a" th:class="'row'"/>
+            <attr sel="/td[0]" th:classappend="'col-sm'">
+              <attr sel="/a" th:classappend="'row'"/>
             </attr>
           </attr>
           <attr sel="author-row">
-            <attr sel="/td[0]" th:class="'col-sm-2 text-left'"/>
-            <attr sel="/td[1]" th:class="'col-sm'"/>
+            <attr sel="/td[0]" th:classappend="'col-sm-2 text-left'"/>
+            <attr sel="/td[1]" th:classappend="'col-sm'"/>
           </attr>
         </attr>
       </attr>
     </attr>
-    <attr sel="/footer" th:class="'fixed-bottom'">
-      <attr sel="/nav" th:class="'container navbar navbar-dark'">
-        <attr sel="/span[0]" th:class="'col-sm text-left'"/>
-        <attr sel="/span[1]" th:class="'col-sm-3 text-center'"/>
-        <attr sel="/span[2]" th:class="'col-sm text-right'"/>
+    <attr sel="/footer" th:classappend="'fixed-bottom'">
+      <attr sel="/nav" th:classappend="'container navbar navbar-dark'">
+        <attr sel="/span[0]" th:classappend="'col-sm text-left'"/>
+        <attr sel="/span[1]" th:classappend="'col-sm-3 text-center'"/>
+        <attr sel="/span[2]" th:classappend="'col-sm text-right'"/>
       </attr>
-      <attr sel="nav//a" th:class="'btn btn-link'"/>
+      <attr sel="nav//a" th:classappend="'btn btn-link'"/>
     </attr>
   </attr>
 </thlogic>

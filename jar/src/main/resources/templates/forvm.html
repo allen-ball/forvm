@@ -92,14 +92,14 @@
              th:href="@{''(page=${number})}"/>
           <a th:with="number = ${page.number + 0}"
              th:text="'<'"
-             th:classappend="${! page.hasPrevious()} ? disabled"
+             th:class="${! page.hasPrevious()} ? disabled"
              th:href="@{''(page=${number})}"/>
           <a th:with="number = ${page.number + 1}"
              th:text="${number}"
              th:href="@{''(page=${number})}"/>
           <a th:with="number = ${page.number + 2}"
              th:text="'>'"
-             th:classappend="${! page.hasNext()} ? disabled"
+             th:class="${! page.hasNext()} ? disabled"
              th:href="@{''(page=${number})}"/>
           <a th:with="number = ${page.totalPages > 0 ? page.totalPages : 1}"
              th:text="'>|'"
