@@ -15,7 +15,7 @@
 <body>
   <header>
     <nav th:with="brand = ${@environment.getProperty('application.brand')}">
-      <a th:href="@{/}" th:text="${brand ?: 'Home'}"/>
+      <a th:text="${brand ?: 'Home'}" th:href="@{/}"/>
       <ul>
         <li sec:authorize="hasAuthority('AUTHOR')">
           <button th:text="'Author'"/>
@@ -24,7 +24,7 @@
           </ul>
         </li>
         <li sec:authorize="hasAuthority('SUBSCRIBER')">
-          <button th:text="'Subscriber'" th:classappend="'disabled'"/>
+          <button th:text="'Subscriber'" th:disabled="${true}"/>
           <ul>
           </ul>
         </li>
@@ -86,19 +86,25 @@
     <nav>
       <span th:text="${#request.servletPath}"/>
       <span>
-        <a th:classappend="${page == null} ? disabled"
-           th:href="@{''(page=${1})}"
-           th:text="'|<'"/>
-        <a th:classappend="${! (page != null && page.hasPrevious())} ? disabled"
-           th:href="@{''(page=${(page != null) ? (page.number + 0) : 1})}"
-           th:text="'<'"/>
-        <th:block th:text="${page != null ? (page.number + 1) : '#'}"/>
-        <a th:classappend="${! (page != null && page.hasNext())} ? disabled"
-           th:href="@{''(page=${(page != null) ? (page.number + 2) : 1})}"
-           th:text="'>'"/>
-        <a th:classappend="${page == null} ? disabled"
-           th:href="@{''(page=${page?.totalPages > 0 ? page.totalPages : 1})}"
-           th:text="'>|'"/>
+        <th:block th:if="${#ctx.containsVariable('page')}">
+          <a th:with="number = ${1}"
+             th:text="'|<'"
+             th:href="@{''(page=${number})}"/>
+          <a th:with="number = ${page.number + 0}"
+             th:text="'<'"
+             th:classappend="${! page.hasPrevious()} ? disabled"
+             th:href="@{''(page=${number})}"/>
+          <a th:with="number = ${page.number + 1}"
+             th:text="${number}"
+             th:href="@{''(page=${number})}"/>
+          <a th:with="number = ${page.number + 2}"
+             th:text="'>'"
+             th:classappend="${! page.hasNext()} ? disabled"
+             th:href="@{''(page=${number})}"/>
+          <a th:with="number = ${page.totalPages > 0 ? page.totalPages : 1}"
+             th:text="'>|'"
+             th:href="@{''(page=${number})}"/>
+        </th:block>
       </span>
       <span>
         <th:block sec:authorize="isAuthenticated()">
