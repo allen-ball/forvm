@@ -2,7 +2,7 @@
 <div>
   <div>
     <div>
-      <form th:enctype="'multipart/form-data'">
+      <form th:object="${form}" th:enctype="'multipart/form-data'">
         <input type="file" th:name="file" th:placeholder="'markdown file'"/>
         <label th:text="'markdown file'"/>
         <button type="submit" th:text="'Submit'"/>
