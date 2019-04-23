@@ -7,7 +7,7 @@
       <attr sel="nav/a[0]" th:class="'navbar-brand'"/>
       <attr sel="nav/ul" th:class="'navbar-nav'"/>
       <attr sel="nav/ul/li" th:class="'navbar-item dropdown'"/>
-      <attr sel="nav/ul/li/a" th:class="'btn btn-link'"/>
+      <attr sel="nav/ul/li/a" th:class="'btn nav-link'"/>
       <attr sel="nav//ul/li/button"
             th:class="'btn dropdown-toggle'"
             th:id="${#ids.seq('dropdown')}"
@@ -17,7 +17,7 @@
             th:class="'dropdown-menu'"
             th:aria-labelledby="${#ids.prev('dropdown')}"/>
       <attr sel="nav//ul/li/ul/li" th:class="'nav-item dropdown'"/>
-      <attr sel="nav//ul/li/ul/li/a" th:class="'btn btn-link dropdown-item'"/>
+      <attr sel="nav//ul/li/ul/li/a" th:class="'btn nav-link dropdown-item'"/>
     </attr>
     <attr sel="main" th:class="'container'">
       <attr sel="/div" th:class="'jumbotron'">
