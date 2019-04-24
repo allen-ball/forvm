@@ -1,7 +1,7 @@
-2019-04-19  Allen D. Ball  <ball@sol.local>
+2019-04-23  Allen D. Ball  <ball@sol.local>
 
-	* Re-factored Thymeleaf templates: *.html to semantic HTML5,
-	*.th.xml to Bootstrap control classes, and *.[s]css to style.
+	* Re-factored Thymeleaf templates: *.html for semantic HTML5,
+	*.th.xml for Bootstrap control classes and style.
 
 2019-04-11  Allen D. Ball  <ball@sol.local>
 
