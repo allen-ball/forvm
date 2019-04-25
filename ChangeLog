@@ -1,3 +1,8 @@
+2019-04-25  Allen D. Ball  <ball@sol.local>
+
+	* jar/src/main/java/forvm/WebSecurityConfigurerImpl.java:
+	Allow unauthenticated access to /webjars/**.
+
 2019-04-23  Allen D. Ball  <ball@sol.local>
 
 	* pom.xml: Released version 1.2.0.

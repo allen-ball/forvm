@@ -6,6 +6,7 @@
 package forvm;
 
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,22 +49,14 @@ public abstract class WebSecurityConfigurerImpl
             .passwordEncoder(passwordEncoder);
     }
 
-    @Override
-    public String toString() { return super.toString(); }
-
     /**
      * {@link org.springframework.security.config.annotation.web.WebSecurityConfigurer}
      * implementation for the API
      */
     @Configuration
     @Order(1)
+    @NoArgsConstructor @ToString
     public static class API extends WebSecurityConfigurerImpl {
-
-        /**
-         * Sole constructor.
-         */
-        public API() { super(); }
-
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.antMatcher("/api/**")
@@ -79,17 +72,12 @@ public abstract class WebSecurityConfigurerImpl
      */
     @Configuration
     @Order(2)
+    @NoArgsConstructor @ToString
     public static class UI extends WebSecurityConfigurerImpl {
-
-        /**
-         * Sole constructor.
-         */
-        public UI() { super(); }
-
         @Override
         public void configure(WebSecurity web) throws Exception {
             web.ignoring()
-                .antMatchers("/css/**", "/js/**", "/images/**");
+                .antMatchers("/css/**", "/js/**", "/images/**", "/webjars/**");
         }
 
         @Override
