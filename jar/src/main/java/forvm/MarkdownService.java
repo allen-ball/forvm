@@ -17,8 +17,8 @@ import com.vladsch.flexmark.parser.ParserEmulationProfile;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.builder.Extension;
-import com.vladsch.flexmark.util.options.MutableDataHolder;
-import com.vladsch.flexmark.util.options.MutableDataSet;
+import com.vladsch.flexmark.util.data.MutableDataHolder;
+import com.vladsch.flexmark.util.data.MutableDataSet;
 import forvm.entity.Article;
 import forvm.entity.Attachment;
 import forvm.entity.Author;
@@ -369,7 +369,7 @@ public class MarkdownService {
         public boolean affectsGlobalScope() { return false; }
 
         @Override
-        public LinkResolver create(LinkResolverContext context) {
+        public LinkResolver apply(LinkResolverContext context) {
             return new LinkResolverImpl(context, prefix);
         }
 
