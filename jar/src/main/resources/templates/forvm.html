@@ -4,29 +4,15 @@
   <head th:with="gaid = ${@environment.getProperty('gaid')}">
     <meta http-equiv="x-ua-compatible" content="ie=edge"/>
     <title th:if="${title != null}" th:text="${title}"/>
-    <meta name="description" content=""/>
+    <meta th:if="${description != null}" name="description" th:content="${description}"/>
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"/>
-    <link rel="manifest" href="/site.webmanifest"/>
-    <link rel="icon" type="image/png" href="/favicon.png"/>
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
-    <link rel="stylesheet" th:href="@{/webjars/prismjs/themes/prism-tomorrow.css}"/>
-    <link rel="stylesheet" th:href="@{/webjars/prismjs/plugins/toolbar/prism-toolbar.css}"/>
-    <link rel="stylesheet" th:href="@{/webjars/prismjs/plugins/autolinker/prism-autolinker.css}"/>
-    <link rel="stylesheet" th:href="@{/webjars/prismjs/plugins/command-line/prism-command-line.css}"/>
-    <link rel="stylesheet" th:href="@{/webjars/prismjs/plugins/line-highlight/prism-line-highlight.css}"/>
-    <link rel="stylesheet" th:href="@{/webjars/prismjs/plugins/line-numbers/prism-line-numbers.css}"/>
-    <link rel="stylesheet" th:href="@{/webjars/prismjs/plugins/previewers/prism-previewers.css}"/>
-    <link rel="stylesheet" th:href="@{/webjars/prismjs/plugins/unescaped-markup/prism-unescaped-markup.css}"/>
-    <link rel="stylesheet" th:href="@{/webjars/prismjs/plugins/wpd/prism-wpd.css}"/>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.css}"/>
+    <link rel="stylesheet"/>
     <style/>
-    <script th:src="@{/js/plugins.js}" th:text="''"/>
+    <script/>
     <th:block th:if="${gaid != null}" th:insert="~{google-adsense}"/>
   </head>
   <body th:with="gtid = ${@environment.getProperty('gtid')}">
-    <!--[if lte IE 9]>
-      <p class="browserupgrade" th:utext="#{browserupgrade}"/>
-    <![endif]-->
+    <th:block th:insert="~{browserupgrade}"/>
     <header>
       <nav th:with="brand = ${@environment.getProperty('application.brand')}">
         <a th:text="${brand ?: 'Home'}" th:href="@{/}"/>
@@ -143,69 +129,7 @@
         </span>
       </nav>
     </footer>
-    <script th:src="@{/webjars/jquery/jquery.js}" th:text="''"/>
-    <script th:src="@{/webjars/bootstrap/js/bootstrap.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/prism.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-markup.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-css.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-clike.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-javascript.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-apacheconf.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-c.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-asciidoc.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-csharp.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-bash.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-bison.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-brainfuck.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-cpp.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-clojure.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-ruby.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-css-extras.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-diff.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-markup-templating.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-erlang.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-git.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-groovy.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-http.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-ini.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-java.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-javastacktrace.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-json.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-kotlin.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-latex.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-markdown.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-lisp.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-lua.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-makefile.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-nginx.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-perl.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-php.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-php-extras.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-sql.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-properties.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-python.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-sass.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-scheme.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/components/prism-yaml.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/toolbar/prism-toolbar.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/autolinker/prism-autolinker.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/autoloader/prism-autoloader.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/command-line/prism-command-line.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/custom-class/prism-custom-class.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/data-uri-highlight/prism-data-uri-highlight.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/file-highlight/prism-file-highlight.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/highlight-keywords/prism-highlight-keywords.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/jsonp-highlight/prism-jsonp-highlight.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/keep-markup/prism-keep-markup.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/line-highlight/prism-line-highlight.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/line-numbers/prism-line-numbers.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/previewers/prism-previewers.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/remove-initial-line-feed/prism-remove-initial-line-feed.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/show-language/prism-show-language.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/unescaped-markup/prism-unescaped-markup.js}" th:text="''"/>
-    <script th:src="@{/webjars/prismjs/plugins/wpd/prism-wpd.js}" th:text="''"/>
+    <script/>
     <th:block th:if="${gtid != null}" th:insert="~{google-analytics}"/>
   </body>
 </html>

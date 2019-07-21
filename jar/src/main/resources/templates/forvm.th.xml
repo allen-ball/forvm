@@ -2,10 +2,31 @@
 <!-- $Id$ -->
 <thlogic>
   <attr sel="head">
-    <attr sel="style[0]" th:text="'
+    <attr sel="link"
+          th:each="css :
+                     ${new String[] {
+                         '/webjars/prismjs/themes/prism-tomorrow.css',
+                         '/webjars/prismjs/plugins/toolbar/prism-toolbar.css',
+                         '/webjars/prismjs/plugins/autolinker/prism-autolinker.css',
+                         '/webjars/prismjs/plugins/command-line/prism-command-line.css',
+                         '/webjars/prismjs/plugins/line-highlight/prism-line-highlight.css',
+                         '/webjars/prismjs/plugins/line-numbers/prism-line-numbers.css',
+                         '/webjars/prismjs/plugins/previewers/prism-previewers.css',
+                         '/webjars/prismjs/plugins/unescaped-markup/prism-unescaped-markup.css',
+                         '/webjars/prismjs/plugins/wpd/prism-wpd.css',
+                         '/webjars/bootstrap/css/bootstrap.css'
+                       }}"
+          th:href="@{${css}}"/>
+    <attr sel="style" th:text="'
 body { padding-top: 60px; margin-bottom: 60px; }
 @media (max-width: 979px) { body { padding-top: 0px; } }
 '"/>
+    <attr sel="script"
+          th:each="script :
+                     ${new String[] {
+                         '/js/plugins.js'
+                       }}"
+          th:src="@{${script}}" th:text="''"/>
   </attr>
   <attr sel="body">
     <attr sel="/header"
@@ -51,5 +72,73 @@ body { padding-top: 60px; margin-bottom: 60px; }
       </attr>
       <attr sel="nav//a" th:classappend="'btn btn-link'"/>
     </attr>
+    <attr sel="script"
+          th:each="script :
+                     ${new String[] {
+                         '/webjars/jquery/jquery.js',
+                         '/webjars/bootstrap/js/bootstrap.js',
+                         '/webjars/prismjs/prism.js',
+                         '/webjars/prismjs/components/prism-markup.js',
+                         '/webjars/prismjs/components/prism-css.js',
+                         '/webjars/prismjs/components/prism-clike.js',
+                         '/webjars/prismjs/components/prism-javascript.js',
+                         '/webjars/prismjs/components/prism-apacheconf.js',
+                         '/webjars/prismjs/components/prism-c.js',
+                         '/webjars/prismjs/components/prism-asciidoc.js',
+                         '/webjars/prismjs/components/prism-csharp.js',
+                         '/webjars/prismjs/components/prism-bash.js',
+                         '/webjars/prismjs/components/prism-bison.js',
+                         '/webjars/prismjs/components/prism-brainfuck.js',
+                         '/webjars/prismjs/components/prism-cpp.js',
+                         '/webjars/prismjs/components/prism-clojure.js',
+                         '/webjars/prismjs/components/prism-ruby.js',
+                         '/webjars/prismjs/components/prism-css-extras.js',
+                         '/webjars/prismjs/components/prism-diff.js',
+                         '/webjars/prismjs/components/prism-markup-templating.js',
+                         '/webjars/prismjs/components/prism-erlang.js',
+                         '/webjars/prismjs/components/prism-git.js',
+                         '/webjars/prismjs/components/prism-groovy.js',
+                         '/webjars/prismjs/components/prism-http.js',
+                         '/webjars/prismjs/components/prism-ini.js',
+                         '/webjars/prismjs/components/prism-java.js',
+                         '/webjars/prismjs/components/prism-javastacktrace.js',
+                         '/webjars/prismjs/components/prism-json.js',
+                         '/webjars/prismjs/components/prism-kotlin.js',
+                         '/webjars/prismjs/components/prism-latex.js',
+                         '/webjars/prismjs/components/prism-markdown.js',
+                         '/webjars/prismjs/components/prism-lisp.js',
+                         '/webjars/prismjs/components/prism-lua.js',
+                         '/webjars/prismjs/components/prism-makefile.js',
+                         '/webjars/prismjs/components/prism-nginx.js',
+                         '/webjars/prismjs/components/prism-perl.js',
+                         '/webjars/prismjs/components/prism-php.js',
+                         '/webjars/prismjs/components/prism-php-extras.js',
+                         '/webjars/prismjs/components/prism-sql.js',
+                         '/webjars/prismjs/components/prism-properties.js',
+                         '/webjars/prismjs/components/prism-python.js',
+                         '/webjars/prismjs/components/prism-sass.js',
+                         '/webjars/prismjs/components/prism-scheme.js',
+                         '/webjars/prismjs/components/prism-yaml.js',
+                         '/webjars/prismjs/plugins/toolbar/prism-toolbar.js',
+                         '/webjars/prismjs/plugins/autolinker/prism-autolinker.js',
+                         '/webjars/prismjs/plugins/autoloader/prism-autoloader.js',
+                         '/webjars/prismjs/plugins/command-line/prism-command-line.js',
+                         '/webjars/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.js',
+                         '/webjars/prismjs/plugins/custom-class/prism-custom-class.js',
+                         '/webjars/prismjs/plugins/data-uri-highlight/prism-data-uri-highlight.js',
+                         '/webjars/prismjs/plugins/file-highlight/prism-file-highlight.js',
+                         '/webjars/prismjs/plugins/highlight-keywords/prism-highlight-keywords.js',
+                         '/webjars/prismjs/plugins/jsonp-highlight/prism-jsonp-highlight.js',
+                         '/webjars/prismjs/plugins/keep-markup/prism-keep-markup.js',
+                         '/webjars/prismjs/plugins/line-highlight/prism-line-highlight.js',
+                         '/webjars/prismjs/plugins/line-numbers/prism-line-numbers.js',
+                         '/webjars/prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js',
+                         '/webjars/prismjs/plugins/previewers/prism-previewers.js',
+                         '/webjars/prismjs/plugins/remove-initial-line-feed/prism-remove-initial-line-feed.js',
+                         '/webjars/prismjs/plugins/show-language/prism-show-language.js',
+                         '/webjars/prismjs/plugins/unescaped-markup/prism-unescaped-markup.js',
+                         '/webjars/prismjs/plugins/wpd/prism-wpd.js'
+                       }}"
+                       th:src="@{${script}}" th:text="''"/>
   </attr>
 </thlogic>

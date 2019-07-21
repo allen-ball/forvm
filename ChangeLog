@@ -1,5 +1,9 @@
 2019-07-21  Allen D. Ball  <ball@sol.local>
 
+	* jar/src/main/resources/templates/forvm.html,
+	jar/src/main/resources/templates/forvm.th.xml:
+	Moved formatting artifact references to decoupled logic.
+
 	* pom.xml: Started development of 1.3-SNAPSHOT.
 
 2019-04-25  Allen D. Ball  <ball@sol.local>
