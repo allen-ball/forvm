@@ -5,7 +5,7 @@
  */
 package forvm;
 
-import ball.spring.HTML5Template;
+import ball.spring.HTML5Controller;
 import forvm.entity.Article;
 import forvm.entity.Credential;
 import forvm.repository.ArticleRepository;
@@ -54,7 +54,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @ComponentScan(basePackageClasses =
                    { ball.spring.mysqld.MysqldComponent.class })
 @NoArgsConstructor @ToString
-public class UIController extends HTML5Template {
+public class UIController extends HTML5Controller {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String EXCEPTION = "exception";
@@ -94,7 +94,7 @@ public class UIController extends HTML5Template {
                            @RequestParam Optional<String> author,
                            @RequestParam Optional<Integer> page,
                            RedirectAttributes redirect) {
-        String view = VIEW;
+        String view = template();
 
         if (page.isPresent()) {
             PageRequest pr =
@@ -130,7 +130,7 @@ public class UIController extends HTML5Template {
         model
             .addAttribute("article", articleRepository.findBySlug(slug).get());
 
-        return VIEW;
+        return template();
     }
 
     @RequestMapping(method = { GET }, value = { "/authors/" })
@@ -139,7 +139,7 @@ public class UIController extends HTML5Template {
                           HttpServletRequest request,
                           @RequestParam Optional<Integer> page,
                           RedirectAttributes redirect) {
-        String view = VIEW;
+        String view = template();
 
         if (page.isPresent()) {
             PageRequest pr = PageRequest.of(page.get() - 1, page_size);
@@ -162,7 +162,7 @@ public class UIController extends HTML5Template {
     public String preview(Model model) {
         model.addAttribute(FORM, new PreviewForm());
 
-        return VIEW;
+        return template();
     }
 
     @RequestMapping(method = { POST }, value = { "/preview/" })
@@ -171,7 +171,7 @@ public class UIController extends HTML5Template {
                               Principal principal, HttpSession session,
                               HttpServletRequest request,
                               PreviewForm form, BindingResult result) {
-        String view = VIEW;
+        String view = template();
 
         try {
             if (! result.hasErrors()) {
@@ -211,7 +211,7 @@ public class UIController extends HTML5Template {
 
         model.addAttribute("article", article.get());
 
-        return VIEW;
+        return template();
     }
 
     @RequestMapping(method = { GET }, value = { "/login" })
@@ -219,7 +219,7 @@ public class UIController extends HTML5Template {
     public String login(Model model, HttpSession session) {
         model.addAttribute(FORM, new LoginForm());
 
-        return VIEW;
+        return template();
     }
 
     @RequestMapping(method = { GET }, value = { "/password" })
@@ -227,7 +227,7 @@ public class UIController extends HTML5Template {
     public String password(Model model) {
         model.addAttribute(FORM, new ChangePasswordForm());
 
-        return VIEW;
+        return template();
     }
 
     @RequestMapping(method = { POST }, value = { "/password" })
@@ -259,7 +259,7 @@ public class UIController extends HTML5Template {
             model.addAttribute(EXCEPTION, exception);
         }
 
-        return VIEW;
+        return template();
     }
 
     @RequestMapping(value = { "/logout" })
