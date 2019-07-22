@@ -77,7 +77,7 @@ public abstract class WebSecurityConfigurerImpl
         @Override
         public void configure(WebSecurity web) throws Exception {
             web.ignoring()
-                .antMatchers("/css/**", "/js/**", "/images/**", "/webjars/**");
+                .antMatchers("/css/**", "/js/**", "/images/**", "/webjarsjs");
         }
 
         @Override
