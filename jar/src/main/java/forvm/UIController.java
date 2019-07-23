@@ -61,11 +61,11 @@ public class UIController extends HTML5Controller {
     private static final String FORM = "form";
     private static final String PAGE = "page";
 
-    @Autowired private AuthorRepository authorRepository;
-    @Autowired private ArticleRepository articleRepository;
-    @Autowired private CredentialRepository credentialRepository;
-    @Autowired private MarkdownService service;
-    @Autowired private PasswordEncoder encoder;
+    @Autowired private AuthorRepository authorRepository = null;
+    @Autowired private ArticleRepository articleRepository = null;
+    @Autowired private CredentialRepository credentialRepository = null;
+    @Autowired private MarkdownService service = null;
+    @Autowired private PasswordEncoder encoder = null;
 
     private int page_size = 8;
 
