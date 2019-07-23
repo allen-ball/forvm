@@ -94,7 +94,7 @@ public class UIController extends HTML5Controller {
                            @RequestParam Optional<String> author,
                            @RequestParam Optional<Integer> page,
                            RedirectAttributes redirect) {
-        String view = template();
+        String view = view();
 
         if (page.isPresent()) {
             PageRequest pr =
@@ -130,7 +130,7 @@ public class UIController extends HTML5Controller {
         model
             .addAttribute("article", articleRepository.findBySlug(slug).get());
 
-        return template();
+        return view();
     }
 
     @RequestMapping(method = { GET }, value = { "/authors/" })
@@ -139,7 +139,7 @@ public class UIController extends HTML5Controller {
                           HttpServletRequest request,
                           @RequestParam Optional<Integer> page,
                           RedirectAttributes redirect) {
-        String view = template();
+        String view = view();
 
         if (page.isPresent()) {
             PageRequest pr = PageRequest.of(page.get() - 1, page_size);
@@ -162,7 +162,7 @@ public class UIController extends HTML5Controller {
     public String preview(Model model) {
         model.addAttribute(FORM, new PreviewForm());
 
-        return template();
+        return view();
     }
 
     @RequestMapping(method = { POST }, value = { "/preview/" })
@@ -171,7 +171,7 @@ public class UIController extends HTML5Controller {
                               Principal principal, HttpSession session,
                               HttpServletRequest request,
                               PreviewForm form, BindingResult result) {
-        String view = template();
+        String view = view();
 
         try {
             if (! result.hasErrors()) {
@@ -211,7 +211,7 @@ public class UIController extends HTML5Controller {
 
         model.addAttribute("article", article.get());
 
-        return template();
+        return view();
     }
 
     @RequestMapping(method = { GET }, value = { "/login" })
@@ -219,7 +219,7 @@ public class UIController extends HTML5Controller {
     public String login(Model model, HttpSession session) {
         model.addAttribute(FORM, new LoginForm());
 
-        return template();
+        return view();
     }
 
     @RequestMapping(method = { GET }, value = { "/password" })
@@ -227,7 +227,7 @@ public class UIController extends HTML5Controller {
     public String password(Model model) {
         model.addAttribute(FORM, new ChangePasswordForm());
 
-        return template();
+        return view();
     }
 
     @RequestMapping(method = { POST }, value = { "/password" })
@@ -259,7 +259,7 @@ public class UIController extends HTML5Controller {
             model.addAttribute(EXCEPTION, exception);
         }
 
-        return template();
+        return view();
     }
 
     @RequestMapping(value = { "/logout" })
