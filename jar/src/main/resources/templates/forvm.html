@@ -46,16 +46,14 @@
         </ul>
       </nav>
     </header>
-    <th:block th:unless="${#ctx.containsVariable('exception')}"
-              th:switch="${#request.servletPath}">
-      <div th:case="'/error'">
-        <section>
-          <h1 th:text="${#request.getAttribute('javax.servlet.error.request_uri')}"/>
-          <h2 th:text="${#request.getAttribute('javax.servlet.error.status_code')}"/>
-          <p th:text="${#request.getAttribute('javax.servlet.error.message')}"/>
-        </section>
-      </div>
-      <main th:case="*">
+    <main th:unless="${#ctx.containsVariable('exception')}"
+          th:switch="${#request.servletPath}">
+      <section th:case="'/error'">
+        <h1 th:text="${#request.getAttribute('javax.servlet.error.request_uri')}"/>
+        <h2 th:text="${#request.getAttribute('javax.servlet.error.status_code')}"/>
+        <p th:text="${#request.getAttribute('javax.servlet.error.message')}"/>
+      </section>
+      <section th:case="*">
         <th:block th:if="${#ctx.containsVariable('form')}">
           <th:block th:insert="~{${#execInfo.templateName + '/' + form.class.simpleName}}"/>
         </th:block>
@@ -89,14 +87,14 @@
           </tbody>
         </table>
         <p th:if="${#ctx.containsVariable('exception')}" th:text="${exception}"/>
-      </main>
-    </th:block>
-    <div th:if="${#ctx.containsVariable('exception')}">
+      </section>
+    </main>
+    <main th:if="${#ctx.containsVariable('exception')}">
       <section>
         <h1 th:text="${#request.getAttribute('javax.servlet.error.request_uri')}"/>
         <p th:text="${exception.message}"/>
       </section>
-    </div>
+    </main>
     <footer>
       <nav>
         <span th:text="${#request.servletPath}"/>
@@ -104,11 +102,11 @@
           <th:block th:if="${#ctx.containsVariable('page')}">
             <a th:with="number = ${1}"
                th:text="'|<'"
-            th:href="@{''(page=${number})}"/>
+               th:href="@{''(page=${number})}"/>
             <a th:with="number = ${page.number + 0}"
                th:text="'<'"
-            th:class="${! page.hasPrevious()} ? disabled"
-            th:href="@{''(page=${number})}"/>
+               th:class="${! page.hasPrevious()} ? disabled"
+               th:href="@{''(page=${number})}"/>
             <a th:with="number = ${page.number + 1}"
                th:text="${number}"
                th:href="@{''(page=${number})}"/>
