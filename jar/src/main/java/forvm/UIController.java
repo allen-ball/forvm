@@ -5,7 +5,7 @@
  */
 package forvm;
 
-import ball.spring.HTML5Controller;
+import ball.spring.AbstractController;
 import forvm.entity.Article;
 import forvm.entity.Credential;
 import forvm.repository.ArticleRepository;
@@ -54,7 +54,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @ComponentScan(basePackageClasses =
                    { ball.spring.mysqld.MysqldComponent.class })
 @NoArgsConstructor @ToString
-public class UIController extends HTML5Controller {
+public class UIController extends AbstractController {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String EXCEPTION = "exception";
