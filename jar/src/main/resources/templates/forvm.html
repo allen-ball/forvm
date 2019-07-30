@@ -104,33 +104,35 @@
     </main>
     <footer>
       <nav th:ref="navbar">
-        <span th:ref="left" th:text="${#request.servletPath}"/>
-        <span th:ref="center">
-          <th:block th:if="${#ctx.containsVariable('page')}">
-            <a th:with="number = ${1}"
-               th:text="'|<'"
-               th:href="@{''(page=${number})}"/>
-            <a th:with="number = ${page.number + 0}"
-               th:text="'<'"
-               th:class="${! page.hasPrevious()} ? disabled"
-               th:href="@{''(page=${number})}"/>
-            <a th:with="number = ${page.number + 1}"
-               th:text="${number}"
-               th:href="@{''(page=${number})}"/>
-            <a th:with="number = ${page.number + 2}"
-               th:text="'>'"
-               th:class="${! page.hasNext()} ? disabled"
-               th:href="@{''(page=${number})}"/>
-            <a th:with="number = ${page.totalPages > 0 ? page.totalPages : 1}"
-               th:text="'>|'"
-               th:href="@{''(page=${number})}"/>
-          </th:block>
-        </span>
-        <span th:ref="right">
-          <th:block sec:authorize="isAuthenticated()">
-            <span sec:authentication="authorities"/>
-          </th:block>
-        </span>
+        <div th:ref="container">
+          <span th:ref="left" th:text="${#request.servletPath}"/>
+          <span th:ref="center">
+            <th:block th:if="${#ctx.containsVariable('page')}">
+              <a th:with="number = ${1}"
+                 th:text="'|<'"
+                 th:href="@{''(page=${number})}"/>
+              <a th:with="number = ${page.number + 0}"
+                 th:text="'<'"
+                 th:class="${! page.hasPrevious()} ? disabled"
+                 th:href="@{''(page=${number})}"/>
+              <a th:with="number = ${page.number + 1}"
+                 th:text="${number}"
+                 th:href="@{''(page=${number})}"/>
+              <a th:with="number = ${page.number + 2}"
+                 th:text="'>'"
+                 th:class="${! page.hasNext()} ? disabled"
+                 th:href="@{''(page=${number})}"/>
+              <a th:with="number = ${page.totalPages > 0 ? page.totalPages : 1}"
+                 th:text="'>|'"
+                 th:href="@{''(page=${number})}"/>
+            </th:block>
+          </span>
+          <span th:ref="right">
+            <th:block sec:authorize="isAuthenticated()">
+              <span sec:authentication="authorities"/>
+            </th:block>
+          </span>
+        </div>
       </nav>
     </footer>
     <script/>
