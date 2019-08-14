@@ -16,6 +16,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.java.Log;
@@ -168,7 +169,7 @@ public class UIController extends AbstractController {
     public String previewPOST(Model model,
                               Principal principal, HttpSession session,
                               HttpServletRequest request,
-                              PreviewForm form, BindingResult result) {
+                              @Valid PreviewForm form, BindingResult result) {
         String view = getViewName();
 
         try {
@@ -231,7 +232,8 @@ public class UIController extends AbstractController {
     @RequestMapping(method = { POST }, value = { "/password" })
     @PreAuthorize("isAuthenticated()")
     public String passwordPOST(Model model,
-                               ChangePasswordForm form, BindingResult result) {
+                               @Valid ChangePasswordForm form,
+                               BindingResult result) {
         try {
             if (result.hasErrors()) {
                 throw new RuntimeException(String.valueOf(result.getAllErrors()));
