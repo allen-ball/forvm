@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2018 Allen D. Ball.  All rights reserved.
+ * Copyright 2018, 2019 Allen D. Ball.  All rights reserved.
  */
 package forvm;
 
@@ -10,8 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Backing bean for "login" form
@@ -24,10 +24,8 @@ import org.apache.logging.log4j.Logger;
 @NoArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode(callSuper = false)
-@ToString
+@ToString @Log4j2
 public class LoginForm {
-    private static final Logger LOGGER = LogManager.getLogger();
-
     private String username;
     private String password;
 }

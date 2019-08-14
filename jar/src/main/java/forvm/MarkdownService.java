@@ -36,12 +36,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.compress.utils.SeekableInMemoryByteChannel;
 import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,9 +57,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @version $Revision$
  */
 @Service
-@NoArgsConstructor @ToString
+@NoArgsConstructor @ToString @Log4j2
 public class MarkdownService {
-    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Configured {@link Extension}s.

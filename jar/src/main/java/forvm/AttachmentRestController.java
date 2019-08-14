@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,10 +40,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RestController
 @ComponentScan(basePackageClasses =
                    { ball.spring.mysqld.MysqldComponent.class })
-@NoArgsConstructor @ToString
+@NoArgsConstructor @ToString @Log4j2
 public class AttachmentRestController {
-    private static final Logger LOGGER = LogManager.getLogger();
-
     @Autowired private ArticleRepository articleRepository;
     @Autowired private AttachmentRepository attachmentRepository;
 

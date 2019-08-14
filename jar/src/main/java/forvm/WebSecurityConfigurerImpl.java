@@ -7,8 +7,8 @@ package forvm;
 
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -35,11 +35,9 @@ import static lombok.AccessLevel.PRIVATE;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@NoArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = PRIVATE) @Log4j2
 public abstract class WebSecurityConfigurerImpl
                       extends WebSecurityConfigurerAdapter {
-    private static final Logger LOGGER = LogManager.getLogger();
-
     @Autowired private UserDetailsService userDetailsService;
     @Autowired private PasswordEncoder passwordEncoder;
 

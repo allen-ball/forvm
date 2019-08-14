@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2018 Allen D. Ball.  All rights reserved.
+ * Copyright 2018, 2019 Allen D. Ball.  All rights reserved.
  */
 package forvm;
 
@@ -10,8 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -25,9 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode(callSuper = false)
-@ToString
+@ToString @Log4j2
 public class PreviewForm {
-    private static final Logger LOGGER = LogManager.getLogger();
-
     private MultipartFile file;
 }

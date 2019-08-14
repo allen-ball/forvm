@@ -18,9 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
@@ -53,10 +53,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 @ComponentScan(basePackageClasses =
                    { ball.spring.mysqld.MysqldComponent.class })
-@NoArgsConstructor @ToString
+@NoArgsConstructor @ToString @Log4j2
 public class UIController extends AbstractController {
-    private static final Logger LOGGER = LogManager.getLogger();
-
     private static final String EXCEPTION = "exception";
     private static final String FORM = "form";
     private static final String PAGE = "page";

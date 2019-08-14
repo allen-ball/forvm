@@ -14,9 +14,9 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpMethod;
@@ -48,10 +48,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @ComponentScan(basePackageClasses =
                    { ball.spring.mysqld.MysqldComponent.class })
 @RequestMapping(value = { "/api/v1" }, produces = "application/json")
-@NoArgsConstructor @ToString
+@NoArgsConstructor @ToString @Log4j2
 public class APIRestController {
-    private static final Logger LOGGER = LogManager.getLogger();
-
     @Autowired private AuthorRepository authorRepository;
     @Autowired private ArticleRepository articleRepository;
     @Autowired private MarkdownService service;
