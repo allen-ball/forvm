@@ -21,6 +21,5 @@
   </properties>
   <modules>
     <module>./jar</module>
-    <module>./war</module>
   </modules>
 </project>
