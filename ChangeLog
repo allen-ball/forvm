@@ -1,20 +1,20 @@
 2019-07-29  Allen D. Ball  <ball@sol.local>
 
-	* jar/src/main/resources/templates/forvm.*:
+	* src/main/resources/templates/forvm.*:
 	Restructured <nav/> nodes to be consistent (at least in structure)
 	with a Bulma solution.
 
 2019-07-21  Allen D. Ball  <ball@sol.local>
 
-	* jar/src/main/resources/templates/forvm.html,
-	jar/src/main/resources/templates/forvm.th.xml:
+	* src/main/resources/templates/forvm.html,
+	src/main/resources/templates/forvm.th.xml:
 	Moved formatting artifact references to decoupled logic.
 
 	* pom.xml: Started development of 1.3-SNAPSHOT.
 
 2019-04-25  Allen D. Ball  <ball@sol.local>
 
-	* jar/src/main/java/forvm/WebSecurityConfigurerImpl.java:
+	* src/main/java/forvm/WebSecurityConfigurerImpl.java:
 	Allow unauthenticated access to /webjars/**.
 
 2019-04-23  Allen D. Ball  <ball@sol.local>
@@ -26,7 +26,7 @@
 
 2019-04-11  Allen D. Ball  <ball@sol.local>
 
-	* jar/src/main/resources/templates/HTML5Template/body/header.th.xml:
+	* src/main/resources/templates/HTML5Template/body/header.th.xml:
 	Converted from header.html.
 
 2019-04-09  Allen D. Ball  <ball@sol.local>
