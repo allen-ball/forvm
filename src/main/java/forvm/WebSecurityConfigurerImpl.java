@@ -73,7 +73,7 @@ public abstract class WebSecurityConfigurerImpl
     @NoArgsConstructor @ToString
     public static class UI extends WebSecurityConfigurerImpl {
         @Override
-        public void configure(WebSecurity web) throws Exception {
+        public void configure(WebSecurity web) {
             web.ignoring()
                 .antMatchers("/css/**", "/js/**", "/images/**",
                              "/webjars/**", "/webjarsjs");
