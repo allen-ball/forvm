@@ -14,7 +14,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -47,7 +47,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @RestController
 @ComponentScan(basePackageClasses =
                    { ball.spring.mysqld.MysqldComponent.class })
-@RequestMapping(value = { "/api/v1" }, produces = "application/json")
+@RequestMapping(value = { "/api/v1" }, produces = APPLICATION_JSON_VALUE)
 @NoArgsConstructor @ToString @Log4j2
 public class APIRestController {
     @Autowired private AuthorRepository authorRepository;
