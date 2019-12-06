@@ -7,7 +7,6 @@ package forvm;
 
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -73,7 +72,7 @@ public abstract class WebSecurityConfigurerImpl
     @NoArgsConstructor @ToString
     public static class UI extends WebSecurityConfigurerImpl {
         @Override
-        public void configure(WebSecurity web) throws Exception {
+        public void configure(WebSecurity web) {
             web.ignoring()
                 .antMatchers("/css/**", "/js/**", "/images/**",
                              "/webjars/**", "/webjarsjs");
