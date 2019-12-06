@@ -7,7 +7,6 @@ package forvm;
 
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.apache.tika.Tika;
 import org.springframework.context.annotation.Bean;
