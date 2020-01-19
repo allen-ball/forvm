@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2018, 2019 Allen D. Ball.  All rights reserved.
+ * Copyright 2018 - 2020 Allen D. Ball.  All rights reserved.
  */
 package forvm;
 
@@ -24,7 +24,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 /**
  * {@link org.springframework.security.config.annotation.web.WebSecurityConfigurer}
- * abstract base class
+ * abstract base class.
  *
  * {@injected.fields}
  *
@@ -48,7 +48,7 @@ public abstract class WebSecurityConfigurerImpl
 
     /**
      * {@link org.springframework.security.config.annotation.web.WebSecurityConfigurer}
-     * implementation for the API
+     * implementation for the API.
      */
     @Configuration
     @Order(1)
@@ -65,7 +65,7 @@ public abstract class WebSecurityConfigurerImpl
 
     /**
      * {@link org.springframework.security.config.annotation.web.WebSecurityConfigurer}
-     * implementation for the UI
+     * implementation for the UI.
      */
     @Configuration
     @Order(2)

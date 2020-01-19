@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2018, 2019 Allen D. Ball.  All rights reserved.
+ * Copyright 2018 - 2020 Allen D. Ball.  All rights reserved.
  */
 package forvm;
 
@@ -14,7 +14,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * Backing bean for "preview" form
+ * Backing bean for "preview" form.
  *
  * {@bean.info}
  *
