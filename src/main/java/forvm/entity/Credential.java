@@ -28,8 +28,7 @@ import lombok.Setter;
  */
 @Entity
 @Table(catalog = "forvm", name = "credentials")
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor @EqualsAndHashCode(callSuper = false)
 public class Credential extends JSONBean {
     private static final long serialVersionUID = -4744967204003834531L;
 

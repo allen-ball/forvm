@@ -22,8 +22,7 @@ import lombok.extern.log4j.Log4j2;
  */
 @NoArgsConstructor
 @Getter @Setter
-@EqualsAndHashCode(callSuper = false)
-@ToString @Log4j2
+@EqualsAndHashCode(callSuper = false) @ToString @Log4j2
 public class ChangePasswordForm {
     private String username;
     private String password;

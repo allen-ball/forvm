@@ -32,8 +32,7 @@ import static javax.persistence.CascadeType.ALL;
  */
 @Entity
 @Table(catalog = "forvm", name = "authors")
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor @EqualsAndHashCode(callSuper = false)
 public class Author extends JSONBean {
     private static final long serialVersionUID = -4572928690438354380L;
 

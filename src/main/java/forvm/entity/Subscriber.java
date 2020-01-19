@@ -25,8 +25,7 @@ import lombok.Setter;
  */
 @Entity
 @Table(catalog = "forvm", name = "subscribers")
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor @EqualsAndHashCode(callSuper = false)
 public class Subscriber extends JSONBean {
     private static final long serialVersionUID = 7653301177108322391L;
 

@@ -23,8 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @NoArgsConstructor
 @Getter @Setter
-@EqualsAndHashCode(callSuper = false)
-@ToString @Log4j2
+@EqualsAndHashCode(callSuper = false) @ToString @Log4j2
 public class PreviewForm {
     private MultipartFile file;
 }
