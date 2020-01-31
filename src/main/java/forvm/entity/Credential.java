@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2018, 2019 Allen D. Ball.  All rights reserved.
+ * Copyright 2018 - 2020 Allen D. Ball.  All rights reserved.
  */
 package forvm.entity;
 
@@ -19,6 +19,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
+ * {@link Credential} {@link Entity}.
+ *
  * {@bean.info}
  *
  * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}
@@ -26,8 +28,7 @@ import lombok.Setter;
  */
 @Entity
 @Table(catalog = "forvm", name = "credentials")
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor @EqualsAndHashCode(callSuper = false)
 public class Credential extends JSONBean {
     private static final long serialVersionUID = -4744967204003834531L;
 

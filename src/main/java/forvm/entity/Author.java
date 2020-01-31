@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2018, 2019 Allen D. Ball.  All rights reserved.
+ * Copyright 2018 - 2020 Allen D. Ball.  All rights reserved.
  */
 package forvm.entity;
 
@@ -23,6 +23,8 @@ import lombok.Setter;
 import static javax.persistence.CascadeType.ALL;
 
 /**
+ * {@link Author} {@link Entity}.
+ *
  * {@bean.info}
  *
  * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}
@@ -30,8 +32,7 @@ import static javax.persistence.CascadeType.ALL;
  */
 @Entity
 @Table(catalog = "forvm", name = "authors")
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor @EqualsAndHashCode(callSuper = false)
 public class Author extends JSONBean {
     private static final long serialVersionUID = -4572928690438354380L;
 

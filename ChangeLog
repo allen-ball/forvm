@@ -1,3 +1,12 @@
+2020-01-30  Allen D. Ball  <ball@hcf.dev>
+
+	* pom.xml: Released version 1.4.0.
+
+2020-01-28  Allen D. Ball  <ball@hcf.dev>
+
+	* src/main/resources/application.properties:
+	Let Spring determine MySQL dialect.
+
 2020-01-18  Allen D. Ball  <ball@hcf.dev>
 
 	* pom.xml:

@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2018, 2019 Allen D. Ball.  All rights reserved.
+ * Copyright 2018 - 2020 Allen D. Ball.  All rights reserved.
  */
 package forvm;
 
@@ -48,7 +48,7 @@ import org.springframework.stereotype.Service;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Markdown {@link Service}
+ * Markdown {@link Service}.
  *
  * {@injected.fields}
  *
