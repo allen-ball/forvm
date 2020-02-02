@@ -6,6 +6,7 @@
                              http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <name>forvm Blog Publishing Platform</name>
+  <description></description>
   <groupId>ball</groupId>
   <artifactId>forvm</artifactId>
   <version>1.4.0</version>
@@ -16,6 +17,7 @@
     <version>20200130.0</version>
     <relativePath>../ball/parent/pom.xml</relativePath>
   </parent>
+  <inceptionYear>2018</inceptionYear>
   <profiles>
     <profile>
       <id>spring-boot:run</id>
