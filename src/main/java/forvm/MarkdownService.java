@@ -31,9 +31,9 @@ import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.parser.ParserEmulationProfile;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
-import com.vladsch.flexmark.util.builder.Extension;
 import com.vladsch.flexmark.util.data.MutableDataHolder;
 import com.vladsch.flexmark.util.data.MutableDataSet;
+import com.vladsch.flexmark.util.misc.Extension;
 import forvm.entity.Article;
 import forvm.entity.Attachment;
 import forvm.entity.Author;
@@ -96,14 +96,14 @@ public class MarkdownService {
                       com.vladsch.flexmark.ext.gitlab.GitLabExtension.class,
                       com.vladsch.flexmark.ext.ins.InsExtension.class,
                       com.vladsch.flexmark.ext.media.tags.MediaTagsExtension.class,
+                      com.vladsch.flexmark.ext.superscript.SuperscriptExtension.class,
                       com.vladsch.flexmark.ext.tables.TablesExtension.class,
                       com.vladsch.flexmark.ext.toc.TocExtension.class,
                       com.vladsch.flexmark.ext.typographic.TypographicExtension.class,
                       com.vladsch.flexmark.ext.wikilink.WikiLinkExtension.class,
                       com.vladsch.flexmark.ext.xwiki.macros.MacroExtension.class,
                       com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension.class,
-                      com.vladsch.flexmark.ext.youtube.embedded.YouTubeLinkExtension.class,
-                      com.vladsch.flexmark.superscript.SuperscriptExtension.class);
+                      com.vladsch.flexmark.ext.youtube.embedded.YouTubeLinkExtension.class);
 
     private static final MutableDataHolder OPTIONS;
 
@@ -369,14 +369,10 @@ public class MarkdownService {
         }
 
         @Override
-        public Set<Class<? extends LinkResolverFactory>> getAfterDependents() {
-            return null;
-        }
+        public Set<Class<?>> getAfterDependents() { return null; }
 
         @Override
-        public Set<Class<? extends LinkResolverFactory>> getBeforeDependents() {
-            return null;
-        }
+        public Set<Class<?>> getBeforeDependents() { return null; }
 
         @Override
         public boolean affectsGlobalScope() { return false; }
