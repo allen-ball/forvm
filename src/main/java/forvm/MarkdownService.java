@@ -1,10 +1,25 @@
-/*
- * $Id$
- *
- * Copyright 2018 - 2020 Allen D. Ball.  All rights reserved.
- */
 package forvm;
-
+/*-
+ * ##########################################################################
+ * forvm Blog Publishing Platform
+ * $Id$
+ * $HeadURL$
+ * %%
+ * Copyright (C) 2018 - 2020 Allen D. Ball
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ##########################################################################
+ */
 import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.html.LinkResolver;
@@ -16,9 +31,9 @@ import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.parser.ParserEmulationProfile;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
-import com.vladsch.flexmark.util.builder.Extension;
 import com.vladsch.flexmark.util.data.MutableDataHolder;
 import com.vladsch.flexmark.util.data.MutableDataSet;
+import com.vladsch.flexmark.util.misc.Extension;
 import forvm.entity.Article;
 import forvm.entity.Attachment;
 import forvm.entity.Author;
@@ -81,14 +96,14 @@ public class MarkdownService {
                       com.vladsch.flexmark.ext.gitlab.GitLabExtension.class,
                       com.vladsch.flexmark.ext.ins.InsExtension.class,
                       com.vladsch.flexmark.ext.media.tags.MediaTagsExtension.class,
+                      com.vladsch.flexmark.ext.superscript.SuperscriptExtension.class,
                       com.vladsch.flexmark.ext.tables.TablesExtension.class,
                       com.vladsch.flexmark.ext.toc.TocExtension.class,
                       com.vladsch.flexmark.ext.typographic.TypographicExtension.class,
                       com.vladsch.flexmark.ext.wikilink.WikiLinkExtension.class,
                       com.vladsch.flexmark.ext.xwiki.macros.MacroExtension.class,
                       com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension.class,
-                      com.vladsch.flexmark.ext.youtube.embedded.YouTubeLinkExtension.class,
-                      com.vladsch.flexmark.superscript.SuperscriptExtension.class);
+                      com.vladsch.flexmark.ext.youtube.embedded.YouTubeLinkExtension.class);
 
     private static final MutableDataHolder OPTIONS;
 
@@ -354,14 +369,10 @@ public class MarkdownService {
         }
 
         @Override
-        public Set<Class<? extends LinkResolverFactory>> getAfterDependents() {
-            return null;
-        }
+        public Set<Class<?>> getAfterDependents() { return null; }
 
         @Override
-        public Set<Class<? extends LinkResolverFactory>> getBeforeDependents() {
-            return null;
-        }
+        public Set<Class<?>> getBeforeDependents() { return null; }
 
         @Override
         public boolean affectsGlobalScope() { return false; }
