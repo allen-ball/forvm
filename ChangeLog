@@ -1,3 +1,7 @@
+2020-04-12  Allen D. Ball  <ball@hcf.dev>
+
+	* pom.xml: Released version 1.6.1.
+
 2020-04-08  Allen D. Ball  <ball@hcf.dev>
 
 	* src/main/java/forvm/MarkdownService.java:
