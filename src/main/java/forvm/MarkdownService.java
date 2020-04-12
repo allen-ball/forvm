@@ -24,7 +24,7 @@ import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.html.LinkResolver;
 import com.vladsch.flexmark.html.LinkResolverFactory;
-import com.vladsch.flexmark.html.renderer.LinkResolverContext;
+import com.vladsch.flexmark.html.renderer.LinkResolverBasicContext;
 import com.vladsch.flexmark.html.renderer.LinkStatus;
 import com.vladsch.flexmark.html.renderer.ResolvedLink;
 import com.vladsch.flexmark.parser.Parser;
@@ -378,7 +378,7 @@ public class MarkdownService {
         public boolean affectsGlobalScope() { return false; }
 
         @Override
-        public LinkResolver apply(LinkResolverContext context) {
+        public LinkResolver apply(LinkResolverBasicContext context) {
             return new LinkResolverImpl(context, prefix);
         }
 
@@ -392,13 +392,13 @@ public class MarkdownService {
 
         private final URI prefix;
 
-        public LinkResolverImpl(LinkResolverContext context, URI prefix) {
+        public LinkResolverImpl(LinkResolverBasicContext context, URI prefix) {
             this.prefix = Objects.requireNonNull(prefix);
         }
 
         @Override
         public ResolvedLink resolveLink(Node node,
-                                        LinkResolverContext context,
+                                        LinkResolverBasicContext context,
                                         ResolvedLink link) {
             URI uri = URI.create(link.getUrl()).normalize();
 
