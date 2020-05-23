@@ -54,6 +54,24 @@
           <scope>runtime</scope>
         </dependency>
       </dependencies>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>ball</groupId>
+              <artifactId>ball-license-maven-plugin</artifactId>
+              <configuration>
+                <selections>
+                  <selection>
+                    <artifact>mysql:mysql-connector-java</artifact>
+                    <license>GPL-2.0 WITH Universal-FOSS-exception-1.0</license>
+                  </selection>
+                </selections>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
     </profile>
   </profiles>
   <properties>
