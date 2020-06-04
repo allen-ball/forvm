@@ -44,7 +44,7 @@
           description="--> Invokes &lt;markdown-parse/&gt; task."
           depends="jar-classes">
     <taskdef classpathref="build.classpath"
-             resource="forvm/ant/defaults.properties"/>
+             resource="forvm/ant/antlib.xml"/>
     <markdown-parse classpathref="runtime.classpath"/>
   </target>
 
@@ -52,7 +52,7 @@
           description="--> Invokes &lt;markdown-render/&gt; task."
           depends="jar-classes">
     <taskdef classpathref="build.classpath"
-             resource="forvm/ant/defaults.properties"/>
+             resource="forvm/ant/antlib.xml"/>
     <markdown-render classpathref="runtime.classpath"/>
   </target>
 
