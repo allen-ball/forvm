@@ -351,16 +351,15 @@ public class MarkdownService {
         return visitor.getData();
     }
 
+    @ToString
     private class ZipFileImpl extends ZipFile {
         public ZipFileImpl(String name, byte[] contents) throws IOException {
             super(new SeekableInMemoryByteChannel(contents),
                   name, UTF_8.name(), true);
         }
-
-        @Override
-        public String toString() { return super.toString(); }
     }
 
+    @ToString
     private class LinkResolverFactoryImpl implements LinkResolverFactory {
         private final URI prefix;
 
@@ -381,11 +380,9 @@ public class MarkdownService {
         public LinkResolver apply(LinkResolverBasicContext context) {
             return new LinkResolverImpl(context, prefix);
         }
-
-        @Override
-        public String toString() { return super.toString(); }
     }
 
+    @ToString
     private class LinkResolverImpl implements LinkResolver {
         private static final String FILE = "file";
         private static final String SLASH = "/";
@@ -413,8 +410,5 @@ public class MarkdownService {
 
             return link;
         }
-
-        @Override
-        public String toString() { return super.toString(); }
     }
 }
