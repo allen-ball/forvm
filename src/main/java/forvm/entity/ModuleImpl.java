@@ -34,6 +34,7 @@ import lombok.ToString;
 @ServiceProviderFor({ Module.class })
 @ToString
 public class ModuleImpl extends SimpleModule {
+    private static final long serialVersionUID = 7298172921762166185L;
 
     /**
      * Sole constructor.
