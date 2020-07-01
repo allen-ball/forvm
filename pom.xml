@@ -49,6 +49,11 @@
       <id>spring-boot:run</id>
       <dependencies>
         <dependency>
+          <groupId>ball</groupId>
+          <artifactId>ball-spring-mysqld-starter</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
           <groupId>org.springframework.cloud</groupId>
           <artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
           <scope>runtime</scope>

@@ -32,7 +32,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,8 +51,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
  * @version $Revision$
  */
 @RestController
-@ComponentScan(basePackageClasses =
-                   { ball.spring.mysqld.MysqldComponent.class })
 @NoArgsConstructor @ToString @Log4j2
 public class AttachmentRestController {
     @Autowired private ArticleRepository articleRepository;

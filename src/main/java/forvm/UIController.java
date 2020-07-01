@@ -37,7 +37,6 @@ import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -66,8 +65,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  * @version $Revision$
  */
 @Controller
-@ComponentScan(basePackageClasses =
-                   { ball.spring.mysqld.MysqldComponent.class })
 @NoArgsConstructor @ToString @Log4j2
 public class UIController extends AbstractController {
     private static final String EXCEPTION = "exception";
