@@ -32,7 +32,6 @@ import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,8 +59,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
  * @version $Revision$
  */
 @RestController
-@ComponentScan(basePackageClasses =
-                   { ball.spring.mysqld.MysqldComponent.class })
 @RequestMapping(value = { "/api/v1" }, produces = APPLICATION_JSON_VALUE)
 @NoArgsConstructor @ToString @Log4j2
 public class APIRestController {

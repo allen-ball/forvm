@@ -28,12 +28,12 @@
   <description></description>
   <groupId>ball</groupId>
   <artifactId>forvm</artifactId>
-  <version>1.7.0</version>
+  <version>1.7.1</version>
   <packaging>jar</packaging>
   <parent>
     <groupId>ball</groupId>
     <artifactId>parent</artifactId>
-    <version>20200612.0</version>
+    <version>20200715.0</version>
     <relativePath>../ball/parent/pom.xml</relativePath>
   </parent>
   <inceptionYear>2018</inceptionYear>
@@ -48,6 +48,11 @@
     <profile>
       <id>spring-boot:run</id>
       <dependencies>
+        <dependency>
+          <groupId>ball</groupId>
+          <artifactId>ball-spring-mysqld-starter</artifactId>
+          <scope>runtime</scope>
+        </dependency>
         <dependency>
           <groupId>org.springframework.cloud</groupId>
           <artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
@@ -75,7 +80,7 @@
     </profile>
   </profiles>
   <properties>
-    <jre.version>1.8</jre.version>
+    <jse.target>8</jse.target>
     <start-class>forvm.Launcher</start-class>
   </properties>
   <dependencies verbose="true">
