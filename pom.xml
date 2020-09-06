@@ -28,7 +28,7 @@
   <description></description>
   <groupId>ball</groupId>
   <artifactId>forvm</artifactId>
-  <version>1.8.0</version>
+  <version>1.8.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <parent>
     <groupId>ball</groupId>
