@@ -3,9 +3,8 @@
 <thlogic>
   <attr sel="head">
     <attr sel="link[rel='stylesheet']"
-          th:each="href : ${#strings.listSplit(stylesheets, ',')}"
-          th:with="path = @{${#strings.trim(href)}}"
-          th:href="@{${#webjars.cdn(#request.scheme, path)}}"/>
+          th:each="href : ${#webjars.assets(true, #request.scheme, stylesheets)}"
+          th:href="@{${href}}"/>
     <attr sel="style" th:if="${style != null}" th:text="${style}"/>
   </attr>
   <attr sel="body">
@@ -65,8 +64,7 @@
       </attr>
     </attr>
     <attr sel="script"
-          th:each="src : ${#strings.listSplit(scripts, ',')}"
-          th:with="path = @{${#strings.trim(src)}}"
-          th:src="@{${#webjars.cdn(#request.scheme, path)}}" th:text="''"/>
+          th:each="src : ${#webjars.assets(true, #request.scheme, scripts)}"
+          th:src="@{${src}}" th:text="''"/>
   </attr>
 </thlogic>
