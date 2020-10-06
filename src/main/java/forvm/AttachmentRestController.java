@@ -26,7 +26,6 @@ import forvm.repository.ArticleRepository;
 import forvm.repository.AttachmentRepository;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -56,12 +55,11 @@ public class AttachmentRestController {
     @Autowired private ArticleRepository articleRepository;
     @Autowired private AttachmentRepository attachmentRepository;
 
-    @RequestMapping(method = { GET }, value = { "/article/{slug}/**" })
+    @RequestMapping(method = { GET }, value = { "/article/{slug}/{name:.+}" })
     @PreAuthorize("permitAll()")
-    public byte[] get(HttpServletRequest request,
-                      @PathVariable String slug) throws Exception {
-        String uri = request.getRequestURI();
-        String path = uri.substring(uri.indexOf(slug) + slug.length());
+    public byte[] get(@PathVariable String slug,
+                      @PathVariable String name) throws Exception {
+        String path = "/" + name;
         Optional<Attachment> attachment =
             articleRepository.findBySlug(slug)
             .flatMap(t -> attachmentRepository.findByArticleAndPath(t, path));
@@ -69,13 +67,12 @@ public class AttachmentRestController {
         return attachment.get().getContent();
     }
 
-    @RequestMapping(method = { GET }, value = { "/preview/{slug}/**" })
+    @RequestMapping(method = { GET }, value = { "/preview/{slug}/{name:.+}" })
     @PreAuthorize("hasAuthority('AUTHOR')")
     public byte[] get(HttpSession session,
-                      HttpServletRequest request,
-                      @PathVariable String slug) throws Exception {
-        String uri = request.getRequestURI();
-        String path = uri.substring(uri.indexOf(slug) + slug.length());
+                      @PathVariable String slug,
+                      @PathVariable String name) throws Exception {
+        String path = "/" + name;
         Optional<Attachment> attachment =
             Optional.ofNullable((Article) session.getAttribute(slug)).get()
             .getAttachments().stream()

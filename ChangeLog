@@ -1,3 +1,9 @@
+2020-10-06  Allen D. Ball  <ball@hcf.dev>
+
+	* src/main/java/forvm/AttachmentRestController.java:
+	Use ".../{slug}/{path:.+}" (regular expression) to get attachment
+	path.
+
 2020-09-19  Allen D. Ball  <ball@hcf.dev>
 
 	* src/main/resources/templates/forvm.th.xml:
