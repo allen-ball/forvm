@@ -1,3 +1,7 @@
+2020-10-11  Allen D. Ball  <ball@hcf.dev>
+
+	* pom.xml: Added Oauth2 client dependencies.
+
 2020-10-06  Allen D. Ball  <ball@hcf.dev>
 
 	* src/main/java/forvm/AttachmentRestController.java:
