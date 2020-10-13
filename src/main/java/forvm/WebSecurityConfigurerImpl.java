@@ -71,10 +71,10 @@ public abstract class WebSecurityConfigurerImpl
     public static class API extends WebSecurityConfigurerImpl {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/api/**")
-                .csrf().disable()
-                .authorizeRequests().anyRequest().authenticated()
-                .and().httpBasic();
+            http
+                .antMatcher("/api/**").csrf().disable()
+                .authorizeRequests(t -> t.anyRequest().permitAll())
+                .httpBasic();
         }
     }
 
@@ -86,19 +86,21 @@ public abstract class WebSecurityConfigurerImpl
     @Order(2)
     @NoArgsConstructor @ToString
     public static class UI extends WebSecurityConfigurerImpl {
+        private static final String[] IGNORE = {
+            "/css/**", "/js/**", "/images/**", "/webjars/**", "/webjarsjs"
+        };
+
         @Override
         public void configure(WebSecurity web) {
-            web.ignoring()
-                .antMatchers("/css/**", "/js/**", "/images/**",
-                             "/webjars/**", "/webjarsjs");
+            web.ignoring().antMatchers(IGNORE);
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                .authorizeRequests().anyRequest().permitAll()
-                .and().formLogin().loginPage("/login").permitAll()
-                .and().logout().permitAll();
+                .authorizeRequests(t -> t.anyRequest().permitAll())
+                .formLogin(t -> t.loginPage("/login").permitAll())
+                .logout(t -> t.permitAll());
         }
     }
 }
