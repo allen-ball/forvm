@@ -72,7 +72,7 @@ public abstract class WebSecurityConfigurerImpl
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                .antMatcher("/api/**").csrf().disable()
+                .csrf(t -> t.ignoringAntMatchers("/api/**"))
                 .authorizeRequests(t -> t.anyRequest().permitAll())
                 .httpBasic();
         }
