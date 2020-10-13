@@ -34,8 +34,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static lombok.AccessLevel.PRIVATE;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
  * {@link org.springframework.security.config.annotation.web.WebSecurityConfigurer}
@@ -71,10 +73,10 @@ public abstract class WebSecurityConfigurerImpl
     public static class API extends WebSecurityConfigurerImpl {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http
-                .csrf(t -> t.ignoringAntMatchers("/api/**"))
-                .authorizeRequests(t -> t.anyRequest().permitAll())
-                .httpBasic();
+            http.antMatcher("/api/**")
+                .csrf(t -> t.disable())
+                .authorizeRequests(t -> t.anyRequest().authenticated())
+                .httpBasic(withDefaults());
         }
     }
 
@@ -97,10 +99,11 @@ public abstract class WebSecurityConfigurerImpl
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http
+            http.antMatcher("/**")
                 .authorizeRequests(t -> t.anyRequest().permitAll())
                 .formLogin(t -> t.loginPage("/login").permitAll())
-                .logout(t -> t.permitAll());
+                .logout(t -> t.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                              .logoutSuccessUrl("/").permitAll());
         }
     }
 }

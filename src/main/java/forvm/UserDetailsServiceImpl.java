@@ -60,10 +60,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = null;
-        Optional<Credential> credential =
-            credentialRepository.findById(username);
 
-        if (credential.isPresent()) {
+        try {
+            Optional<Credential> credential =
+                credentialRepository.findById(username);
             HashSet<GrantedAuthority> set = new HashSet<>();
 
             subscriberRepository.findById(username)
@@ -73,7 +73,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .ifPresent(t -> set.add(new SimpleGrantedAuthority("AUTHOR")));
 
             user = new User(username, credential.get().getPassword(), set);
-        } else {
+        } catch (UsernameNotFoundException exception) {
+            throw exception;
+        } catch (Exception exception) {
             throw new UsernameNotFoundException(username);
         }
 

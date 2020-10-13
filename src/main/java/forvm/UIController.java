@@ -29,7 +29,6 @@ import forvm.repository.CredentialRepository;
 import java.security.Principal;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import lombok.NoArgsConstructor;
@@ -41,10 +40,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -271,18 +267,5 @@ public class UIController extends AbstractController {
         }
 
         return getViewName();
-    }
-
-    @RequestMapping(value = { "/logout" })
-    @PreAuthorize("permitAll()")
-    public String logout(HttpServletRequest request,
-                         HttpServletResponse response) {
-        Authentication authentication =
-            SecurityContextHolder.getContext().getAuthentication();
-
-        new SecurityContextLogoutHandler()
-            .logout(request, response, authentication);
-
-        return "redirect:/";
     }
 }
