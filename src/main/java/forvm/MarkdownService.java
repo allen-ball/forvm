@@ -132,7 +132,7 @@ public class MarkdownService {
     private static final String SLASH = "/";
     private static final URI ROOT = URI.create(SLASH);
 
-    @Autowired private Tika tika;
+    @Autowired private Tika tika = null;
 
     /**
      * Method to compile the parameters into an {@link Author}.

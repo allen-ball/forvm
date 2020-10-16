@@ -52,8 +52,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RestController
 @NoArgsConstructor @ToString @Log4j2
 public class AttachmentRestController {
-    @Autowired private ArticleRepository articleRepository;
-    @Autowired private AttachmentRepository attachmentRepository;
+    @Autowired private ArticleRepository articleRepository = null;
+    @Autowired private AttachmentRepository attachmentRepository = null;
 
     @RequestMapping(method = { GET }, value = { "/article/{slug}/{name:.+}" })
     @PreAuthorize("permitAll()")

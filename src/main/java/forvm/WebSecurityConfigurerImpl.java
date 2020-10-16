@@ -54,8 +54,8 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @NoArgsConstructor(access = PRIVATE) @Log4j2
 public abstract class WebSecurityConfigurerImpl
                       extends WebSecurityConfigurerAdapter {
-    @Autowired private UserDetailsService userDetailsService;
-    @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private UserDetailsService userDetailsService = null;
+    @Autowired private PasswordEncoder passwordEncoder = null;
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {

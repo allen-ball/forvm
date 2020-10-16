@@ -52,9 +52,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @NoArgsConstructor @ToString @Log4j2
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired private CredentialRepository credentialRepository;
-    @Autowired private AuthorRepository authorRepository;
-    @Autowired private SubscriberRepository subscriberRepository;
+    @Autowired private CredentialRepository credentialRepository = null;
+    @Autowired private AuthorRepository authorRepository = null;
+    @Autowired private SubscriberRepository subscriberRepository = null;
 
     @Override
     @Transactional(readOnly = true)
