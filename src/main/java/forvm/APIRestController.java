@@ -35,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -62,9 +63,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @RequestMapping(value = { "/api/v1" }, produces = APPLICATION_JSON_VALUE)
 @NoArgsConstructor @ToString @Log4j2
 public class APIRestController {
-    @Autowired private AuthorRepository authorRepository;
-    @Autowired private ArticleRepository articleRepository;
-    @Autowired private MarkdownService service;
+    @Autowired private AuthorRepository authorRepository = null;
+    @Autowired private ArticleRepository articleRepository = null;
+    @Autowired private MarkdownService service = null;
 
     @RequestMapping(method = { PUT },
                     value = { "/author", "/author/{slug}" })
@@ -182,7 +183,7 @@ public class APIRestController {
                     reason = "Resource not found")
     public void handleNOT_FOUND() { }
 
-    @ExceptionHandler({ SecurityException.class })
+    @ExceptionHandler({ AccessDeniedException.class, SecurityException.class })
     @ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "Forbidden")
     public void handleFORBIDDEN() { }
 
