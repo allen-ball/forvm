@@ -26,6 +26,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,10 +35,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static lombok.AccessLevel.PRIVATE;
-import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
  * {@link org.springframework.security.config.annotation.web.WebSecurityConfigurer}
@@ -74,9 +75,9 @@ public abstract class WebSecurityConfigurerImpl
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.antMatcher("/api/**")
-                .csrf(t -> t.disable())
                 .authorizeRequests(t -> t.anyRequest().authenticated())
-                .httpBasic(withDefaults());
+                .csrf(t -> t.disable())
+                .httpBasic(t -> t.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.FORBIDDEN)));
         }
     }
 
