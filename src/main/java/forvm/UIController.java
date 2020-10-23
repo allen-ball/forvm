@@ -238,10 +238,13 @@ public class UIController extends AbstractController {
 
     @RequestMapping(method = { POST }, value = { "/password" })
     @PreAuthorize("isAuthenticated()")
-    public String passwordPOST(Model model,
-                               @Valid ChangePasswordForm form,
-                               BindingResult result) {
+    public String passwordPOST(Model model, Principal principal,
+                               @Valid ChangePasswordForm form, BindingResult result) {
         try {
+            if (! principal.getName().equals(form.getUsername())) {
+                throw new RuntimeException("User name does not match Principal");
+            }
+
             if (result.hasErrors()) {
                 throw new RuntimeException(String.valueOf(result.getAllErrors()));
             }
