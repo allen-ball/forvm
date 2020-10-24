@@ -1,5 +1,6 @@
 /**
- * Classes representing forvm database repositories.
+ * Classes representing forvm database repositories.  Please refer to the
+ * {@link.uri https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#reference Spring Data JPA - Reference Documentation}.
  *
  * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}
  */
