@@ -27,6 +27,7 @@ import forvm.repository.ArticleRepository;
 import forvm.repository.AuthorRepository;
 import forvm.repository.CredentialRepository;
 import java.security.Principal;
+import java.util.Objects;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -39,6 +40,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -63,7 +66,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 @NoArgsConstructor @ToString @Log4j2
 public class UIController extends AbstractController {
-    private static final String EXCEPTION = "exception";
+    private static final String ERRORS = "errors";
     private static final String FORM = "form";
     private static final String PAGE = "page";
 
@@ -201,7 +204,7 @@ public class UIController extends AbstractController {
                 model.addAttribute(FORM, form);
             }
         } catch (Exception exception) {
-            model.addAttribute(EXCEPTION, exception.getMessage());
+            model.addAttribute(ERRORS, exception.getMessage());
         }
 
         return view;
@@ -240,33 +243,34 @@ public class UIController extends AbstractController {
     @PreAuthorize("isAuthenticated()")
     public String passwordPOST(Model model, Principal principal,
                                @Valid ChangePasswordForm form, BindingResult result) {
-        try {
-            if (! principal.getName().equals(form.getUsername())) {
-                throw new RuntimeException("User name does not match Principal");
-            }
+        Credential credential =
+            credentialRepository.findById(principal.getName())
+            .orElseThrow(() -> new AuthorizationServiceException("Unauthorized"));
 
+        try {
             if (result.hasErrors()) {
                 throw new RuntimeException(String.valueOf(result.getAllErrors()));
             }
 
+            if (! (Objects.equals(form.getUsername(), principal.getName())
+                   && encoder.matches(form.getPassword(), credential.getPassword()))) {
+                throw new AccessDeniedException("Invalid user name and password");
+            }
+
             if (! (form.getNewPassword() != null
-                   && form.getNewPassword().equals(form.getRepeatPassword()))) {
+                   && Objects.equals(form.getNewPassword(), form.getRepeatPassword()))) {
                 throw new RuntimeException("Repeated password does not match new password");
             }
 
-            Credential credential =
-                credentialRepository.findById(form.getUsername()).get();
-
-            if (! encoder.matches(form.getPassword(), credential.getPassword())) {
-                throw new RuntimeException("Invalid password");
+            if (encoder.matches(form.getNewPassword(), credential.getPassword())) {
+                throw new RuntimeException("New password must be different than old");
             }
 
             credential.setPassword(encoder.encode(form.getNewPassword()));
-
             credentialRepository.save(credential);
         } catch (Exception exception) {
             model.addAttribute(FORM, form);
-            model.addAttribute(EXCEPTION, exception);
+            model.addAttribute(ERRORS, exception.getMessage());
         }
 
         return getViewName();

@@ -63,6 +63,7 @@
       <section th:case="*">
         <th:block th:if="${#ctx.containsVariable('form')}">
           <th:block th:insert="~{${#execInfo.templateName + '/' + form.class.simpleName}}"/>
+          <p th:if="${#ctx.containsVariable('errors')}" th:text="${errors}"/>
         </th:block>
         <table th:if="${#ctx.containsVariable('articles')}">
           <tbody>
