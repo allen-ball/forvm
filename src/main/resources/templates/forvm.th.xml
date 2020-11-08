@@ -3,7 +3,7 @@
 <thlogic>
   <attr sel="head">
     <attr sel="link[rel='stylesheet']"
-          th:each="href : ${#webjars.assets(true, #request.scheme, stylesheets)}"
+          th:each="href : ${#webjars.assets(true, 'https', stylesheets)}"
           th:href="@{${href}}"/>
     <attr sel="style" th:if="${style != null}" th:text="${style}"/>
   </attr>
@@ -64,7 +64,7 @@
       </attr>
     </attr>
     <attr sel="script"
-          th:each="src : ${#webjars.assets(true, #request.scheme, scripts)}"
+          th:each="src : ${#webjars.assets(true, 'https', scripts)}"
           th:src="@{${src}}" th:text="''"/>
   </attr>
 </thlogic>
