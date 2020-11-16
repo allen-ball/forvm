@@ -35,6 +35,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -53,8 +55,7 @@ import static lombok.AccessLevel.PRIVATE;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @NoArgsConstructor(access = PRIVATE) @Log4j2
-public abstract class WebSecurityConfigurerImpl
-                      extends WebSecurityConfigurerAdapter {
+public abstract class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
     @Autowired private UserDetailsService userDetailsService = null;
     @Autowired private PasswordEncoder passwordEncoder = null;
 
@@ -93,6 +94,8 @@ public abstract class WebSecurityConfigurerImpl
             "/css/**", "/js/**", "/images/**", "/webjars/**", "/webjarsjs"
         };
 
+        @Autowired private OidcUserService oidcUserService = null;
+
         @Override
         public void configure(WebSecurity web) {
             web.ignoring().antMatchers(IGNORE);
@@ -105,6 +108,18 @@ public abstract class WebSecurityConfigurerImpl
                 .formLogin(t -> t.loginPage("/login").permitAll())
                 .logout(t -> t.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                               .logoutSuccessUrl("/").permitAll());
+
+            try {
+                ClientRegistrationRepository repository =
+                    getApplicationContext().getBean(ClientRegistrationRepository.class);
+
+                if (repository != null) {
+                    http.oauth2Login(t -> t.clientRegistrationRepository(repository)
+                                           .userInfoEndpoint(u -> u.oidcUserService(oidcUserService))
+                                           .loginPage("/login").permitAll());
+                }
+            } catch (Exception exception) {
+            }
         }
     }
 }

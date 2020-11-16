@@ -1,3 +1,7 @@
+2020-11-16  Allen D. Ball  <ball@hcf.dev>
+
+	* Added configurable OAuth2 support.
+
 2020-10-16  Allen D. Ball  <ball@hcf.dev>
 
 	* src/main/java/forvm/APIRestController.java:
@@ -25,7 +29,7 @@
 
 2020-09-06  Allen D. Ball  <ball@hcf.dev>
 
-	* pom.xml: Started development of 1.8.1-SNAPSHOT.
+	* pom.xml: Started development of 2.0-SNAPSHOT.
 
 2020-09-03  Allen D. Ball  <ball@hcf.dev>
 
