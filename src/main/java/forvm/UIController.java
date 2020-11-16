@@ -50,7 +50,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -64,7 +63,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}
  * @version $Revision$
  */
-@Controller @EnableWebMvc
+@Controller
 @NoArgsConstructor @ToString @Log4j2
 public class UIController extends AbstractController {
     private static final String ERRORS = "errors";
