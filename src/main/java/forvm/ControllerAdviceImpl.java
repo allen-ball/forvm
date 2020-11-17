@@ -20,6 +20,7 @@ package forvm;
  * limitations under the License.
  * ##########################################################################
  */
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -30,6 +31,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ResolvableType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -80,5 +82,10 @@ public class ControllerAdviceImpl {
         }
 
         return oauth2;
+    }
+
+    @ModelAttribute("isPasswordAuthenticated")
+    public boolean isPasswordAuthenticated(Principal principal) {
+        return principal instanceof UsernamePasswordAuthenticationToken;
     }
 }
