@@ -22,7 +22,6 @@ package forvm;
  */
 import ball.spring.AbstractController;
 import forvm.entity.Article;
-import forvm.entity.Credential;
 import forvm.repository.ArticleRepository;
 import forvm.repository.AuthorRepository;
 import forvm.repository.CredentialRepository;
@@ -103,16 +102,14 @@ public class UIController extends AbstractController {
                            @RequestParam Optional<String> author,
                            @RequestParam Optional<Integer> page,
                            RedirectAttributes redirect) {
-        String view = getViewName();
+        var view = getViewName();
 
         if (page.isPresent()) {
-            PageRequest pr =
-                PageRequest.of(page.get() - 1, page_size,
-                               Sort.Direction.DESC, "slug");
+            var pr = PageRequest.of(page.get() - 1, page_size, Sort.Direction.DESC, "slug");
             Page<?> articles = null;
 
             if (author.isPresent()) {
-                String slug = author.get();
+                var slug = author.get();
 
                 articles =
                     articleRepository
@@ -148,11 +145,11 @@ public class UIController extends AbstractController {
                           HttpServletRequest request,
                           @RequestParam Optional<Integer> page,
                           RedirectAttributes redirect) {
-        String view = getViewName();
+        var view = getViewName();
 
         if (page.isPresent()) {
-            PageRequest pr = PageRequest.of(page.get() - 1, page_size);
-            Page<?> authors = authorRepository.findAll(pr);
+            var  pr = PageRequest.of(page.get() - 1, page_size);
+            var authors = authorRepository.findAll(pr);
 
             model.addAttribute("authors", authors);
             model.addAttribute(PAGE, authors);
@@ -180,14 +177,14 @@ public class UIController extends AbstractController {
                               Principal principal, HttpSession session,
                               HttpServletRequest request,
                               @Valid PreviewForm form, BindingResult result) {
-        String view = getViewName();
+        var view = getViewName();
 
         try {
             if (! result.hasErrors()) {
-                String email = principal.getName();
-                String name = form.getFile().getOriginalFilename();
-                String slug = FilenameUtils.getBaseName(name);
-                Article article = new Article();
+                var email = principal.getName();
+                var name = form.getFile().getOriginalFilename();
+                var  slug = FilenameUtils.getBaseName(name);
+                var article = new Article();
 
                 article.setAuthor(authorRepository.findById(email).get());
                 article.setEmail(article.getAuthor().getEmail());
@@ -215,8 +212,7 @@ public class UIController extends AbstractController {
     public String article(Model model,
                           HttpSession session,
                           @PathVariable String slug) {
-        Optional<Article> article =
-            Optional.ofNullable((Article) session.getAttribute(slug));
+        var article = Optional.ofNullable((Article) session.getAttribute(slug));
 
         model.addAttribute("article", article.get());
 
@@ -243,7 +239,7 @@ public class UIController extends AbstractController {
     @PreAuthorize("isAuthenticated()")
     public String passwordPOST(Model model, Principal principal,
                                @Valid ChangePasswordForm form, BindingResult result) {
-        Credential credential =
+        var credential =
             credentialRepository.findById(principal.getName())
             .orElseThrow(() -> new AuthorizationServiceException("Unauthorized"));
 

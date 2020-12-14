@@ -63,11 +63,10 @@ public class ControllerAdviceImpl {
             oauth2 = new ArrayList<>();
 
             try {
-                ClientRegistrationRepository repository =
-                    context.getBean(ClientRegistrationRepository.class);
+                var repository = context.getBean(ClientRegistrationRepository.class);
 
                 if (repository != null) {
-                    ResolvableType type =
+                    var type =
                         ResolvableType.forInstance(repository)
                         .as(Iterable.class);
 

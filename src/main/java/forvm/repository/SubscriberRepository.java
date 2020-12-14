@@ -33,6 +33,5 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional(readOnly = true)
-public interface SubscriberRepository
-                 extends JpaRepository<Subscriber,String> {
+public interface SubscriberRepository extends JpaRepository<Subscriber,String> {
 }

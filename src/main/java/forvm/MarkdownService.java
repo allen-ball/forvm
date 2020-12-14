@@ -48,7 +48,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
@@ -61,6 +60,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Markdown {@link Service}.
@@ -108,12 +109,11 @@ public class MarkdownService {
     private static final MutableDataHolder OPTIONS;
 
     static {
-        ArrayList<Extension> extensions = new ArrayList<>();
+        var extensions = new ArrayList<Extension>();
 
         try {
             for (Class<? extends Extension> type : EXTENSIONS) {
-                Extension extension =
-                    (Extension) type.getMethod("create").invoke(null);
+                var extension = (Extension) type.getMethod("create").invoke(null);
 
                 extensions.add(extension);
             }
@@ -162,12 +162,11 @@ public class MarkdownService {
                 break;
             }
 
-            Document document = parse(markdown);
-            Map<String,List<String>> yaml = getYamlFrom(document);
+            var document = parse(markdown);
+            var yaml = getYamlFrom(document);
 
             if (yaml.containsKey("email")) {
-                String string =
-                    yaml.get("email").stream().collect(Collectors.joining());
+                var string = yaml.get("email").stream().collect(joining());
 
                 author.setEmail(string);
             }
@@ -175,19 +174,18 @@ public class MarkdownService {
             author.setSlug(slug);
 
             if (yaml.containsKey("name")) {
-                author.setName(yaml.get("name")
-                               .stream().collect(Collectors.joining()));
+                author.setName(yaml.get("name").stream().collect(joining()));
             }
 
             author.setMarkdown(markdown);
 
             if (zip != null) {
-                for (ZipArchiveEntry entry :
+                for (var entry :
                          Collections.list(zip.getEntries())
                          .stream()
                          .filter(t -> (! t.isDirectory()))
                          .filter(t -> (! t.getName().equals(README_MD)))
-                         .collect(Collectors.toList())) {
+                         .collect(toList())) {
                     throw new IllegalArgumentException(entry.getName());
                 }
             }
@@ -200,8 +198,7 @@ public class MarkdownService {
         }
     }
 
-    private String getEntryAsUTF8String(ZipFile zip,
-                                        String name) throws Exception {
+    private String getEntryAsUTF8String(ZipFile zip, String name) throws Exception {
         ZipArchiveEntry entry = zip.getEntry(name);
         Scanner scanner = new Scanner(zip.getInputStream(entry), UTF_8.name());
 
@@ -241,27 +238,24 @@ public class MarkdownService {
 
             article.setSlug(slug);
 
-            Document document = parse(markdown);
-            Map<String,List<String>> yaml = getYamlFrom(document);
-            String title =
-                yaml.get("title").stream().collect(Collectors.joining());
+            var document = parse(markdown);
+            var yaml = getYamlFrom(document);
+            var title = yaml.get("title").stream().collect(joining());
 
             article.setTitle(title);
             article.setMarkdown(markdown);
             article.getAttachments().clear();
 
             if (zip != null) {
-                for (ZipArchiveEntry entry :
+                for (var entry :
                          Collections.list(zip.getEntries())
                          .stream()
                          .filter(t -> (! t.isDirectory()))
                          .filter(t -> (! t.getName().equals(README_MD)))
-                         .collect(Collectors.toList())) {
-                    String path =
-                        ROOT.resolve(entry.getName()).normalize().getPath();
-                    byte[] content =
-                        IOUtils.toByteArray(zip.getInputStream(entry));
-                    Attachment attachment = new Attachment();
+                         .collect(toList())) {
+                    var path = ROOT.resolve(entry.getName()).normalize().getPath();
+                    var content = IOUtils.toByteArray(zip.getInputStream(entry));
+                    var attachment = new Attachment();
 
                     attachment.setArticle(article);
                     attachment.setPath(path);
@@ -271,9 +265,9 @@ public class MarkdownService {
                 }
             }
 
-            String path = prefix + "/" + article.getSlug() + "/";
-            URI uri = URI.create(path.replaceAll("[/]+", "/"));
-            CharSequence html = htmlRender(document, uri);
+            var path = prefix + "/" + article.getSlug() + "/";
+            var uri = URI.create(path.replaceAll("[/]+", "/"));
+            var html = htmlRender(document, uri);
 
             article.setHtml(html.toString());
         } finally {
@@ -293,7 +287,7 @@ public class MarkdownService {
      * @throws  IOException     If an I/O error is encountered.
      */
     public Document parse(Reader markdown) throws IOException {
-        Parser.Builder builder = Parser.builder(OPTIONS);
+        var builder = Parser.builder(OPTIONS);
 
         return builder.build().parseReader(markdown);
     }
@@ -306,7 +300,7 @@ public class MarkdownService {
      * @return  The parsed {@link Document}.
      */
     public Document parse(String markdown) {
-        Parser.Builder builder = Parser.builder(OPTIONS);
+        var builder = Parser.builder(OPTIONS);
 
         return builder.build().parse(markdown);
     }
@@ -323,8 +317,8 @@ public class MarkdownService {
      *          {@code HTML}.
      */
     public CharSequence htmlRender(Document document, URI prefix) {
-        StringBuilder html = new StringBuilder();
-        HtmlRenderer.Builder builder = HtmlRenderer.builder(OPTIONS);
+        var html = new StringBuilder();
+        var builder = HtmlRenderer.builder(OPTIONS);
 
         if (prefix != null) {
             builder.linkResolverFactory(new LinkResolverFactoryImpl(prefix));
@@ -343,8 +337,7 @@ public class MarkdownService {
      * @return  The {@link Map} representing the parsed YAML.
      */
     public Map<String,List<String>> getYamlFrom(Document document) {
-        AbstractYamlFrontMatterVisitor visitor =
-            new AbstractYamlFrontMatterVisitor() { };
+        var visitor = new AbstractYamlFrontMatterVisitor() { };
 
         visitor.visit(document);
 
@@ -397,7 +390,7 @@ public class MarkdownService {
         public ResolvedLink resolveLink(Node node,
                                         LinkResolverBasicContext context,
                                         ResolvedLink link) {
-            URI uri = URI.create(link.getUrl()).normalize();
+            var uri = URI.create(link.getUrl()).normalize();
 
             if ((! uri.isAbsolute()) || FILE.equals(uri.getScheme())) {
                 if (! uri.getPath().startsWith(SLASH)) {

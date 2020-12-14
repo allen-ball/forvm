@@ -20,14 +20,10 @@ package forvm;
  * limitations under the License.
  * ##########################################################################
  */
-import forvm.entity.Author;
-import forvm.entity.Credential;
-import forvm.entity.Subscriber;
 import forvm.repository.AuthorRepository;
 import forvm.repository.CredentialRepository;
 import forvm.repository.SubscriberRepository;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -85,7 +81,7 @@ public class UserServicesConfiguration {
     }
 
     private Set<GrantedAuthority> getGrantedAuthoritySet(String username) {
-        HashSet<GrantedAuthority> set = new HashSet<>();
+        var set = new HashSet<GrantedAuthority>();
 
         subscriberRepository.findById(username)
             .ifPresent(t -> set.add(new SimpleGrantedAuthority("SUBSCRIBER")));
@@ -104,8 +100,7 @@ public class UserServicesConfiguration {
             User user = null;
 
             try {
-                Optional<Credential> credential =
-                    credentialRepository.findById(username);
+                var credential = credentialRepository.findById(username);
 
                 user = new
                     User(username,
@@ -128,10 +123,10 @@ public class UserServicesConfiguration {
         @Override
         @Transactional(readOnly = true)
         public OAuth2User loadUser(OAuth2UserRequest request) throws OAuth2AuthenticationException {
-            String attribute =
+            var attribute =
                 request.getClientRegistration().getProviderDetails()
                 .getUserInfoEndpoint().getUserNameAttributeName();
-            OAuth2User user = delegate.loadUser(request);
+            var user = delegate.loadUser(request);
 
             try {
                 user =
@@ -154,10 +149,10 @@ public class UserServicesConfiguration {
         @Override
         @Transactional(readOnly = true)
         public OidcUser loadUser(OidcUserRequest request) throws OAuth2AuthenticationException {
-            String attribute =
+            var attribute =
                 request.getClientRegistration().getProviderDetails()
                 .getUserInfoEndpoint().getUserNameAttributeName();
-            OidcUser user = super.loadUser(request);
+            var user = super.loadUser(request);
 
             try {
                 user =

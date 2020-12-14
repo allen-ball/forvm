@@ -80,7 +80,7 @@
     </profile>
   </profiles>
   <properties>
-    <jse.target>8</jse.target>
+    <jse.target>11</jse.target>
     <start-class>forvm.Launcher</start-class>
   </properties>
   <dependencies verbose="true">

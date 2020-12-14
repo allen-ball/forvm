@@ -110,7 +110,7 @@ public abstract class WebSecurityConfigurerImpl extends WebSecurityConfigurerAda
                               .logoutSuccessUrl("/").permitAll());
 
             try {
-                ClientRegistrationRepository repository =
+                var repository =
                     getApplicationContext().getBean(ClientRegistrationRepository.class);
 
                 if (repository != null) {

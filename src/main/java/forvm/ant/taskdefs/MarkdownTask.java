@@ -30,8 +30,6 @@ import com.vladsch.flexmark.util.ast.Document;
 import forvm.MarkdownService;
 import java.io.File;
 import java.nio.file.Files;
-import java.util.List;
-import java.util.Map;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -46,7 +44,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 /**
  * Abstract base class for {@link.uri http://ant.apache.org/ Ant}
- * {@link org.apache.tools.ant.Task}s to parse and/or render markdown.
+ * {@link Task}s to parse and/or render markdown.
  *
  * {@ant.task}
  *
@@ -93,11 +91,11 @@ public abstract class MarkdownTask extends Task
             super.execute();
 
             try {
-                byte[] bytes = Files.readAllBytes(getFile().toPath());
+                var bytes = Files.readAllBytes(getFile().toPath());
 
                 document = service.parse(new String(bytes, UTF_8));
 
-                Map<String,List<String>> yaml = service.getYamlFrom(document);
+                var yaml = service.getYamlFrom(document);
 
                 log(new MapTableModel(yaml));
             } catch (BuildException exception) {

@@ -67,15 +67,14 @@ public class APIRestController {
     @Autowired private ArticleRepository articleRepository = null;
     @Autowired private MarkdownService service = null;
 
-    @RequestMapping(method = { PUT },
-                    value = { "/author", "/author/{slug}" })
+    @RequestMapping(method = { PUT }, value = { "/author", "/author/{slug}" })
     @PreAuthorize("hasAuthority('AUTHOR')")
     @Transactional
     public ResponseEntity<String> author(Principal principal,
                                          HttpMethod method,
                                          @PathVariable Optional<String> slug,
                                          @RequestParam MultipartFile file) throws Exception {
-        String email = principal.getName();
+        var email = principal.getName();
         Author author = null;
 
         switch (method) {
@@ -87,7 +86,7 @@ public class APIRestController {
             throw new MethodNotAllowedException(String.valueOf(method));
         }
 
-        String name = file.getOriginalFilename();
+        var name = file.getOriginalFilename();
 
         if (! slug.isPresent()) {
             slug = Optional.of(FilenameUtils.getBaseName(name));
@@ -110,11 +109,11 @@ public class APIRestController {
     public ResponseEntity<String> article(Principal principal,
                                           HttpMethod method,
                                           @PathVariable String slug) throws Exception {
-        String email = principal.getName();
+        var email = principal.getName();
 
         switch (method) {
         case DELETE:
-            Article article = articleRepository.findBySlug(slug).get();
+            var article = articleRepository.findBySlug(slug).get();
 
             if (email.equals(article.getAuthor().getEmail())) {
                 articleRepository.delete(article);
@@ -138,8 +137,8 @@ public class APIRestController {
                                           HttpMethod method,
                                           @PathVariable Optional<String> slug,
                                           @RequestParam MultipartFile file) throws Exception {
-        String email = principal.getName();
-        String name = file.getOriginalFilename();
+        var email = principal.getName();
+        var name = file.getOriginalFilename();
 
         if (! slug.isPresent()) {
             slug = Optional.of(FilenameUtils.getBaseName(name));
@@ -179,8 +178,7 @@ public class APIRestController {
     }
 
     @ExceptionHandler({ NoSuchElementException.class })
-    @ResponseStatus(value = HttpStatus.NOT_FOUND,
-                    reason = "Resource not found")
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Resource not found")
     public void handleNOT_FOUND() { }
 
     @ExceptionHandler({ AccessDeniedException.class, SecurityException.class })

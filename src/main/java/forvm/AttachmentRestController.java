@@ -21,7 +21,6 @@ package forvm;
  * ##########################################################################
  */
 import forvm.entity.Article;
-import forvm.entity.Attachment;
 import forvm.repository.ArticleRepository;
 import forvm.repository.AttachmentRepository;
 import java.util.NoSuchElementException;
@@ -59,8 +58,8 @@ public class AttachmentRestController {
     @PreAuthorize("permitAll()")
     public byte[] get(@PathVariable String slug,
                       @PathVariable String name) throws Exception {
-        String path = "/" + name;
-        Optional<Attachment> attachment =
+        var path = "/" + name;
+        var attachment =
             articleRepository.findBySlug(slug)
             .flatMap(t -> attachmentRepository.findByArticleAndPath(t, path));
 
@@ -72,8 +71,8 @@ public class AttachmentRestController {
     public byte[] get(HttpSession session,
                       @PathVariable String slug,
                       @PathVariable String name) throws Exception {
-        String path = "/" + name;
-        Optional<Attachment> attachment =
+        var path = "/" + name;
+        var attachment =
             Optional.ofNullable((Article) session.getAttribute(slug)).get()
             .getAttachments().stream()
             .filter(t -> t.getPath().equalsIgnoreCase(path))

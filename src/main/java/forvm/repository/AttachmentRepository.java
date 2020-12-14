@@ -37,6 +37,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface AttachmentRepository
                  extends JpaRepository<Attachment,Attachment.PK> {
-    public Optional<Attachment> findByArticleAndPath(Article article,
-                                                     String path);
+    public Optional<Attachment> findByArticleAndPath(Article article, String path);
 }
