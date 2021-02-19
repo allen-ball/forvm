@@ -54,7 +54,7 @@
           <scope>runtime</scope>
         </dependency>
         <dependency>
-          <groupId>org.springframework.cloud</groupId>
+          <groupId>com.google.cloud</groupId>
           <artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
           <scope>runtime</scope>
         </dependency>
