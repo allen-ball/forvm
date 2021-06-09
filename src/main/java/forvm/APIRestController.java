@@ -2,8 +2,6 @@ package forvm;
 /*-
  * ##########################################################################
  * forvm Blog Publishing Platform
- * $Id$
- * $HeadURL$
  * %%
  * Copyright (C) 2018 - 2021 Allen D. Ball
  * %%
@@ -57,7 +55,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
  * {@injected.fields}
  *
  * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}
- * @version $Revision$
  */
 @RestController
 @RequestMapping(value = { "/api/v1" }, produces = APPLICATION_JSON_VALUE)

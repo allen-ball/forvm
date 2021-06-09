@@ -2,8 +2,6 @@ package forvm.entity;
 /*-
  * ##########################################################################
  * forvm Blog Publishing Platform
- * $Id$
- * $HeadURL$
  * %%
  * Copyright (C) 2018 - 2021 Allen D. Ball
  * %%
@@ -29,7 +27,6 @@ import lombok.ToString;
  * {@link Module} service provider for {@link forvm.entity}.
  *
  * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}
- * @version $Revision$
  */
 @ServiceProviderFor({ Module.class })
 @ToString

@@ -2,8 +2,6 @@ package forvm;
 /*-
  * ##########################################################################
  * forvm Blog Publishing Platform
- * $Id$
- * $HeadURL$
  * %%
  * Copyright (C) 2018 - 2021 Allen D. Ball
  * %%
@@ -69,7 +67,6 @@ import static java.util.stream.Collectors.toList;
  * {@injected.fields}
  *
  * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}
- * @version $Revision$
  */
 @Service
 @NoArgsConstructor @ToString @Log4j2

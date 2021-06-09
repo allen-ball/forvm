@@ -2,8 +2,6 @@ package forvm.entity;
 /*-
  * ##########################################################################
  * forvm Blog Publishing Platform
- * $Id$
- * $HeadURL$
  * %%
  * Copyright (C) 2018 - 2021 Allen D. Ball
  * %%
@@ -39,7 +37,6 @@ import lombok.Setter;
  * {@bean.info}
  *
  * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}
- * @version $Revision$
  */
 @Entity
 @Table(catalog = "forvm", name = "credentials")

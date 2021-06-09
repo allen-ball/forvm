@@ -2,8 +2,6 @@ package forvm.repository;
 /*-
  * ##########################################################################
  * forvm Blog Publishing Platform
- * $Id$
- * $HeadURL$
  * %%
  * Copyright (C) 2018 - 2021 Allen D. Ball
  * %%
@@ -29,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
  * {@link Credential} {@link JpaRepository}.
  *
  * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}
- * @version $Revision$
  */
 @Repository
 @Transactional(readOnly = true)

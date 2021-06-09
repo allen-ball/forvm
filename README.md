@@ -1,5 +1,5 @@
-forvm
-=====
+forvm Blog Publishing Platform
+==============================
 
 Description
 -----------

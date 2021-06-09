@@ -2,8 +2,6 @@ package forvm;
 /*-
  * ##########################################################################
  * forvm Blog Publishing Platform
- * $Id$
- * $HeadURL$
  * %%
  * Copyright (C) 2018 - 2021 Allen D. Ball
  * %%
@@ -33,7 +31,6 @@ import org.springframework.context.ApplicationContext;
  * {@link SpringApplication} {@link Launcher}.
  *
  * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}
- * @version $Revision$
  */
 @SpringBootApplication
 @NoArgsConstructor @ToString @Log4j2
