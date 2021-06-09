@@ -10,7 +10,8 @@ Description
 Documentation
 -------------
 
-Javadoc is published at <https://allen-ball.github.io/javadoc/forvm/2.1.0-SNAPSHOT/>.
+[Javadoc][forvm API Javadoc] is published at
+<https://allen-ball.github.io/forvm>.
 
 
 License
@@ -21,6 +22,7 @@ This code is under the
 
 
 [forvm]: https://github.com/allen-ball/forvm
+[forvm API Javadoc]: https://allen-ball.github.io/forvm/index.html?overview-summary.html
 
 [Spring Boot]: https://spring.io/projects/spring-boot
 [Spring MVC]: https://docs.spring.io/spring/docs/5.3.6/spring-framework-reference/web.html
