@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package forvm.entity;</a>
+<span class="sourceLineNo">002</span><a id="line.2">/*-</a>
+<span class="sourceLineNo">003</span><a id="line.3"> * ##########################################################################</a>
+<span class="sourceLineNo">004</span><a id="line.4"> * forvm Blog Publishing Platform</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * %%</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * Copyright (C) 2018 - 2021 Allen D. Ball</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * %%</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * Licensed under the Apache License, Version 2.0 (the "License");</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * you may not use this file except in compliance with the License.</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * You may obtain a copy of the License at</a>
+<span class="sourceLineNo">011</span><a id="line.11"> *</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *      http://www.apache.org/licenses/LICENSE-2.0</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * Unless required by applicable law or agreed to in writing, software</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * distributed under the License is distributed on an "AS IS" BASIS,</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * See the License for the specific language governing permissions and</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * limitations under the License.</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * ##########################################################################</a>
+<span class="sourceLineNo">020</span><a id="line.20"> */</a>
+<span class="sourceLineNo">021</span><a id="line.21">import ball.databind.JSONBean;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import java.util.ArrayList;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import java.util.List;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import javax.persistence.Column;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import javax.persistence.Entity;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import javax.persistence.Id;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import javax.persistence.IdClass;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import javax.persistence.JoinColumn;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import javax.persistence.Lob;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import javax.persistence.ManyToOne;</a>
+<span class="sourceLineNo">031</span><a id="line.31">import javax.persistence.OneToMany;</a>
+<span class="sourceLineNo">032</span><a id="line.32">import javax.persistence.Table;</a>
+<span class="sourceLineNo">033</span><a id="line.33">import lombok.EqualsAndHashCode;</a>
+<span class="sourceLineNo">034</span><a id="line.34">import lombok.Getter;</a>
+<span class="sourceLineNo">035</span><a id="line.35">import lombok.NoArgsConstructor;</a>
+<span class="sourceLineNo">036</span><a id="line.36">import lombok.Setter;</a>
+<span class="sourceLineNo">037</span><a id="line.37"></a>
+<span class="sourceLineNo">038</span><a id="line.38">import static javax.persistence.CascadeType.ALL;</a>
+<span class="sourceLineNo">039</span><a id="line.39">import static javax.persistence.FetchType.LAZY;</a>
+<span class="sourceLineNo">040</span><a id="line.40"></a>
+<span class="sourceLineNo">041</span><a id="line.41">/**</a>
+<span class="sourceLineNo">042</span><a id="line.42"> * {@link Article} {@link Entity}.</a>
+<span class="sourceLineNo">043</span><a id="line.43"> *</a>
+<span class="sourceLineNo">044</span><a id="line.44"> * {@bean.info}</a>
+<span class="sourceLineNo">045</span><a id="line.45"> *</a>
+<span class="sourceLineNo">046</span><a id="line.46"> * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}</a>
+<span class="sourceLineNo">047</span><a id="line.47"> */</a>
+<span class="sourceLineNo">048</span><a id="line.48">@Entity</a>
+<span class="sourceLineNo">049</span><a id="line.49">@Table(catalog = "forvm", name = "articles")</a>
+<span class="sourceLineNo">050</span><a id="line.50">@IdClass(Article.PK.class)</a>
+<span class="sourceLineNo">051</span><a id="line.51">@NoArgsConstructor @EqualsAndHashCode(callSuper = false)</a>
+<span class="sourceLineNo">052</span><a id="line.52">public class Article extends JSONBean {</a>
+<span class="sourceLineNo">053</span><a id="line.53">    private static final long serialVersionUID = 3932015275027666636L;</a>
+<span class="sourceLineNo">054</span><a id="line.54"></a>
+<span class="sourceLineNo">055</span><a id="line.55">    /** @serial */</a>
+<span class="sourceLineNo">056</span><a id="line.56">    @Id @Column(length = 64, nullable = false)</a>
+<span class="sourceLineNo">057</span><a id="line.57">    @Getter @Setter</a>
+<span class="sourceLineNo">058</span><a id="line.58">    private String email = null;</a>
+<span class="sourceLineNo">059</span><a id="line.59"></a>
+<span class="sourceLineNo">060</span><a id="line.60">    /** @serial */</a>
+<span class="sourceLineNo">061</span><a id="line.61">    @Id @Column(length = 255, nullable = false, unique = true)</a>
+<span class="sourceLineNo">062</span><a id="line.62">    @Getter @Setter</a>
+<span class="sourceLineNo">063</span><a id="line.63">    private String slug = null;</a>
+<span class="sourceLineNo">064</span><a id="line.64"></a>
+<span class="sourceLineNo">065</span><a id="line.65">    /** @serial */</a>
+<span class="sourceLineNo">066</span><a id="line.66">    @Lob @Column(nullable = false)</a>
+<span class="sourceLineNo">067</span><a id="line.67">    @Getter @Setter</a>
+<span class="sourceLineNo">068</span><a id="line.68">    private String title = null;</a>
+<span class="sourceLineNo">069</span><a id="line.69"></a>
+<span class="sourceLineNo">070</span><a id="line.70">    /** @serial */</a>
+<span class="sourceLineNo">071</span><a id="line.71">    @Lob @Column(nullable = false)</a>
+<span class="sourceLineNo">072</span><a id="line.72">    @Getter @Setter</a>
+<span class="sourceLineNo">073</span><a id="line.73">    private String markdown = null;</a>
+<span class="sourceLineNo">074</span><a id="line.74"></a>
+<span class="sourceLineNo">075</span><a id="line.75">    /** @serial */</a>
+<span class="sourceLineNo">076</span><a id="line.76">    @Lob @Column(nullable = true)</a>
+<span class="sourceLineNo">077</span><a id="line.77">    @Getter @Setter</a>
+<span class="sourceLineNo">078</span><a id="line.78">    private String html = null;</a>
+<span class="sourceLineNo">079</span><a id="line.79"></a>
+<span class="sourceLineNo">080</span><a id="line.80">    /** @serial */</a>
+<span class="sourceLineNo">081</span><a id="line.81">    @ManyToOne(fetch = LAZY)</a>
+<span class="sourceLineNo">082</span><a id="line.82">    @JoinColumn(name = "email", insertable = false, updatable = false)</a>
+<span class="sourceLineNo">083</span><a id="line.83">    @Getter</a>
+<span class="sourceLineNo">084</span><a id="line.84">    private Author author = null;</a>
+<span class="sourceLineNo">085</span><a id="line.85"></a>
+<span class="sourceLineNo">086</span><a id="line.86">    public void setAuthor(Author author) {</a>
+<span class="sourceLineNo">087</span><a id="line.87">        this.author = author;</a>
+<span class="sourceLineNo">088</span><a id="line.88"></a>
+<span class="sourceLineNo">089</span><a id="line.89">        if (author != null) {</a>
+<span class="sourceLineNo">090</span><a id="line.90">            setEmail(author.getEmail());</a>
+<span class="sourceLineNo">091</span><a id="line.91">        }</a>
+<span class="sourceLineNo">092</span><a id="line.92">    }</a>
+<span class="sourceLineNo">093</span><a id="line.93"></a>
+<span class="sourceLineNo">094</span><a id="line.94">    /** @serial */</a>
+<span class="sourceLineNo">095</span><a id="line.95">    @OneToMany(mappedBy = "article", cascade = ALL)</a>
+<span class="sourceLineNo">096</span><a id="line.96">    @Getter</a>
+<span class="sourceLineNo">097</span><a id="line.97">    private List&lt;Attachment&gt; attachments = new ArrayList&lt;&gt;();</a>
+<span class="sourceLineNo">098</span><a id="line.98"></a>
+<span class="sourceLineNo">099</span><a id="line.99">    @NoArgsConstructor @EqualsAndHashCode(callSuper = false)</a>
+<span class="sourceLineNo">100</span><a id="line.100">    public static class PK extends JSONBean {</a>
+<span class="sourceLineNo">101</span><a id="line.101">        private static final long serialVersionUID = 3053196702554146437L;</a>
+<span class="sourceLineNo">102</span><a id="line.102"></a>
+<span class="sourceLineNo">103</span><a id="line.103">        /** @serial */ @Getter @Setter private String email = null;</a>
+<span class="sourceLineNo">104</span><a id="line.104">        /** @serial */ @Getter @Setter private String slug = null;</a>
+<span class="sourceLineNo">105</span><a id="line.105">    }</a>
+<span class="sourceLineNo">106</span><a id="line.106">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

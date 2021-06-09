@@ -1,0 +1,345 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package forvm;</a>
+<span class="sourceLineNo">002</span><a id="line.2">/*-</a>
+<span class="sourceLineNo">003</span><a id="line.3"> * ##########################################################################</a>
+<span class="sourceLineNo">004</span><a id="line.4"> * forvm Blog Publishing Platform</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * %%</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * Copyright (C) 2018 - 2021 Allen D. Ball</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * %%</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * Licensed under the Apache License, Version 2.0 (the "License");</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * you may not use this file except in compliance with the License.</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * You may obtain a copy of the License at</a>
+<span class="sourceLineNo">011</span><a id="line.11"> *</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *      http://www.apache.org/licenses/LICENSE-2.0</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * Unless required by applicable law or agreed to in writing, software</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * distributed under the License is distributed on an "AS IS" BASIS,</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * See the License for the specific language governing permissions and</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * limitations under the License.</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * ##########################################################################</a>
+<span class="sourceLineNo">020</span><a id="line.20"> */</a>
+<span class="sourceLineNo">021</span><a id="line.21">import ball.spring.AbstractController;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import forvm.entity.Article;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import forvm.repository.ArticleRepository;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import forvm.repository.AuthorRepository;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import forvm.repository.CredentialRepository;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import java.security.Principal;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import java.util.Objects;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import java.util.Optional;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import javax.servlet.http.HttpServletRequest;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import javax.servlet.http.HttpSession;</a>
+<span class="sourceLineNo">031</span><a id="line.31">import javax.validation.Valid;</a>
+<span class="sourceLineNo">032</span><a id="line.32">import lombok.NoArgsConstructor;</a>
+<span class="sourceLineNo">033</span><a id="line.33">import lombok.ToString;</a>
+<span class="sourceLineNo">034</span><a id="line.34">import lombok.extern.log4j.Log4j2;</a>
+<span class="sourceLineNo">035</span><a id="line.35">import org.apache.commons.io.FilenameUtils;</a>
+<span class="sourceLineNo">036</span><a id="line.36">import org.springframework.beans.factory.annotation.Autowired;</a>
+<span class="sourceLineNo">037</span><a id="line.37">import org.springframework.data.domain.Page;</a>
+<span class="sourceLineNo">038</span><a id="line.38">import org.springframework.data.domain.PageRequest;</a>
+<span class="sourceLineNo">039</span><a id="line.39">import org.springframework.data.domain.Sort;</a>
+<span class="sourceLineNo">040</span><a id="line.40">import org.springframework.security.access.AccessDeniedException;</a>
+<span class="sourceLineNo">041</span><a id="line.41">import org.springframework.security.access.AuthorizationServiceException;</a>
+<span class="sourceLineNo">042</span><a id="line.42">import org.springframework.security.access.prepost.PreAuthorize;</a>
+<span class="sourceLineNo">043</span><a id="line.43">import org.springframework.security.crypto.password.PasswordEncoder;</a>
+<span class="sourceLineNo">044</span><a id="line.44">import org.springframework.stereotype.Controller;</a>
+<span class="sourceLineNo">045</span><a id="line.45">import org.springframework.ui.Model;</a>
+<span class="sourceLineNo">046</span><a id="line.46">import org.springframework.validation.BindingResult;</a>
+<span class="sourceLineNo">047</span><a id="line.47">import org.springframework.web.bind.annotation.PathVariable;</a>
+<span class="sourceLineNo">048</span><a id="line.48">import org.springframework.web.bind.annotation.RequestMapping;</a>
+<span class="sourceLineNo">049</span><a id="line.49">import org.springframework.web.bind.annotation.RequestParam;</a>
+<span class="sourceLineNo">050</span><a id="line.50">import org.springframework.web.servlet.mvc.support.RedirectAttributes;</a>
+<span class="sourceLineNo">051</span><a id="line.51"></a>
+<span class="sourceLineNo">052</span><a id="line.52">import static org.springframework.web.bind.annotation.RequestMethod.GET;</a>
+<span class="sourceLineNo">053</span><a id="line.53">import static org.springframework.web.bind.annotation.RequestMethod.POST;</a>
+<span class="sourceLineNo">054</span><a id="line.54"></a>
+<span class="sourceLineNo">055</span><a id="line.55">/**</a>
+<span class="sourceLineNo">056</span><a id="line.56"> * UI {@link Controller} implementation.</a>
+<span class="sourceLineNo">057</span><a id="line.57"> *</a>
+<span class="sourceLineNo">058</span><a id="line.58"> * {@injected.fields}</a>
+<span class="sourceLineNo">059</span><a id="line.59"> *</a>
+<span class="sourceLineNo">060</span><a id="line.60"> * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}</a>
+<span class="sourceLineNo">061</span><a id="line.61"> */</a>
+<span class="sourceLineNo">062</span><a id="line.62">@Controller</a>
+<span class="sourceLineNo">063</span><a id="line.63">@NoArgsConstructor @ToString @Log4j2</a>
+<span class="sourceLineNo">064</span><a id="line.64">public class UIController extends AbstractController {</a>
+<span class="sourceLineNo">065</span><a id="line.65">    private static final String ERRORS = "errors";</a>
+<span class="sourceLineNo">066</span><a id="line.66">    private static final String FORM = "form";</a>
+<span class="sourceLineNo">067</span><a id="line.67">    private static final String PAGE = "page";</a>
+<span class="sourceLineNo">068</span><a id="line.68"></a>
+<span class="sourceLineNo">069</span><a id="line.69">    @Autowired private AuthorRepository authorRepository = null;</a>
+<span class="sourceLineNo">070</span><a id="line.70">    @Autowired private ArticleRepository articleRepository = null;</a>
+<span class="sourceLineNo">071</span><a id="line.71">    @Autowired private CredentialRepository credentialRepository = null;</a>
+<span class="sourceLineNo">072</span><a id="line.72">    @Autowired private MarkdownService service = null;</a>
+<span class="sourceLineNo">073</span><a id="line.73">    @Autowired private PasswordEncoder encoder = null;</a>
+<span class="sourceLineNo">074</span><a id="line.74"></a>
+<span class="sourceLineNo">075</span><a id="line.75">    private int page_size = 8;</a>
+<span class="sourceLineNo">076</span><a id="line.76"></a>
+<span class="sourceLineNo">077</span><a id="line.77">    @RequestMapping(value = { "/" })</a>
+<span class="sourceLineNo">078</span><a id="line.78">    @PreAuthorize("permitAll()")</a>
+<span class="sourceLineNo">079</span><a id="line.79">    public String root() { return "redirect:/index.html"; }</a>
+<span class="sourceLineNo">080</span><a id="line.80"></a>
+<span class="sourceLineNo">081</span><a id="line.81">    @RequestMapping(value = { "/index.html", "/index.htm", "/index" })</a>
+<span class="sourceLineNo">082</span><a id="line.82">    @PreAuthorize("permitAll()")</a>
+<span class="sourceLineNo">083</span><a id="line.83">    public String index() { return "redirect:/articles/"; }</a>
+<span class="sourceLineNo">084</span><a id="line.84"></a>
+<span class="sourceLineNo">085</span><a id="line.85">    @RequestMapping(value = {</a>
+<span class="sourceLineNo">086</span><a id="line.86">                        "/articles", "/article/{slug}",</a>
+<span class="sourceLineNo">087</span><a id="line.87">                        "/authors",</a>
+<span class="sourceLineNo">088</span><a id="line.88">                        "/preview", "/preview/{slug}"</a>
+<span class="sourceLineNo">089</span><a id="line.89">                    })</a>
+<span class="sourceLineNo">090</span><a id="line.90">    @PreAuthorize("permitAll()")</a>
+<span class="sourceLineNo">091</span><a id="line.91">    public String redirect(HttpServletRequest request) {</a>
+<span class="sourceLineNo">092</span><a id="line.92">        return "redirect:" + request.getServletPath() + "/";</a>
+<span class="sourceLineNo">093</span><a id="line.93">    }</a>
+<span class="sourceLineNo">094</span><a id="line.94"></a>
+<span class="sourceLineNo">095</span><a id="line.95">    @RequestMapping(method = { GET }, value = { "/articles/" })</a>
+<span class="sourceLineNo">096</span><a id="line.96">    @PreAuthorize("permitAll()")</a>
+<span class="sourceLineNo">097</span><a id="line.97">    public String articles(Model model,</a>
+<span class="sourceLineNo">098</span><a id="line.98">                           HttpServletRequest request,</a>
+<span class="sourceLineNo">099</span><a id="line.99">                           @RequestParam Optional&lt;String&gt; author,</a>
+<span class="sourceLineNo">100</span><a id="line.100">                           @RequestParam Optional&lt;Integer&gt; page,</a>
+<span class="sourceLineNo">101</span><a id="line.101">                           RedirectAttributes redirect) {</a>
+<span class="sourceLineNo">102</span><a id="line.102">        var view = getViewName();</a>
+<span class="sourceLineNo">103</span><a id="line.103"></a>
+<span class="sourceLineNo">104</span><a id="line.104">        if (page.isPresent()) {</a>
+<span class="sourceLineNo">105</span><a id="line.105">            var pr = PageRequest.of(page.get() - 1, page_size, Sort.Direction.DESC, "slug");</a>
+<span class="sourceLineNo">106</span><a id="line.106">            Page&lt;?&gt; articles = null;</a>
+<span class="sourceLineNo">107</span><a id="line.107"></a>
+<span class="sourceLineNo">108</span><a id="line.108">            if (author.isPresent()) {</a>
+<span class="sourceLineNo">109</span><a id="line.109">                var slug = author.get();</a>
+<span class="sourceLineNo">110</span><a id="line.110"></a>
+<span class="sourceLineNo">111</span><a id="line.111">                articles =</a>
+<span class="sourceLineNo">112</span><a id="line.112">                    articleRepository</a>
+<span class="sourceLineNo">113</span><a id="line.113">                    .findByAuthor(pr, authorRepository.findBySlug(slug).get());</a>
+<span class="sourceLineNo">114</span><a id="line.114">            } else {</a>
+<span class="sourceLineNo">115</span><a id="line.115">                articles = articleRepository.findAll(pr);</a>
+<span class="sourceLineNo">116</span><a id="line.116">            }</a>
+<span class="sourceLineNo">117</span><a id="line.117"></a>
+<span class="sourceLineNo">118</span><a id="line.118">            model.addAttribute("articles", articles);</a>
+<span class="sourceLineNo">119</span><a id="line.119">            model.addAttribute(PAGE, articles);</a>
+<span class="sourceLineNo">120</span><a id="line.120">        } else {</a>
+<span class="sourceLineNo">121</span><a id="line.121">            redirect.addAttribute(PAGE, String.valueOf(1));</a>
+<span class="sourceLineNo">122</span><a id="line.122">            redirect.mergeAttributes(request.getParameterMap());</a>
+<span class="sourceLineNo">123</span><a id="line.123"></a>
+<span class="sourceLineNo">124</span><a id="line.124">            view = "redirect:" + request.getServletPath();</a>
+<span class="sourceLineNo">125</span><a id="line.125">        }</a>
+<span class="sourceLineNo">126</span><a id="line.126"></a>
+<span class="sourceLineNo">127</span><a id="line.127">        return view;</a>
+<span class="sourceLineNo">128</span><a id="line.128">    }</a>
+<span class="sourceLineNo">129</span><a id="line.129"></a>
+<span class="sourceLineNo">130</span><a id="line.130">    @RequestMapping(method = { GET }, value = { "/article/{slug}/" })</a>
+<span class="sourceLineNo">131</span><a id="line.131">    @PreAuthorize("permitAll()")</a>
+<span class="sourceLineNo">132</span><a id="line.132">    public String article(Model model, @PathVariable String slug) {</a>
+<span class="sourceLineNo">133</span><a id="line.133">        model</a>
+<span class="sourceLineNo">134</span><a id="line.134">            .addAttribute("article", articleRepository.findBySlug(slug).get());</a>
+<span class="sourceLineNo">135</span><a id="line.135"></a>
+<span class="sourceLineNo">136</span><a id="line.136">        return getViewName();</a>
+<span class="sourceLineNo">137</span><a id="line.137">    }</a>
+<span class="sourceLineNo">138</span><a id="line.138"></a>
+<span class="sourceLineNo">139</span><a id="line.139">    @RequestMapping(method = { GET }, value = { "/authors/" })</a>
+<span class="sourceLineNo">140</span><a id="line.140">    @PreAuthorize("permitAll()")</a>
+<span class="sourceLineNo">141</span><a id="line.141">    public String authors(Model model,</a>
+<span class="sourceLineNo">142</span><a id="line.142">                          HttpServletRequest request,</a>
+<span class="sourceLineNo">143</span><a id="line.143">                          @RequestParam Optional&lt;Integer&gt; page,</a>
+<span class="sourceLineNo">144</span><a id="line.144">                          RedirectAttributes redirect) {</a>
+<span class="sourceLineNo">145</span><a id="line.145">        var view = getViewName();</a>
+<span class="sourceLineNo">146</span><a id="line.146"></a>
+<span class="sourceLineNo">147</span><a id="line.147">        if (page.isPresent()) {</a>
+<span class="sourceLineNo">148</span><a id="line.148">            var  pr = PageRequest.of(page.get() - 1, page_size);</a>
+<span class="sourceLineNo">149</span><a id="line.149">            var authors = authorRepository.findAll(pr);</a>
+<span class="sourceLineNo">150</span><a id="line.150"></a>
+<span class="sourceLineNo">151</span><a id="line.151">            model.addAttribute("authors", authors);</a>
+<span class="sourceLineNo">152</span><a id="line.152">            model.addAttribute(PAGE, authors);</a>
+<span class="sourceLineNo">153</span><a id="line.153">        } else {</a>
+<span class="sourceLineNo">154</span><a id="line.154">            redirect.addAttribute(PAGE, String.valueOf(1));</a>
+<span class="sourceLineNo">155</span><a id="line.155">            redirect.mergeAttributes(request.getParameterMap());</a>
+<span class="sourceLineNo">156</span><a id="line.156"></a>
+<span class="sourceLineNo">157</span><a id="line.157">            view = "redirect:" + request.getServletPath();</a>
+<span class="sourceLineNo">158</span><a id="line.158">        }</a>
+<span class="sourceLineNo">159</span><a id="line.159"></a>
+<span class="sourceLineNo">160</span><a id="line.160">        return view;</a>
+<span class="sourceLineNo">161</span><a id="line.161">    }</a>
+<span class="sourceLineNo">162</span><a id="line.162"></a>
+<span class="sourceLineNo">163</span><a id="line.163">    @RequestMapping(method = { GET }, value = { "/preview/" })</a>
+<span class="sourceLineNo">164</span><a id="line.164">    @PreAuthorize("hasAuthority('AUTHOR')")</a>
+<span class="sourceLineNo">165</span><a id="line.165">    public String preview(Model model) {</a>
+<span class="sourceLineNo">166</span><a id="line.166">        model.addAttribute(FORM, new PreviewForm());</a>
+<span class="sourceLineNo">167</span><a id="line.167"></a>
+<span class="sourceLineNo">168</span><a id="line.168">        return getViewName();</a>
+<span class="sourceLineNo">169</span><a id="line.169">    }</a>
+<span class="sourceLineNo">170</span><a id="line.170"></a>
+<span class="sourceLineNo">171</span><a id="line.171">    @RequestMapping(method = { POST }, value = { "/preview/" })</a>
+<span class="sourceLineNo">172</span><a id="line.172">    @PreAuthorize("hasAuthority('AUTHOR')")</a>
+<span class="sourceLineNo">173</span><a id="line.173">    public String previewPOST(Model model,</a>
+<span class="sourceLineNo">174</span><a id="line.174">                              Principal principal, HttpSession session,</a>
+<span class="sourceLineNo">175</span><a id="line.175">                              HttpServletRequest request,</a>
+<span class="sourceLineNo">176</span><a id="line.176">                              @Valid PreviewForm form, BindingResult result) {</a>
+<span class="sourceLineNo">177</span><a id="line.177">        var view = getViewName();</a>
+<span class="sourceLineNo">178</span><a id="line.178"></a>
+<span class="sourceLineNo">179</span><a id="line.179">        try {</a>
+<span class="sourceLineNo">180</span><a id="line.180">            if (! result.hasErrors()) {</a>
+<span class="sourceLineNo">181</span><a id="line.181">                var email = principal.getName();</a>
+<span class="sourceLineNo">182</span><a id="line.182">                var name = form.getFile().getOriginalFilename();</a>
+<span class="sourceLineNo">183</span><a id="line.183">                var  slug = FilenameUtils.getBaseName(name);</a>
+<span class="sourceLineNo">184</span><a id="line.184">                var article = new Article();</a>
+<span class="sourceLineNo">185</span><a id="line.185"></a>
+<span class="sourceLineNo">186</span><a id="line.186">                article.setAuthor(authorRepository.findById(email).get());</a>
+<span class="sourceLineNo">187</span><a id="line.187">                article.setEmail(article.getAuthor().getEmail());</a>
+<span class="sourceLineNo">188</span><a id="line.188"></a>
+<span class="sourceLineNo">189</span><a id="line.189">                service.compile(name, form.getFile().getBytes(),</a>
+<span class="sourceLineNo">190</span><a id="line.190">                                request.getServletPath(), slug, article);</a>
+<span class="sourceLineNo">191</span><a id="line.191"></a>
+<span class="sourceLineNo">192</span><a id="line.192">                session.setAttribute(article.getSlug(), article);</a>
+<span class="sourceLineNo">193</span><a id="line.193"></a>
+<span class="sourceLineNo">194</span><a id="line.194">                view =</a>
+<span class="sourceLineNo">195</span><a id="line.195">                    "redirect:" + request.getServletPath()</a>
+<span class="sourceLineNo">196</span><a id="line.196">                    + article.getSlug() + "/";</a>
+<span class="sourceLineNo">197</span><a id="line.197">            } else {</a>
+<span class="sourceLineNo">198</span><a id="line.198">                model.addAttribute(FORM, form);</a>
+<span class="sourceLineNo">199</span><a id="line.199">            }</a>
+<span class="sourceLineNo">200</span><a id="line.200">        } catch (Exception exception) {</a>
+<span class="sourceLineNo">201</span><a id="line.201">            model.addAttribute(ERRORS, exception.getMessage());</a>
+<span class="sourceLineNo">202</span><a id="line.202">        }</a>
+<span class="sourceLineNo">203</span><a id="line.203"></a>
+<span class="sourceLineNo">204</span><a id="line.204">        return view;</a>
+<span class="sourceLineNo">205</span><a id="line.205">    }</a>
+<span class="sourceLineNo">206</span><a id="line.206"></a>
+<span class="sourceLineNo">207</span><a id="line.207">    @RequestMapping(method = { GET }, value = { "/preview/{slug}/" })</a>
+<span class="sourceLineNo">208</span><a id="line.208">    @PreAuthorize("hasAuthority('AUTHOR')")</a>
+<span class="sourceLineNo">209</span><a id="line.209">    public String article(Model model,</a>
+<span class="sourceLineNo">210</span><a id="line.210">                          HttpSession session,</a>
+<span class="sourceLineNo">211</span><a id="line.211">                          @PathVariable String slug) {</a>
+<span class="sourceLineNo">212</span><a id="line.212">        var article = Optional.ofNullable((Article) session.getAttribute(slug));</a>
+<span class="sourceLineNo">213</span><a id="line.213"></a>
+<span class="sourceLineNo">214</span><a id="line.214">        model.addAttribute("article", article.get());</a>
+<span class="sourceLineNo">215</span><a id="line.215"></a>
+<span class="sourceLineNo">216</span><a id="line.216">        return getViewName();</a>
+<span class="sourceLineNo">217</span><a id="line.217">    }</a>
+<span class="sourceLineNo">218</span><a id="line.218"></a>
+<span class="sourceLineNo">219</span><a id="line.219">    @RequestMapping(method = { GET }, value = { "/login" })</a>
+<span class="sourceLineNo">220</span><a id="line.220">    @PreAuthorize("permitAll()")</a>
+<span class="sourceLineNo">221</span><a id="line.221">    public String login(Model model, HttpSession session) {</a>
+<span class="sourceLineNo">222</span><a id="line.222">        model.addAttribute(FORM, new LoginForm());</a>
+<span class="sourceLineNo">223</span><a id="line.223"></a>
+<span class="sourceLineNo">224</span><a id="line.224">        return getViewName();</a>
+<span class="sourceLineNo">225</span><a id="line.225">    }</a>
+<span class="sourceLineNo">226</span><a id="line.226"></a>
+<span class="sourceLineNo">227</span><a id="line.227">    @RequestMapping(method = { GET }, value = { "/password" })</a>
+<span class="sourceLineNo">228</span><a id="line.228">    @PreAuthorize("isAuthenticated()")</a>
+<span class="sourceLineNo">229</span><a id="line.229">    public String password(Model model) {</a>
+<span class="sourceLineNo">230</span><a id="line.230">        model.addAttribute(FORM, new ChangePasswordForm());</a>
+<span class="sourceLineNo">231</span><a id="line.231"></a>
+<span class="sourceLineNo">232</span><a id="line.232">        return getViewName();</a>
+<span class="sourceLineNo">233</span><a id="line.233">    }</a>
+<span class="sourceLineNo">234</span><a id="line.234"></a>
+<span class="sourceLineNo">235</span><a id="line.235">    @RequestMapping(method = { POST }, value = { "/password" })</a>
+<span class="sourceLineNo">236</span><a id="line.236">    @PreAuthorize("isAuthenticated()")</a>
+<span class="sourceLineNo">237</span><a id="line.237">    public String passwordPOST(Model model, Principal principal,</a>
+<span class="sourceLineNo">238</span><a id="line.238">                               @Valid ChangePasswordForm form, BindingResult result) {</a>
+<span class="sourceLineNo">239</span><a id="line.239">        var credential =</a>
+<span class="sourceLineNo">240</span><a id="line.240">            credentialRepository.findById(principal.getName())</a>
+<span class="sourceLineNo">241</span><a id="line.241">            .orElseThrow(() -&gt; new AuthorizationServiceException("Unauthorized"));</a>
+<span class="sourceLineNo">242</span><a id="line.242"></a>
+<span class="sourceLineNo">243</span><a id="line.243">        try {</a>
+<span class="sourceLineNo">244</span><a id="line.244">            if (result.hasErrors()) {</a>
+<span class="sourceLineNo">245</span><a id="line.245">                throw new RuntimeException(String.valueOf(result.getAllErrors()));</a>
+<span class="sourceLineNo">246</span><a id="line.246">            }</a>
+<span class="sourceLineNo">247</span><a id="line.247"></a>
+<span class="sourceLineNo">248</span><a id="line.248">            if (! (Objects.equals(form.getUsername(), principal.getName())</a>
+<span class="sourceLineNo">249</span><a id="line.249">                   &amp;&amp; encoder.matches(form.getPassword(), credential.getPassword()))) {</a>
+<span class="sourceLineNo">250</span><a id="line.250">                throw new AccessDeniedException("Invalid user name and password");</a>
+<span class="sourceLineNo">251</span><a id="line.251">            }</a>
+<span class="sourceLineNo">252</span><a id="line.252"></a>
+<span class="sourceLineNo">253</span><a id="line.253">            if (! (form.getNewPassword() != null</a>
+<span class="sourceLineNo">254</span><a id="line.254">                   &amp;&amp; Objects.equals(form.getNewPassword(), form.getRepeatPassword()))) {</a>
+<span class="sourceLineNo">255</span><a id="line.255">                throw new RuntimeException("Repeated password does not match new password");</a>
+<span class="sourceLineNo">256</span><a id="line.256">            }</a>
+<span class="sourceLineNo">257</span><a id="line.257"></a>
+<span class="sourceLineNo">258</span><a id="line.258">            if (encoder.matches(form.getNewPassword(), credential.getPassword())) {</a>
+<span class="sourceLineNo">259</span><a id="line.259">                throw new RuntimeException("New password must be different than old");</a>
+<span class="sourceLineNo">260</span><a id="line.260">            }</a>
+<span class="sourceLineNo">261</span><a id="line.261"></a>
+<span class="sourceLineNo">262</span><a id="line.262">            credential.setPassword(encoder.encode(form.getNewPassword()));</a>
+<span class="sourceLineNo">263</span><a id="line.263">            credentialRepository.save(credential);</a>
+<span class="sourceLineNo">264</span><a id="line.264">        } catch (Exception exception) {</a>
+<span class="sourceLineNo">265</span><a id="line.265">            model.addAttribute(FORM, form);</a>
+<span class="sourceLineNo">266</span><a id="line.266">            model.addAttribute(ERRORS, exception.getMessage());</a>
+<span class="sourceLineNo">267</span><a id="line.267">        }</a>
+<span class="sourceLineNo">268</span><a id="line.268"></a>
+<span class="sourceLineNo">269</span><a id="line.269">        return getViewName();</a>
+<span class="sourceLineNo">270</span><a id="line.270">    }</a>
+<span class="sourceLineNo">271</span><a id="line.271">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>
