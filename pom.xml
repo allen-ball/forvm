@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ##########################################################################
+  forvm Blog Publishing Platform
   %%
   Copyright (C) 2018 - 2021 Allen D. Ball
   %%
@@ -32,7 +33,7 @@
     <groupId>ball</groupId>
     <artifactId>parent</artifactId>
     <version>20210602.1</version>
-    <relativePath>../ball/parent/pom.xml</relativePath>
+    <relativePath/>
   </parent>
   <inceptionYear>2018</inceptionYear>
   <licenses>
@@ -42,6 +43,35 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+  <scm>
+    <url>https://github.com/allen-ball/forvm</url>
+  </scm>
+  <repositories>
+    <repository>
+      <id>repo.hcf.dev-RELEASE</id>
+      <name>hcf.dev RELEASE Repository</name>
+      <url>https://repo.hcf.dev/maven/release/</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>repo.hcf.dev-RELEASE</id>
+      <url>https://repo.hcf.dev/maven/release/</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <properties>
+    <jse.target>11</jse.target>
+    <start-class>forvm.Launcher</start-class>
+    <flexmark.version>0.62.2</flexmark.version>
+  </properties>
   <profiles>
     <profile>
       <id>spring-boot:run</id>
@@ -77,10 +107,20 @@
       </build>
     </profile>
   </profiles>
-  <properties>
-    <jse.target>11</jse.target>
-    <start-class>forvm.Launcher</start-class>
-  </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.vladsch.flexmark</groupId>
+        <artifactId>flexmark</artifactId>
+        <version>${flexmark.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.vladsch.flexmark</groupId>
+        <artifactId>flexmark-all</artifactId>
+        <version>${flexmark.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies verbose="true">
     <dependency>
       <groupId>ball</groupId>
