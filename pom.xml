@@ -32,9 +32,13 @@
   <parent>
     <groupId>ball</groupId>
     <artifactId>parent</artifactId>
-    <version>20210602.1</version>
+    <version>20210611.0</version>
     <relativePath/>
   </parent>
+  <organization>
+    <name><![CDATA[<a href="mailto:ball@hcf.dev">Allen D. Ball</a>]]></name>
+    <url>https://github.com/allen-ball/forvm</url>
+  </organization>
   <inceptionYear>2018</inceptionYear>
   <licenses>
     <license>
