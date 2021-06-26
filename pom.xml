@@ -73,8 +73,9 @@
   </pluginRepositories>
   <properties>
     <jse.target>11</jse.target>
-    <start-class>forvm.Launcher</start-class>
     <flexmark.version>0.62.2</flexmark.version>
+    <jetty.version>10.0.5</jetty.version>
+    <start-class>forvm.Launcher</start-class>
   </properties>
   <profiles>
     <profile>
@@ -187,6 +188,16 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-jetty</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.jetty.websocket</groupId>
+          <artifactId>javax-websocket-server-impl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.eclipse.jetty.websocket</groupId>
+          <artifactId>websocket-server</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
