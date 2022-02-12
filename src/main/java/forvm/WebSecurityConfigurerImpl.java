@@ -107,8 +107,7 @@ public abstract class WebSecurityConfigurerImpl extends WebSecurityConfigurerAda
                               .logoutSuccessUrl("/").permitAll());
 
             try {
-                var repository =
-                    getApplicationContext().getBean(ClientRegistrationRepository.class);
+                var repository = getApplicationContext().getBean(ClientRegistrationRepository.class);
 
                 if (repository != null) {
                     http.oauth2Login(t -> t.clientRegistrationRepository(repository)

@@ -99,10 +99,7 @@ public class UserServicesConfiguration {
             try {
                 var credential = credentialRepository.findById(username);
 
-                user = new
-                    User(username,
-                         credential.get().getPassword(),
-                         getGrantedAuthoritySet(username));
+                user = new User(username, credential.get().getPassword(), getGrantedAuthoritySet(username));
             } catch (UsernameNotFoundException exception) {
                 throw exception;
             } catch (Exception exception) {
@@ -126,9 +123,7 @@ public class UserServicesConfiguration {
             var user = delegate.loadUser(request);
 
             try {
-                user =
-                    new DefaultOAuth2User(getGrantedAuthoritySet(user.getName()),
-                                          user.getAttributes(), attribute);
+                user = new DefaultOAuth2User(getGrantedAuthoritySet(user.getName()), user.getAttributes(), attribute);
             } catch (OAuth2AuthenticationException exception) {
                 throw exception;
             } catch (Exception exception) {
@@ -154,8 +149,7 @@ public class UserServicesConfiguration {
             try {
                 user =
                     new DefaultOidcUser(getGrantedAuthoritySet(user.getName()),
-                                        user.getIdToken(), user.getUserInfo(),
-                                        attribute);
+                                        user.getIdToken(), user.getUserInfo(), attribute);
             } catch (OAuth2AuthenticationException exception) {
                 throw exception;
             } catch (Exception exception) {

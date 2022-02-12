@@ -24,7 +24,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -71,10 +70,8 @@ public class Attachment extends JSONBean {
 
     /** @serial */
     @ManyToOne(fetch = LAZY)
-    @JoinColumns({
-        @JoinColumn(name = "email", insertable = false, updatable = false),
-            @JoinColumn(name = "slug", insertable = false, updatable = false)
-    })
+    @JoinColumn(name = "email", insertable = false, updatable = false)
+    @JoinColumn(name = "slug", insertable = false, updatable = false)
     @Getter
     private Article article = null;
 

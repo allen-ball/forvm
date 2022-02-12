@@ -49,10 +49,7 @@ import static lombok.AccessLevel.PROTECTED;
  * @author {@link.uri mailto:ball@hcf.dev Allen D. Ball}
  */
 @NoArgsConstructor(access = PROTECTED)
-public abstract class MarkdownTask extends Task
-                                   implements AnnotatedAntTask,
-                                              ClasspathDelegateAntTask,
-                                              ConfigurableAntTask {
+public abstract class MarkdownTask extends Task implements AnnotatedAntTask, ClasspathDelegateAntTask, ConfigurableAntTask {
     @Getter @Setter @Accessors(chain = true, fluent = true)
     private ClasspathUtils.Delegate delegate = null;
     protected MarkdownService service = new MarkdownService();

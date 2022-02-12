@@ -35,6 +35,8 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import static org.springframework.core.ResolvableType.NONE;
+
 /**
  * {@link ControllerAdvice} implementation.
  *
@@ -63,12 +65,9 @@ public class ControllerAdviceImpl {
                 var repository = context.getBean(ClientRegistrationRepository.class);
 
                 if (repository != null) {
-                    var type =
-                        ResolvableType.forInstance(repository)
-                        .as(Iterable.class);
+                    var type = ResolvableType.forInstance(repository).as(Iterable.class);
 
-                    if (type != ResolvableType.NONE
-                        && ClientRegistration.class.isAssignableFrom(type.resolveGenerics()[0])) {
+                    if (type != NONE && ClientRegistration.class.isAssignableFrom(type.resolveGenerics()[0])) {
                         ((Iterable<?>) repository)
                             .forEach(t -> oauth2.add((ClientRegistration) t));
                     }

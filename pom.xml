@@ -32,7 +32,7 @@
   <parent>
     <groupId>ball</groupId>
     <artifactId>parent</artifactId>
-    <version>20210923.0</version>
+    <version>2022.0.0-SNAPSHOT</version>
     <relativePath/>
   </parent>
   <organization>
@@ -73,8 +73,7 @@
   </pluginRepositories>
   <properties>
     <jse.target>11</jse.target>
-    <flexmark.version>0.62.2</flexmark.version>
-    <jetty.version>10.0.5</jetty.version>
+    <flexmark.version>0.64.0</flexmark.version>
     <start-class>forvm.Launcher</start-class>
   </properties>
   <profiles>

@@ -1,3 +1,5 @@
+# .gitignore
+.DS_Store
 application.properties
 build.properties
 target/

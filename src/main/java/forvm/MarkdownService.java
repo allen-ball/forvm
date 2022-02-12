@@ -141,8 +141,7 @@ public class MarkdownService {
      *
      * @throws  Exception       If any {@link Exception} is encountered.
      */
-    public void compile(String name, byte[] contents,
-                        String slug, Author author) throws Exception {
+    public void compile(String name, byte[] contents, String slug, Author author) throws Exception {
         ZipFile zip = null;
 
         try {
@@ -178,8 +177,7 @@ public class MarkdownService {
 
             if (zip != null) {
                 for (var entry :
-                         Collections.list(zip.getEntries())
-                         .stream()
+                         Collections.list(zip.getEntries()).stream()
                          .filter(t -> (! t.isDirectory()))
                          .filter(t -> (! t.getName().equals(README_MD)))
                          .collect(toList())) {
@@ -214,9 +212,7 @@ public class MarkdownService {
      *
      * @throws  Exception       If any {@link Exception} is encountered.
      */
-    public void compile(String name, byte[] contents,
-                        String prefix, String slug,
-                        Article article) throws Exception {
+    public void compile(String name, byte[] contents, String prefix, String slug, Article article) throws Exception {
         ZipFile zip = null;
 
         try {
@@ -245,8 +241,7 @@ public class MarkdownService {
 
             if (zip != null) {
                 for (var entry :
-                         Collections.list(zip.getEntries())
-                         .stream()
+                         Collections.list(zip.getEntries()).stream()
                          .filter(t -> (! t.isDirectory()))
                          .filter(t -> (! t.getName().equals(README_MD)))
                          .collect(toList())) {
@@ -344,8 +339,7 @@ public class MarkdownService {
     @ToString
     private class ZipFileImpl extends ZipFile {
         public ZipFileImpl(String name, byte[] contents) throws IOException {
-            super(new SeekableInMemoryByteChannel(contents),
-                  name, UTF_8.name(), true);
+            super(new SeekableInMemoryByteChannel(contents), name, UTF_8.name(), true);
         }
     }
 
@@ -384,9 +378,7 @@ public class MarkdownService {
         }
 
         @Override
-        public ResolvedLink resolveLink(Node node,
-                                        LinkResolverBasicContext context,
-                                        ResolvedLink link) {
+        public ResolvedLink resolveLink(Node node, LinkResolverBasicContext context, ResolvedLink link) {
             var uri = URI.create(link.getUrl()).normalize();
 
             if ((! uri.isAbsolute()) || FILE.equals(uri.getScheme())) {

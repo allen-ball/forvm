@@ -53,8 +53,7 @@ public class AttachmentRestController {
 
     @RequestMapping(method = { GET }, value = { "/article/{slug}/{name:.+}" })
     @PreAuthorize("permitAll()")
-    public byte[] get(@PathVariable String slug,
-                      @PathVariable String name) throws Exception {
+    public byte[] get(@PathVariable String slug, @PathVariable String name) throws Exception {
         var path = "/" + name;
         var attachment =
             articleRepository.findBySlug(slug)
@@ -65,9 +64,7 @@ public class AttachmentRestController {
 
     @RequestMapping(method = { GET }, value = { "/preview/{slug}/{name:.+}" })
     @PreAuthorize("hasAuthority('AUTHOR')")
-    public byte[] get(HttpSession session,
-                      @PathVariable String slug,
-                      @PathVariable String name) throws Exception {
+    public byte[] get(HttpSession session, @PathVariable String slug, @PathVariable String name) throws Exception {
         var path = "/" + name;
         var attachment =
             Optional.ofNullable((Article) session.getAttribute(slug)).get()

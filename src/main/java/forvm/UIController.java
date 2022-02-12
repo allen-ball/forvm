@@ -94,11 +94,7 @@ public class UIController extends AbstractController {
 
     @RequestMapping(method = { GET }, value = { "/articles/" })
     @PreAuthorize("permitAll()")
-    public String articles(Model model,
-                           HttpServletRequest request,
-                           @RequestParam Optional<String> author,
-                           @RequestParam Optional<Integer> page,
-                           RedirectAttributes redirect) {
+    public String articles(Model model, HttpServletRequest request, @RequestParam Optional<String> author, @RequestParam Optional<Integer> page, RedirectAttributes redirect) {
         var view = getViewName();
 
         if (page.isPresent()) {
@@ -108,9 +104,7 @@ public class UIController extends AbstractController {
             if (author.isPresent()) {
                 var slug = author.get();
 
-                articles =
-                    articleRepository
-                    .findByAuthor(pr, authorRepository.findBySlug(slug).get());
+                articles = articleRepository.findByAuthor(pr, authorRepository.findBySlug(slug).get());
             } else {
                 articles = articleRepository.findAll(pr);
             }
@@ -130,22 +124,18 @@ public class UIController extends AbstractController {
     @RequestMapping(method = { GET }, value = { "/article/{slug}/" })
     @PreAuthorize("permitAll()")
     public String article(Model model, @PathVariable String slug) {
-        model
-            .addAttribute("article", articleRepository.findBySlug(slug).get());
+        model.addAttribute("article", articleRepository.findBySlug(slug).get());
 
         return getViewName();
     }
 
     @RequestMapping(method = { GET }, value = { "/authors/" })
     @PreAuthorize("permitAll()")
-    public String authors(Model model,
-                          HttpServletRequest request,
-                          @RequestParam Optional<Integer> page,
-                          RedirectAttributes redirect) {
+    public String authors(Model model, HttpServletRequest request, @RequestParam Optional<Integer> page, RedirectAttributes redirect) {
         var view = getViewName();
 
         if (page.isPresent()) {
-            var  pr = PageRequest.of(page.get() - 1, page_size);
+            var pr = PageRequest.of(page.get() - 1, page_size);
             var authors = authorRepository.findAll(pr);
 
             model.addAttribute("authors", authors);
@@ -170,30 +160,24 @@ public class UIController extends AbstractController {
 
     @RequestMapping(method = { POST }, value = { "/preview/" })
     @PreAuthorize("hasAuthority('AUTHOR')")
-    public String previewPOST(Model model,
-                              Principal principal, HttpSession session,
-                              HttpServletRequest request,
-                              @Valid PreviewForm form, BindingResult result) {
+    public String previewPOST(Model model, Principal principal, HttpSession session, HttpServletRequest request, @Valid PreviewForm form, BindingResult result) {
         var view = getViewName();
 
         try {
             if (! result.hasErrors()) {
                 var email = principal.getName();
                 var name = form.getFile().getOriginalFilename();
-                var  slug = FilenameUtils.getBaseName(name);
+                var slug = FilenameUtils.getBaseName(name);
                 var article = new Article();
 
                 article.setAuthor(authorRepository.findById(email).get());
                 article.setEmail(article.getAuthor().getEmail());
 
-                service.compile(name, form.getFile().getBytes(),
-                                request.getServletPath(), slug, article);
+                service.compile(name, form.getFile().getBytes(), request.getServletPath(), slug, article);
 
                 session.setAttribute(article.getSlug(), article);
 
-                view =
-                    "redirect:" + request.getServletPath()
-                    + article.getSlug() + "/";
+                view = "redirect:" + request.getServletPath() + article.getSlug() + "/";
             } else {
                 model.addAttribute(FORM, form);
             }
@@ -206,9 +190,7 @@ public class UIController extends AbstractController {
 
     @RequestMapping(method = { GET }, value = { "/preview/{slug}/" })
     @PreAuthorize("hasAuthority('AUTHOR')")
-    public String article(Model model,
-                          HttpSession session,
-                          @PathVariable String slug) {
+    public String article(Model model, HttpSession session, @PathVariable String slug) {
         var article = Optional.ofNullable((Article) session.getAttribute(slug));
 
         model.addAttribute("article", article.get());
@@ -234,8 +216,7 @@ public class UIController extends AbstractController {
 
     @RequestMapping(method = { POST }, value = { "/password" })
     @PreAuthorize("isAuthenticated()")
-    public String passwordPOST(Model model, Principal principal,
-                               @Valid ChangePasswordForm form, BindingResult result) {
+    public String passwordPOST(Model model, Principal principal, @Valid ChangePasswordForm form, BindingResult result) {
         var credential =
             credentialRepository.findById(principal.getName())
             .orElseThrow(() -> new AuthorizationServiceException("Unauthorized"));
@@ -250,8 +231,7 @@ public class UIController extends AbstractController {
                 throw new AccessDeniedException("Invalid user name and password");
             }
 
-            if (! (form.getNewPassword() != null
-                   && Objects.equals(form.getNewPassword(), form.getRepeatPassword()))) {
+            if (! (form.getNewPassword() != null && Objects.equals(form.getNewPassword(), form.getRepeatPassword()))) {
                 throw new RuntimeException("Repeated password does not match new password");
             }
 

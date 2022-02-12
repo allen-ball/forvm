@@ -67,10 +67,7 @@ public class APIRestController {
     @RequestMapping(method = { PUT }, value = { "/author", "/author/{slug}" })
     @PreAuthorize("hasAuthority('AUTHOR')")
     @Transactional
-    public ResponseEntity<String> author(Principal principal,
-                                         HttpMethod method,
-                                         @PathVariable Optional<String> slug,
-                                         @RequestParam MultipartFile file) throws Exception {
+    public ResponseEntity<String> author(Principal principal, HttpMethod method, @PathVariable Optional<String> slug, @RequestParam MultipartFile file) throws Exception {
         var email = principal.getName();
         Author author = null;
 
@@ -103,9 +100,7 @@ public class APIRestController {
     @RequestMapping(method = { DELETE }, value = { "/article/{slug}" })
     @PreAuthorize("hasAuthority('AUTHOR')")
     @Transactional
-    public ResponseEntity<String> article(Principal principal,
-                                          HttpMethod method,
-                                          @PathVariable String slug) throws Exception {
+    public ResponseEntity<String> article(Principal principal, HttpMethod method, @PathVariable String slug) throws Exception {
         var email = principal.getName();
 
         switch (method) {
@@ -130,10 +125,7 @@ public class APIRestController {
                     value = { "/article", "/article/{slug}" })
     @PreAuthorize("hasAuthority('AUTHOR')")
     @Transactional
-    public ResponseEntity<String> article(Principal principal,
-                                          HttpMethod method,
-                                          @PathVariable Optional<String> slug,
-                                          @RequestParam MultipartFile file) throws Exception {
+    public ResponseEntity<String> article(Principal principal, HttpMethod method, @PathVariable Optional<String> slug, @RequestParam MultipartFile file) throws Exception {
         var email = principal.getName();
         var name = file.getOriginalFilename();
 
@@ -162,8 +154,7 @@ public class APIRestController {
             throw new MethodNotAllowedException(String.valueOf(method));
         }
 
-        service.compile(name, file.getBytes(),
-                        "/article", slug.get(), article);
+        service.compile(name, file.getBytes(), "/article", slug.get(), article);
 
         if (email.equals(article.getAuthor().getEmail())) {
             articleRepository.save(article);
