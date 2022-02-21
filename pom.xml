@@ -32,7 +32,7 @@
   <parent>
     <groupId>ball</groupId>
     <artifactId>parent</artifactId>
-    <version>2022.0.0-SNAPSHOT</version>
+    <version>2022.0.0</version>
     <relativePath/>
   </parent>
   <organization>
@@ -48,7 +48,7 @@
     </license>
   </licenses>
   <scm>
-    <url>https://github.com/allen-ball/forvm</url>
+    <url>https://github.com/allen-ball/forvm.git</url>
   </scm>
   <repositories>
     <repository>
@@ -132,10 +132,6 @@
     </dependency>
     <dependency>
       <groupId>ball</groupId>
-      <artifactId>ball-persistence</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>ball</groupId>
       <artifactId>ball-spring</artifactId>
     </dependency>
     <dependency>
@@ -157,6 +153,11 @@
     <dependency>
       <groupId>org.apache.tika</groupId>
       <artifactId>tika-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-common</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
