@@ -12,7 +12,7 @@
 <span class="sourceLineNo">003</span><a id="line.3"> * ##########################################################################</a>
 <span class="sourceLineNo">004</span><a id="line.4"> * forvm Blog Publishing Platform</a>
 <span class="sourceLineNo">005</span><a id="line.5"> * %%</a>
-<span class="sourceLineNo">006</span><a id="line.6"> * Copyright (C) 2018 - 2021 Allen D. Ball</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * Copyright (C) 2018 - 2022 Allen D. Ball</a>
 <span class="sourceLineNo">007</span><a id="line.7"> * %%</a>
 <span class="sourceLineNo">008</span><a id="line.8"> * Licensed under the Apache License, Version 2.0 (the "License");</a>
 <span class="sourceLineNo">009</span><a id="line.9"> * you may not use this file except in compliance with the License.</a>
@@ -116,19 +116,18 @@
 <span class="sourceLineNo">107</span><a id="line.107">                              .logoutSuccessUrl("/").permitAll());</a>
 <span class="sourceLineNo">108</span><a id="line.108"></a>
 <span class="sourceLineNo">109</span><a id="line.109">            try {</a>
-<span class="sourceLineNo">110</span><a id="line.110">                var repository =</a>
-<span class="sourceLineNo">111</span><a id="line.111">                    getApplicationContext().getBean(ClientRegistrationRepository.class);</a>
-<span class="sourceLineNo">112</span><a id="line.112"></a>
-<span class="sourceLineNo">113</span><a id="line.113">                if (repository != null) {</a>
-<span class="sourceLineNo">114</span><a id="line.114">                    http.oauth2Login(t -&gt; t.clientRegistrationRepository(repository)</a>
-<span class="sourceLineNo">115</span><a id="line.115">                                           .userInfoEndpoint(u -&gt; u.oidcUserService(oidcUserService))</a>
-<span class="sourceLineNo">116</span><a id="line.116">                                           .loginPage("/login").permitAll());</a>
-<span class="sourceLineNo">117</span><a id="line.117">                }</a>
-<span class="sourceLineNo">118</span><a id="line.118">            } catch (Exception exception) {</a>
-<span class="sourceLineNo">119</span><a id="line.119">            }</a>
-<span class="sourceLineNo">120</span><a id="line.120">        }</a>
-<span class="sourceLineNo">121</span><a id="line.121">    }</a>
-<span class="sourceLineNo">122</span><a id="line.122">}</a>
+<span class="sourceLineNo">110</span><a id="line.110">                var repository = getApplicationContext().getBean(ClientRegistrationRepository.class);</a>
+<span class="sourceLineNo">111</span><a id="line.111"></a>
+<span class="sourceLineNo">112</span><a id="line.112">                if (repository != null) {</a>
+<span class="sourceLineNo">113</span><a id="line.113">                    http.oauth2Login(t -&gt; t.clientRegistrationRepository(repository)</a>
+<span class="sourceLineNo">114</span><a id="line.114">                                           .userInfoEndpoint(u -&gt; u.oidcUserService(oidcUserService))</a>
+<span class="sourceLineNo">115</span><a id="line.115">                                           .loginPage("/login").permitAll());</a>
+<span class="sourceLineNo">116</span><a id="line.116">                }</a>
+<span class="sourceLineNo">117</span><a id="line.117">            } catch (Exception exception) {</a>
+<span class="sourceLineNo">118</span><a id="line.118">            }</a>
+<span class="sourceLineNo">119</span><a id="line.119">        }</a>
+<span class="sourceLineNo">120</span><a id="line.120">    }</a>
+<span class="sourceLineNo">121</span><a id="line.121">}</a>
 
 
 
