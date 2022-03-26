@@ -23,16 +23,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <name>forvm Blog Publishing Platform</name>
-  <description></description>
   <groupId>ball</groupId>
   <artifactId>forvm</artifactId>
   <version>2.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
+  <name>${project.groupId}:${project.artifactId}</name>
+  <description>forvm Blog Publishing Platform</description>
+  <url>https://github.com/allen-ball/forvm</url>
   <parent>
     <groupId>ball</groupId>
     <artifactId>parent</artifactId>
-    <version>2022.0.1</version>
+    <version>2022.1.0</version>
     <relativePath/>
   </parent>
   <organization>
@@ -72,7 +73,7 @@
     </pluginRepository>
   </pluginRepositories>
   <properties>
-    <jse.target>11</jse.target>
+    <maven.compiler.release>11</maven.compiler.release>
     <flexmark.version>0.64.0</flexmark.version>
     <start-class>forvm.Launcher</start-class>
   </properties>
@@ -229,7 +230,7 @@
     <dependency>
       <groupId>org.webjars.npm</groupId>
       <artifactId>prismjs</artifactId>
-      <version>1.16.0</version>
+      <version>1.28.0</version>
     </dependency>
   </dependencies>
 </project>
