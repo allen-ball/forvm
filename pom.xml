@@ -73,6 +73,8 @@
     </pluginRepository>
   </pluginRepositories>
   <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+
     <maven.compiler.release>11</maven.compiler.release>
     <flexmark.version>0.64.0</flexmark.version>
     <start-class>forvm.Launcher</start-class>
