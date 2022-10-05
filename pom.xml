@@ -23,7 +23,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>ball</groupId>
+  <groupId>dev.hcf</groupId>
   <artifactId>forvm</artifactId>
   <version>2.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
@@ -31,7 +31,7 @@
   <description>forvm Blog Publishing Platform</description>
   <url>https://github.com/allen-ball/forvm</url>
   <parent>
-    <groupId>ball</groupId>
+    <groupId>dev.hcf.ball</groupId>
     <artifactId>parent</artifactId>
     <version>2022.1.2-SNAPSHOT</version>
     <relativePath/>
@@ -84,7 +84,7 @@
       <id>spring-boot:run</id>
       <dependencies>
         <dependency>
-          <groupId>ball</groupId>
+          <groupId>dev.hcf.ball</groupId>
           <artifactId>ball-spring-mysqld-starter</artifactId>
           <scope>runtime</scope>
         </dependency>
@@ -98,7 +98,7 @@
         <pluginManagement>
           <plugins>
             <plugin>
-              <groupId>ball</groupId>
+              <groupId>dev.hcf.ball</groupId>
               <artifactId>ball-license-maven-plugin</artifactId>
               <configuration>
                 <selections>
@@ -130,15 +130,15 @@
   </dependencyManagement>
   <dependencies verbose="true">
     <dependency>
-      <groupId>ball</groupId>
+      <groupId>dev.hcf.ball</groupId>
       <artifactId>ball-databind</artifactId>
     </dependency>
     <dependency>
-      <groupId>ball</groupId>
+      <groupId>dev.hcf.ball</groupId>
       <artifactId>ball-spring</artifactId>
     </dependency>
     <dependency>
-      <groupId>ball</groupId>
+      <groupId>dev.hcf.ball</groupId>
       <artifactId>ball-util</artifactId>
     </dependency>
     <dependency>
