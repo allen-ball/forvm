@@ -11,7 +11,7 @@ Documentation
 -------------
 
 [Javadoc][forvm API Javadoc] is published at
-<https://allen-ball.github.io/forvm>.
+<https://allen-ball.github.io/forvm/>.
 
 
 License
